@@ -1,0 +1,44 @@
+{
+  "Cum 0: Khách hàng VIP - Tài sản lớn": {
+    "dac_trung": "Tuổi TB 50, số dư 175M, engagement 32/100",
+    "giai_doan_song": "Tích lũy tài sản, chuẩn bị hưu trí, lo cho gia đình",
+    "nhu_cau": "Đầu tư dài hạn, bảo hiểm, quản lý tài sản",
+    "chien_luoc": "Giữ chân và upsell sản phẩm cao cấp",
+    "uu_dai": [
+      "Thẻ VIP với ưu đãi phí 0đ",
+      "Lãi suất tiết kiệm cao hơn 0.5%/năm",
+      "Tư vấn tài chính cá nhân miễn phí",
+      "Ưu tiên xử lý giao dịch, đường dây hotline riêng",
+      "Quà tặng sinh nhật và dịp lễ đặc biệt"
+    ],
+    "canh_bao": "Churn rate 0.1% - Mất 1 KH này = mất nhiều giá trị"
+  },
+  "Cum 1: Khách hàng rủi ro cao - Cần kích hoạt ngay": {
+    "dac_trung": "Tuổi TB 49, số dư 37M, engagement 18/100",
+    "giai_doan_song": "Đang có dấu hiệu không hài lòng hoặc tìm kiếm lựa chọn khác",
+    "nhu_cau": "Cần được lắng nghe, giải quyết vấn đề, cảm thấy được trân trọng",
+    "chien_luoc": "Can thiệp khẩn cấp, win-back campaign",
+    "uu_dai": [
+      "Gọi điện tư vấn cá nhân trong 48h",
+      "Ưu đãi đặc biệt giữ chân: miễn phí 3 tháng",
+      "Giải quyết khiếu nại ưu tiên",
+      "Tặng điểm loyalty bù đắp trải nghiệm xấu",
+      "Khảo sát hài lòng và cam kết cải thiện"
+    ],
+    "canh_bao": "[!] Churn rate 26.3% - CANH BẠC: Cần hành động ngay!"
+  },
+  "Cum 2: Khách hàng thân thiết - Đặc biệt": {
+    "dac_trung": "Tuổi TB 49, số dư 40M, engagement 73/100",
+    "giai_doan_song": "Xây dựng sự nghiệp, mua nhà/xe, lập gia đình",
+    "nhu_cau": "Vay mua nhà, thẻ tín dụng, tiết kiệm linh hoạt",
+    "chien_luoc": "Nuôi dưỡng và chuyển đổi thành KH thân thiết",
+    "uu_dai": [
+      "Vay mua nhà lãi suất ưu đãi 2 năm đầu",
+      "Thẻ tín dụng hoàn tiền 2% mua sắm",
+      "Miễn phí chuyển khoản 24/7",
+      "Tích điểm đổi quà khi dùng app",
+      "Lộ trình thăng hạng loyalty rõ ràng"
+    ],
+    "canh_bao": "Churn rate 6.7% - Cần can thiệp sớm để giữ chân"
+  }
+}

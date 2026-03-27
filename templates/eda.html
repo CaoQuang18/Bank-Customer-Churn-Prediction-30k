@@ -1,0 +1,101 @@
+<section id="tab-eda" class="tab-content">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px">
+    <h2 style="margin-bottom:0">🔍 Phân tích Chân dung Khách hàng (EDA)</h2>
+    <span style="background:#dbeafe; color:#1e40af; padding:8px 20px; border-radius:30px; font-size:15px; font-weight:700; border:1px solid #bae6fd">Phân tích thực tế (Real Data Analysis)</span>
+  </div>
+  <p style="color:#64748b; font-size:17px; margin-bottom:32px; line-height:1.7; max-width:800px">
+    Giải mã các "patterns" hành vi rời bỏ dịch vụ thông qua phân tích tương quan các chiều dữ liệu nhân khẩu học và tài chính.
+  </p>
+
+  <!-- HIGHLIGHT TOP RISKS -->
+  <div class="card" style="margin-bottom:32px; background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border: 1px solid #fde68a; box-shadow: 0 10px 20px rgba(251,191,36,0.1);">
+    <h3 style="color:#92400e; font-size:20px; display:flex; align-items:center; gap:12px; margin-bottom:15px">🔥 Top 5 Chỉ số Rủi ro cao nhất</h3>
+    <div id="eda-top-risks" style="font-size:16px; color:#92400e; font-weight:500; display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px">Đang quét dữ liệu rủi ro...</div>
+  </div>
+   
+  <!-- SECTION Demo -->
+  <div style="margin:40px 0 20px; border-bottom: 2px solid #e2e8f0; padding-bottom:10px; display:flex; align-items:center; gap:12px">
+    <span style="background:#1e40af; color:white; width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px">👤</span>
+    <h3 style="margin-bottom:0; font-size:22px; color:#1e293b">Nhân khẩu học & Phân nhóm</h3>
+  </div>
+  
+  <div class="eda-grid" style="gap:24px">
+    <div class="card chart-card">
+      <h3 style="font-size:16px; margin-bottom:15px">📅 Tỉ lệ Churn theo Nhóm tuổi</h3>
+      <canvas id="chart-age"></canvas>
+      <div class="insight-box" id="insight-age" style="margin-top:20px; font-size:15px"></div>
+    </div>
+    <div class="card chart-card">
+      <h3 style="font-size:16px; margin-bottom:15px">⚧ Tỉ lệ Churn theo Giới tính</h3>
+      <canvas id="chart-gender"></canvas>
+      <div class="insight-box" id="insight-gender" style="margin-top:20px; font-size:15px"></div>
+    </div>
+    <div class="card chart-card">
+      <h3 style="font-size:16px; margin-bottom:15px">🏷️ Tỉ lệ Churn theo Phân khúc</h3>
+      <canvas id="chart-segment"></canvas>
+      <div class="insight-box" id="insight-segment" style="margin-top:20px; font-size:15px"></div>
+    </div>
+    <div class="card chart-card">
+      <h3 style="font-size:16px; margin-bottom:15px">⭐ Tỉ lệ Churn theo Loyalty</h3>
+      <canvas id="chart-loyalty"></canvas>
+      <div class="insight-box" id="insight-loyalty" style="margin-top:20px; font-size:15px"></div>
+    </div>
+  </div>
+
+  <!-- SECTION Financial -->
+  <div style="margin:48px 0 20px; border-bottom: 2px solid #e2e8f0; padding-bottom:10px; display:flex; align-items:center; gap:12px">
+    <span style="background:#10b981; color:white; width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px">💰</span>
+    <h3 style="margin-bottom:0; font-size:22px; color:#1e293b">Tài chính & Tín dụng</h3>
+  </div>
+  
+  <div class="eda-grid" style="gap:24px">
+    <div class="card chart-card">
+      <h3 style="font-size:16px; margin-bottom:15px">💳 Tỉ lệ Churn theo Điểm tín dụng</h3>
+      <canvas id="chart-credit"></canvas>
+      <div class="insight-box" id="insight-credit" style="margin-top:20px; font-size:15px"></div>
+    </div>
+    <div class="card chart-card">
+      <h3 style="font-size:16px; margin-bottom:15px">💰 Phân bố Số dư (Churn vs Ở lại)</h3>
+      <canvas id="chart-balance"></canvas>
+      <div class="insight-box" id="insight-balance" style="margin-top:20px; font-size:15px"></div>
+    </div>
+  </div>
+
+  <!-- SECTION Behavior -->
+  <div style="margin:48px 0 20px; border-bottom: 2px solid #e2e8f0; padding-bottom:10px; display:flex; align-items:center; gap:12px">
+    <span style="background:#f59e0b; color:white; width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px">📱</span>
+    <h3 style="margin-bottom:0; font-size:22px; color:#1e293b">Hành vi & Tương tác số</h3>
+  </div>
+  
+  <div class="eda-grid" style="gap:24px">
+    <div class="card chart-card">
+      <h3 style="font-size:16px; margin-bottom:15px">📱 Tỉ lệ Churn theo Kênh giao dịch</h3>
+      <canvas id="chart-digital"></canvas>
+      <div class="insight-box" id="insight-digital" style="margin-top:20px; font-size:15px"></div>
+    </div>
+    <div class="card chart-card">
+      <h3 style="font-size:16px; margin-bottom:15px">✅ Tỉ lệ Churn theo Trạng thái Active</h3>
+      <canvas id="chart-active"></canvas>
+      <div class="insight-box" id="insight-active" style="margin-top:20px; font-size:15px"></div>
+    </div>
+    <div class="card chart-card wide" style="background:#f8fafc">
+      <h3 style="font-size:16px; margin-bottom:15px">📈 Ma trận Tương quan các đặc trưng (Heatmap)</h3>
+      <canvas id="chart-corr" style="max-height: 400px"></canvas>
+      <div class="insight-box" id="insight-corr" style="margin-top:20px; font-size:15px"></div>
+    </div>
+  </div>
+
+  <!-- DEEP ANALYTICS -->
+  <div class="card" style="margin-top:40px; border: 2px solid #e2e8f0; padding: 24px">
+    <h3 style="font-size:20px; margin-bottom:20px; display:flex; align-items:center; gap:10px">🎯 Insights Tổng hợp & Hành động Kế tiếp</h3>
+    <div id="eda-actionable" style="font-size:16px; line-height:1.8; color:#334155">Đang tổng hợp thông tin chiến lược...</div>
+  </div>
+
+  <!-- CONCLUSION -->
+  <div class="card" style="margin-top:48px; border-top: 6px solid #3b82f6; background: linear-gradient(to bottom, #eff6ff, #ffffff); border-radius: 20px; padding: 40px; border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;">
+    <h3 style="color: #1e40af; font-size:24px; margin-bottom:16px">📝 Kết luận chung Tab EDC</h3>
+    <div style="font-size:17px; line-height:1.8; color:#1e3a8a; font-weight:400">
+      Phân tích EDA đã vạch trần một sự thật: Churn không xảy ra ngẫu nhiên. Nó tập trung ở <strong>nhóm khách hàng mới</strong>, có <strong>số dư tài khoản thấp</strong> và <strong>ngừng tương tác trên ứng dụng di động</strong>. Kết quả này là cơ sở dữ liệu quan trọng để bộ phận Marketing thiết kế các chiến dịch "Tái kích hoạt" (Re-activation) chính xác cho từng phân khúc cụ thể.
+    </div>
+  </div>
+</section>

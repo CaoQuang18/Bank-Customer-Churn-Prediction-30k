@@ -1,0 +1,29 @@
+[
+  {
+    "cluster": 0,
+    "balance_mean": 174522183,
+    "engagement_mean": 31.8,
+    "churn_rate": 0.05,
+    "age_mean": 50.3,
+    "count": 12862,
+    "cluster_name": "Khách hàng VIP - Tài sản lớn"
+  },
+  {
+    "cluster": 1,
+    "balance_mean": 36647452,
+    "engagement_mean": 18.03,
+    "churn_rate": 26.32,
+    "age_mean": 49.2,
+    "count": 50437,
+    "cluster_name": "Khách hàng rủi ro cao - Cần kích hoạt ngay"
+  },
+  {
+    "cluster": 2,
+    "balance_mean": 39753895,
+    "engagement_mean": 72.86,
+    "churn_rate": 6.69,
+    "age_mean": 49.2,
+    "count": 16701,
+    "cluster_name": "Khách hàng thân thiết - Đặc biệt"
+  }
+]

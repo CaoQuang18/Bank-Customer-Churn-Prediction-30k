@@ -1,0 +1,35 @@
+{
+  "Logistic Regression": {
+    "cv_auc_mean": 0.8917,
+    "cv_auc_std": 0.0022,
+    "cv_auc_scores": [
+      0.8903,
+      0.8931,
+      0.8932,
+      0.888,
+      0.894
+    ]
+  },
+  "Random Forest": {
+    "cv_auc_mean": 0.9114,
+    "cv_auc_std": 0.002,
+    "cv_auc_scores": [
+      0.9087,
+      0.9112,
+      0.9115,
+      0.9106,
+      0.915
+    ]
+  },
+  "XGBoost": {
+    "cv_auc_mean": 0.9526,
+    "cv_auc_std": 0.0016,
+    "cv_auc_scores": [
+      0.9511,
+      0.9525,
+      0.9525,
+      0.9515,
+      0.9556
+    ]
+  }
+}

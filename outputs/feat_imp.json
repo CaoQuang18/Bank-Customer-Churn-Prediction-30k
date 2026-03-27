@@ -1,0 +1,82 @@
+{
+  "rf": {
+    "risk_score": 0.2727,
+    "monthly_ir": 0.1598,
+    "balance": 0.1079,
+    "nums_service": 0.0941,
+    "engagement_score": 0.0841,
+    "credit_sco": 0.0631,
+    "tenure_ye": 0.0576,
+    "customer_segment": 0.0566,
+    "gender": 0.0256,
+    "loyalty_level": 0.0233,
+    "nums_card": 0.0196,
+    "married": 0.0134,
+    "age": 0.0093,
+    "active_member": 0.0067,
+    "digital_behavior": 0.0062
+  },
+  "xgb": {
+    "risk_score": 0.2955,
+    "active_member": 0.0909,
+    "digital_behavior": 0.09,
+    "tenure_ye": 0.0889,
+    "engagement_score": 0.0718,
+    "nums_card": 0.0582,
+    "nums_service": 0.0577,
+    "gender": 0.0565,
+    "monthly_ir": 0.0469,
+    "married": 0.0436,
+    "loyalty_level": 0.0389,
+    "customer_segment": 0.0257,
+    "balance": 0.0139,
+    "credit_sco": 0.0131,
+    "age": 0.0084
+  },
+  "lr": {
+    "monthly_ir": 1.0,
+    "engagement_score": 0.5412,
+    "tenure_ye": 0.2688,
+    "credit_sco": 0.2298,
+    "balance": 0.171,
+    "gender": 0.1666,
+    "nums_service": 0.1513,
+    "married": 0.1475,
+    "active_member": 0.0971,
+    "digital_behavior": 0.0971,
+    "loyalty_level": 0.0568,
+    "nums_card": 0.0535,
+    "customer_segment": 0.0494,
+    "age": 0.0399,
+    "risk_score": 0.0054
+  },
+  "combined": {
+    "monthly_ir": 0.4023,
+    "engagement_score": 0.2323,
+    "risk_score": 0.1912,
+    "tenure_ye": 0.1384,
+    "credit_sco": 0.102,
+    "nums_service": 0.101,
+    "balance": 0.0976,
+    "gender": 0.0829,
+    "married": 0.0682,
+    "active_member": 0.0649,
+    "digital_behavior": 0.0644,
+    "customer_segment": 0.0439,
+    "nums_card": 0.0438,
+    "loyalty_level": 0.0397,
+    "age": 0.0192
+  },
+  "top3": [
+    "monthly_ir",
+    "engagement_score",
+    "risk_score"
+  ],
+  "insight": {
+    "so_lieu": "Top 3 đặc trưng quan trọng nhat: monthly_ir, engagement_score, risk_score",
+    "nguyen_nhan": "Các đặc trưng nay xuất hiện nhat quán quan trọng tren cả 3 mô hình",
+    "ly_do": "Chúng phản ánh hanh vi thuc tế cua khach hang co nguy cơ rời bỏ cao nhat",
+    "huong_xu_ly": "Tap trung monitoring va can thiệp sớm dựa tren monthly_ir va engagement_score",
+    "giai_phap": "Xây dựng hệ thống cảnh báo sớm dựa tren top features, cá nhân hoa uu dai"
+  }
+}

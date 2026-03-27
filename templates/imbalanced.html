@@ -1,0 +1,53 @@
+<section id="tab-imbalanced" class="tab-content">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px">
+    <h2 style="margin-bottom:0">⚖️ Phân tích Kỹ thuật Nội suy Dữ liệu (Oversampling)</h2>
+    <span style="background:#fee2e2; color:#b91c1c; padding:8px 20px; border-radius:30px; font-size:15px; font-weight:700; border:1px solid #fecaca">SMOTE & Class Weights Hybrid</span>
+  </div>
+  <p style="color:#64748b; font-size:17px; margin-bottom:32px; line-height:1.7; max-width:800px">
+    Báo cáo kỹ thuật chi tiết về hiện tượng Data Blindness do mất cân bằng phân phối (Class Imbalance). Đánh giá hiệu suất của các thuật toán Synthetic Minority Over-sampling Technique (SMOTE) so với Baseline.
+  </p>
+
+  <div class="card-row" style="margin-bottom:32px; gap:24px">
+    <div class="card" style="border-left: 6px solid #ef4444; background: #fff5f5; box-shadow: 0 10px 25px rgba(239,68,68,0.05);">
+      <h3 style="color:#b91c1c; font-size:20px; display:flex; align-items:center; gap:12px; margin-bottom:20px">
+        <span style="background:#ef4444; color:white; width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px">🚨</span>
+        Mức độ Lệch Phân phối (Distribution Skewness)
+      </h3>
+      <div id="imbalance-overview" style="font-size:16px; color:#991b1b; line-height:1.7">Đang phân tích độ lệch dữ liệu...</div>
+    </div>
+    <div class="card" style="border-left: 6px solid #10b981; background: #f0fdf4; box-shadow: 0 10px 25px rgba(16,185,129,0.05);">
+      <h3 style="color:#065f46; font-size:20px; display:flex; align-items:center; gap:12px; margin-bottom:20px">
+        <span style="background:#10b981; color:white; width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px">🛠️</span>
+        Phân tích Kiến trúc Baseline vs SMOTE
+      </h3>
+      <div id="imbalance-insights" style="font-size:16px; color:#166534; line-height:1.7">Đang tải biểu đồ tóm tắt kỹ thuật...</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:32px; border: 1px solid #e2e8f0; box-shadow: 0 15px 35px rgba(0,0,0,0.04);">
+    <h3 style="margin-bottom:24px; color:#1e293b; display:flex; align-items:center; gap:12px">
+       📊 Đánh giá Ma trận Nhầm lẫn (Confusion Matrix Metrics)
+    </h3>
+    <div id="imbalance-comparison" class="table-wrap">Đang trích xuất ma trận đánh giá...</div>
+  </div>
+
+  <div class="card" style="margin-bottom:32px; border: 1px solid #e2e8f0; box-shadow: 0 15px 35px rgba(0,0,0,0.04);">
+    <h3 style="margin-bottom:24px; color:#1e293b; display:flex; align-items:center; gap:12px">
+       📈 Tối ưu hóa Hàm Mất mát (Threshold Tuning Optimization)
+    </h3>
+    <div id="threshold-analysis">Đang tính toán đạo hàm ngưỡng...</div>
+  </div>
+
+  <div class="card" style="margin-bottom:32px; border: 1px solid #e2e8f0;">
+    <h3 style="font-size:18px; color:#1e293b; margin-bottom:15px">🎯 Quyết định Thiết kế (Architecture Choice)</h3>
+    <div id="imbalance-recommendations" style="font-size:16px; line-height:1.8; color:#475569">Đang tải tham số mô hình tối ưu...</div>
+  </div>
+
+  <!-- CONCLUSION -->
+  <div class="card" style="margin-top:40px; border-top: 6px solid #ef4444; background: linear-gradient(to bottom, #fef2f2, #ffffff); border-radius: 20px; padding: 40px; border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;">
+    <h3 style="color: #b91c1c; font-size:24px; margin-bottom:16px">📝 Kết luận Đánh giá Nội suy (Oversampling Post-Mortem)</h3>
+    <div style="font-size:17px; line-height:1.8; color:#7f1d1d; font-weight:400">
+      Do phân phối lớp Target bị lệch nghiêm trọng (Class Imbalance), thuật toán <strong>SMOTE (Synthetic Minority Over-sampling Technique)</strong> nội suy các điểm dữ liệu mới trong không gian đặc trưng bằng cách tính toán K-Nearest Neighbors, giúp mô hình thoát khỏi khuynh hướng dự đoán thiên vị (Bias) cho lớp đa số (Majority Class). Hiện tượng đánh đổi Precision để tối ưu Recall (Precision-Recall Tradeoff) được điều chỉnh thông qua tham số cực trị Threshold Tuning, đảm bảo giảm thiểu triệt để lỗi loại II (False Negatives - Bỏ sót lớp Positive).
+    </div>
+  </div>
+</section>

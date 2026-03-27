@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank Customer Churn Analysis</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f5f5; color: #333; padding: 20px; font-size: 14px; }
+    .container { max-width: 1400px; margin: 0 auto; }
+    h1 { color: #1a56db; margin-bottom: 5px; }
+    h2 { color: #374151; margin: 25px 0 15px; border-bottom: 2px solid #1a56db; padding-bottom: 5px; }
+    h3 { color: #4b5563; margin: 20px 0 10px; }
+    .subtitle { color: #6b7280; margin-bottom: 20px; }
+    
+    /* Tabs */
+    .tabs { display: flex; gap: 5px; margin: 20px 0; flex-wrap: wrap; }
+    .tab { padding: 10px 20px; border: none; background: #e5e7eb; border-radius: 8px 8px 0 0; cursor: pointer; font-size: 14px; }
+    .tab.active { background: #1a56db; color: white; }
+    .tab:hover { background: #d1d5db; }
+    .tab.active:hover { background: #1e40af; }
+    
+    /* Content */
+    .content { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .section { margin-bottom: 30px; }
+    .section:target { outline: 3px solid #1a56db; border-radius: 8px; }
+    
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 13px; }
+    th { background: #1a56db; color: white; padding: 12px 10px; text-align: left; }
+    td { padding: 10px; border-bottom: 1px solid #e5e7eb; }
+    tr:hover { background: #f9fafb; }
+    .best { background: #dcfce7 !important; font-weight: 600; }
+    
+    /* KPI Cards */
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+    .kpi { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 12px; text-align: center; }
+    .kpi.green { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+    .kpi.red { background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%); }
+    .kpi.orange { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+    .kpi-val { font-size: 32px; font-weight: 700; }
+    .kpi-label { font-size: 13px; opacity: 0.9; margin-top: 5px; }
+    
+    /* Summary boxes */
+    .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 20px 0; }
+    .summary-box { background: #f9fafb; padding: 20px; border-radius: 10px; border-left: 4px solid #1a56db; }
+    .summary-box.warning { border-left-color: #f59e0b; background: #fef3c7; }
+    .summary-box.success { border-left-color: #10b981; background: #d1fae5; }
+    .summary-box.danger { border-left-color: #ef4444; background: #fee2e2; }
+    
+    /* Info list */
+    ul { margin: 10px 0 10px 25px; }
+    li { margin: 5px 0; }
+    
+    /* Navigation */
+    .nav { margin-bottom: 20px; }
+    .nav a { color: #1a56db; text-decoration: none; margin-right: 15px; }
+    .nav a:hover { text-decoration: underline; }
+    
+    /* Badge */
+    .badge { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+    .badge.red { background: #fee2e2; color: #dc2626; }
+    .badge.green { background: #d1fae5; color: #059669; }
+    .badge.yellow { background: #fef3c7; color: #d97706; }
+    
+    pre { background: #1f2937; color: #f9fafb; padding: 15px; border-radius: 8px; overflow-x: auto; font-size: 12px; }
+    code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="nav">
+      <a href="#overview">Tong quan</a>
+      <a href="#eda">EDA</a>
+      <a href="#models">Mo hinh</a>
+      <a href="#shap">SHAP</a>
+      <a href="#imbalanced">Imbalanced</a>
+      <a href="#clusters">Phan cum</a>
+      <a href="#predict">Du doan</a>
+    </div>
+    
+    <!-- ======================== TONG QUAN ======================== -->
+    <section id="overview" class="section">
+      <h1>📊 Bank Customer Churn Analysis Dashboard</h1>
+      <p class="subtitle">Phan tich du doan roi bo khach hang - Data: {{ data.overview.total|default(80000) }} khach hang</p>
+      
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-val">{{ data.overview.total|default(80000) }}</div>
+          <div class="kpi-label">Tong Khach Hang</div>
+        </div>
+        <div class="kpi red">
+          <div class="kpi-val">{{ data.overview.churn_rate|default(18) }}%</div>
+          <div class="kpi-label">Ti le Churn</div>
+        </div>
+        <div class="kpi green">
+          <div class="kpi-val">{{ data.overview.churn|default(14400) }}</div>
+          <div class="kpi-label">Da roi bo</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-val">{{ data.overview.no_churn|default(65600) }}</div>
+          <div class="kpi-label">Con lai</div>
+        </div>
+      </div>
+      
+      <div class="summary-box">
+        <h3>📌 Ket luan tong quan</h3>
+        <p>{{ data.overview.insight|default('Ti le churn 18% - can cai thien') }}</p>
+      </div>
+    </section>
+    
+    <!-- ======================== EDA ======================== -->
+    <section id="eda" class="section">
+      <h2>🔍 Phan tich Kham Pha Du Lieu (EDA)</h2>
+      
+      <div class="summary-grid">
+        <div class="summary-box danger">
+          <h3>⚠️ Top yeu to rui ro cao</h3>
+          <ul>
+            <li><strong>Nhom tuoi 18-30:</strong> Churn 24.5%</li>
+            <li><strong>Phan khuc Mass:</strong> Churn 39.5%</li>
+            <li><strong>Khong active:</strong> Churn 21.1%</li>
+            <li><strong>Credit score thap:</strong> Churn 43.5%</li>
+          </ul>
+        </div>
+        <div class="summary-box success">
+          <h3>✅ Dac diem KH khong churn</h3>
+          <ul>
+            <li>Tuoi 41-70, churn ~16%</li>
+            <li>Phan khuc Affluent/Priority, churn <5%</li>
+            <li>Loyalty Gold/Platinum, churn <3%</li>
+            <li>Mobile users, churn 6.5%</li>
+          </ul>
+        </div>
+      </div>
+      
+      <h3>Chi tiet EDA theo dac diem</h3>
+      {% if data.eda.age %}
+      <div style="margin: 15px 0;">
+        <strong>Theo tuoi:</strong> {{ data.eda.age.labels|join(', ') }}<br>
+        <strong>Churn rates:</strong> {{ data.eda.age.churn_rates|join('%, ') }}%
+      </div>
+      {% endif %}
+      
+      {% if data.eda.segment %}
+      <div style="margin: 15px 0;">
+        <strong>Theo phan khuc:</strong> {{ data.eda.segment.labels|join(', ') }}<br>
+        <strong>Churn rates:</strong> {{ data.eda.segment.churn_rates|join('%, ') }}%
+      </div>
+      {% endif %}
+    </section>
+    
+    <!-- ======================== MODELS ======================== -->
+    <section id="models" class="section">
+      <h2>🤖 Mo hinh Du doan Churn</h2>
+      
+      <div class="summary-grid">
+        <div class="summary-box">
+          <h3>🏆 Best Model</h3>
+          <p><strong>{{ data.best_model.name|default('Random Forest') }}</strong></p>
+          <ul>
+            <li>ROC-AUC: {{ data.best_model.roc_auc|default('0.8423') }}</li>
+            <li>Recall: {{ ((data.best_model.recall|default(0.7)) * 100)|round|int }}%</li>
+            <li>F1-Score: {{ ((data.best_model.f1|default(0.53)) * 100)|round|int }}%</li>
+          </ul>
+        </div>
+        <div class="summary-box success">
+          <h3>🔑 Top Features</h3>
+          <ol>
+            {% for f in data.top_features|default(['monthly_ir', 'engagement_score', 'risk_score']) %}
+            <li><strong>{{ f }}</strong></li>
+            {% endfor %}
+          </ol>
+        </div>
+      </div>
+      
+      <h3>Bang so sanh Mo hinh</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Mo hinh</th>
+            <th>Accuracy</th>
+            <th>Precision</th>
+            <th>Recall</th>
+            <th>F1</th>
+            <th>ROC-AUC</th>
+            <th>Threshold</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for model_name, result in data.results|default({})|items %}
+          <tr class="{{ 'best' if model_name == data.best_model.name else '' }}">
+            <td><strong>{{ model_name }}</strong></td>
+            <td>{{ ((result.accuracy|default(0.78)) * 100)|round|int }}%</td>
+            <td>{{ ((result.precision|default(0.42)) * 100)|round|int }}%</td>
+            <td>{{ ((result.recall|default(0.71)) * 100)|round|int }}%</td>
+            <td>{{ ((result.f1|default(0.53)) * 100)|round|int }}%</td>
+            <td>{{ result.roc_auc|default(0.84) }}</td>
+            <td>{{ ((result.threshold|default(0.5)) * 100)|round|int }}%</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      
+      <h3>Cross-Validation (5-Fold)</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Mo hinh</th>
+            <th>CV AUC Mean</th>
+            <th>CV AUC Std</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for model_name, cv in data.cv_results|default({})|items %}
+          <tr>
+            <td>{{ model_name }}</td>
+            <td><strong>{{ cv.cv_auc_mean|default(0.91) }}</strong></td>
+            <td>{{ cv.cv_auc_std|default(0.002) }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+    
+    <!-- ======================== SHAP ======================== -->
+    <section id="shap" class="section">
+      <h2>🧠 SHAP Analysis - Giai thich Model</h2>
+      
+      <div class="summary-box">
+        <h3>📌 SHAP la gi?</h3>
+        <p>SHAP (SHapley Additive exPlanations) giup giai thich tai sao model dua ra du doan cu the. Moi feature co SHAP value - cho biet no dong gop bao nhieu vao ket qua.</p>
+      </div>
+      
+      <h3>Top 10 Features quan trong (SHAP)</h3>
+      {% if data.shap.random_forest.top_10 %}
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Feature</th>
+            <th>SHAP Importance</th>
+            <th>Mo ta</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in data.shap.random_forest.top_10 %}
+          <tr>
+            <td><strong>{{ loop.index }}</strong></td>
+            <td><strong>{{ item.feature }}</strong></td>
+            <td>{{ item.shap_importance|round(4) }}</td>
+            <td>
+              {% if item.feature == 'monthly_ir' %}Thu nhap hang thang
+              {% elif item.feature == 'engagement_score' %}Diem engagement
+              {% elif item.feature == 'risk_score' %}Diem rui ro
+              {% elif item.feature == 'tenure_ye' %}So nam gan bo
+              {% elif item.feature == 'credit_sco' %}Diem tin dung
+              {% elif item.feature == 'age' %}Tuoi
+              {% elif item.feature == 'balance' %}So du
+              {% else %}—
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>Chua co du lieu SHAP</p>
+      {% endif %}
+      
+      <div class="summary-grid" style="margin-top: 20px;">
+        <div class="summary-box danger">
+          <h3>🔴 Features tang nguy co churn</h3>
+          <ul>
+            <li><strong>monthly_ir</strong> - Thu nhap thap</li>
+            <li><strong>risk_score</strong> - Diem rui ro cao</li>
+            <li><strong>tenure_ye</strong> - Gan bo it nam</li>
+          </ul>
+        </div>
+        <div class="summary-box success">
+          <h3>🟢 Features giam nguy co churn</h3>
+          <ul>
+            <li><strong>engagement_score</strong> - Engagement cao</li>
+            <li><strong>active_member</strong> - La thanh vien active</li>
+            <li><strong>nums_service</strong> - Dung nhieu dich vu</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    
+    <!-- ======================== IMBALANCED ======================== -->
+    <section id="imbalanced" class="section">
+      <h2>⚖️ Xly Du Lieu Mat Can Bang</h2>
+      
+      {% if data.imbalance %}
+      <div class="kpi-grid">
+        <div class="kpi red">
+          <div class="kpi-val">{{ data.imbalance.imbalance_ratio|default(4.6) }}:1</div>
+          <div class="kpi-label">Imbalance Ratio</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-val">{{ data.imbalance.minority_pct|default(18) }}%</div>
+          <div class="kpi-label">Churn (Minority)</div>
+        </div>
+        <div class="kpi green">
+          <div class="kpi-val">{{ data.imbalance.majority_pct|default(82) }}%</div>
+          <div class="kpi-label">Khong Churn (Majority)</div>
+        </div>
+        <div class="kpi orange">
+          <div class="kpi-val">{{ data.imbalance.severity|default('Medium') }}</div>
+          <div class="kpi-label">Severity</div>
+        </div>
+      </div>
+      {% endif %}
+      
+      <h3>So sanh cac phuong phap xly</h3>
+      {% if data.methods_comparison %}
+      <table>
+        <thead>
+          <tr>
+            <th>Phuong phap</th>
+            <th>Accuracy</th>
+            <th>Precision</th>
+            <th>Recall</th>
+            <th>F1</th>
+            <th>ROC-AUC</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for method_name, result in data.methods_comparison|items %}
+          <tr>
+            <td><strong>{{ method_name }}</strong></td>
+            <td>{{ ((result.accuracy|default(0.77)) * 100)|round|int }}%</td>
+            <td>{{ ((result.precision|default(0.42)) * 100)|round|int }}%</td>
+            <td class="{{ 'badge red' if result.recall|default(0.7) > 0.7 else '' }}">{{ ((result.recall|default(0.7)) * 100)|round|int }}%</td>
+            <td>{{ ((result.f1|default(0.53)) * 100)|round|int }}%</td>
+            <td>{{ result.roc_auc|default(0.84) }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>Chua co du lieu so sanh</p>
+      {% endif %}
+      
+      <div class="summary-grid" style="margin-top: 20px;">
+        <div class="summary-box">
+          <h3>💡 Khuyen nghi</h3>
+          <ul>
+            <li>Dung <strong>SMOTE + Class Weights</strong> de tang recall</li>
+            <li>Tune threshold = <strong>0.4-0.5</strong> de can bang</li>
+            <li>Uu tien Recall > Precision trong bai toan churn</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    
+    <!-- ======================== CLUSTERS ======================== -->
+    <section id="clusters" class="section">
+      <h2>👥 Phan cum Khach Hang (K-Means)</h2>
+      
+      <div class="summary-box">
+        <h3>📖 Phuong phap</h3>
+        <p><strong>K-Means Clustering</strong> chia KH thanh 4 cum dua tren dac diem. Moi cum co chien luoc cham soc rieng.</p>
+      </div>
+      
+      {% if data.cluster_profiles %}
+      <h3>Bang so sanh cac cum</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Cum</th>
+            <th>Ten</th>
+            <th>So KH</th>
+            <th>%</th>
+            <th>Churn Rate</th>
+            <th>So du TB</th>
+            <th>Engagement</th>
+            <th>Tuoi TB</th>
+            <th>Uu tien</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in data.cluster_profiles %}
+          {% set churn = p.churn_rate|default(0) %}
+          <tr style="{{ 'background: #fee2e2' if churn > 20 else '' }}">
+            <td><strong>{{ p.cluster }}</strong></td>
+            <td>{{ p.cluster_name|default('Khach hang') }}</td>
+            <td>{{ p.count|default(0) }}</td>
+            <td>{{ ((p.count|default(1) / data.total_customers * 100))|round(1) }}%</td>
+            <td><span class="badge {{ 'red' if churn > 20 else 'yellow' if churn > 5 else 'green' }}">{{ churn }}%</span></td>
+            <td>{{ (p.balance_mean|default(37000000) / 1000000)|round|int }}M</td>
+            <td>{{ p.engagement_mean|default(50)|round|int }}</td>
+            <td>{{ p.age_mean|default(49)|round|int }}</td>
+            <td>{{ 'Cao' if churn > 20 else 'TB' if churn > 5 else 'Thap' }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>Chua co du lieu cum</p>
+      {% endif %}
+      
+      <h3>Chien luoc theo cum</h3>
+      {% if data.cluster_strategies %}
+      {% for key, strat in data.cluster_strategies.items() %}
+      <div class="summary-box {{ 'danger' if 'rui ro' in key|lower else 'success' if 'VIP' in key or 'thanh' in key|lower else '' }}">
+        <h3>{{ key }}</h3>
+        <p><strong>Dac trung:</strong> {{ strat.dac_trung|default('') }}</p>
+        <p><strong>Chien luoc:</strong> {{ strat.chien_luoc|default('') }}</p>
+        <p><strong>Uu dai:</strong></p>
+        <ul>
+          {% for u in strat.uu_dai|default([]) %}
+          <li>{{ u }}</li>
+          {% endfor %}
+        </ul>
+        <p><strong>{{ strat.canh_bao|default('') }}</strong></p>
+      </div>
+      {% endfor %}
+      {% endif %}
+    </section>
+    
+    <!-- ======================== PREDICT ======================== -->
+    <section id="predict" class="section">
+      <h2>🎯 Du doan Churn cho Khach Hang moi</h2>
+      
+      <div class="summary-box">
+        <h3>📝 Cach su dung</h3>
+        <p>Su dung model <strong>{{ data.best_model.name|default('Random Forest') }}</strong> de du doan nguy co roi bo cua khach hang moi.</p>
+        <p>Du doan qua API: <code>POST /api/predict</code></p>
+        <p>Vi du cau truc du lieu dau vao:</p>
+        <pre>{
+  "credit_sco": 700,
+  "gender": "male",
+  "age": 40,
+  "balance": 50000000,
+  "monthly_ir": 20000000,
+  "tenure_ye": 3,
+  "married": 1,
+  "nums_card": 2,
+  "nums_service": 3,
+  "active_member": 1,
+  "engagement_score": 50,
+  "risk_score": 0.2,
+  "model": "Random Forest"
+}</pre>
+      </div>
+      
+      <div class="summary-grid">
+        <div class="summary-box warning">
+          <h3>⚠️ Luu y</h3>
+          <ul>
+            <li>Threshold mac dinh: {{ ((data.best_model.threshold|default(0.52)) * 100)|round|int }}%</li>
+            <li>Neu probability > threshold -> Churn</li>
+            <li>Neu probability <= threshold -> Khong Churn</li>
+          </ul>
+        </div>
+        <div class="summary-box">
+          <h3>📊 Hieu luc</h3>
+          <ul>
+            <li>Recall: {{ ((data.best_model.recall|default(0.71)) * 100)|round|int }}% - bat duoc {{ ((data.best_model.recall|default(0.71)) * 100)|round|int }}/100 KH se churn</li>
+            <li>Precision: {{ ((data.best_model.precision|default(0.42)) * 100)|round|int }}%</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    
+    <footer style="margin-top: 50px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; text-align: center;">
+      <p>Bank Customer Churn Prediction Dashboard</p>
+    </footer>
+  </div>
+</body>
+</html>

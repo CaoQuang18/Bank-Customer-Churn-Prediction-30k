@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bank Churn Prediction Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">🏦 Bank Churn Prediction</div>
+      </div>
+      <nav class="sidebar-nav">
+        <button class="nav-btn active" data-tab="overview">
+          <span class="nav-icon">📊</span>
+          <span class="nav-text">Tổng quan</span>
+        </button>
+        <button class="nav-btn" data-tab="eda">
+          <span class="nav-icon">🔍</span>
+          <span class="nav-text">EDA</span>
+        </button>
+        <button class="nav-btn" data-tab="models">
+          <span class="nav-icon">🤖</span>
+          <span class="nav-text">Mô hình</span>
+        </button>
+        <button class="nav-btn" data-tab="shap">
+          <span class="nav-icon">🧠</span>
+          <span class="nav-text">SHAP</span>
+        </button>
+        <button class="nav-btn" data-tab="imbalanced">
+          <span class="nav-icon">⚖️</span>
+          <span class="nav-text">Imbalanced</span>
+        </button>
+        <button class="nav-btn" data-tab="clusters">
+          <span class="nav-icon">👥</span>
+          <span class="nav-text">Phân cụm</span>
+        </button>
+        <button class="nav-btn" data-tab="predict">
+          <span class="nav-icon">🎯</span>
+          <span class="nav-text">Dự đoán</span>
+        </button>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <div class="top-bar">
+        <h1 class="page-title">Dashboard</h1>
+      </div>
+      <div class="content-wrapper">
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

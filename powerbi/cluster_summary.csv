@@ -1,0 +1,4 @@
+cluster,balance_mean,engagement_mean,churn_rate,age_mean,count,cluster_name
+0,174522183,31.8,0.05,50.3,12862,Khách hàng VIP - Tài sản lớn
+1,36647452,18.03,26.32,49.2,50437,Khách hàng rủi ro cao - Cần kích hoạt ngay
+2,39753895,72.86,6.69,49.2,16701,Khách hàng thân thiết - Đặc biệt

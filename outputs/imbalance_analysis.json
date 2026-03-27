@@ -1,0 +1,120 @@
+{
+  "imbalance_analysis": {
+    "total": 78720,
+    "majority_class": 39360,
+    "minority_class": 39360,
+    "majority_pct": 50.0,
+    "minority_pct": 50.0,
+    "imbalance_ratio": 1.0,
+    "severity": "Mild"
+  },
+  "methods_comparison": {
+    "Baseline": {
+      "method": "Baseline (No处理)",
+      "accuracy": 0.7666875,
+      "precision": 0.4160928585481015,
+      "recall": 0.734375,
+      "f1": 0.5312068315961321,
+      "roc_auc": 0.8426131912686314,
+      "confusion_matrix": [
+        [
+          10152,
+          2968
+        ],
+        [
+          765,
+          2115
+        ]
+      ],
+      "description": "Model không xử lý imbalance - tendency predict class chiếm đa số"
+    },
+    "Class_Weights": {
+      "method": "Class Weights",
+      "accuracy": 0.7666875,
+      "precision": 0.4160928585481015,
+      "recall": 0.734375,
+      "f1": 0.5312068315961321,
+      "roc_auc": 0.8426131912686314,
+      "confusion_matrix": [
+        [
+          10152,
+          2968
+        ],
+        [
+          765,
+          2115
+        ]
+      ],
+      "description": "Tự động điều chỉnh trọng số class theo tỉ lệ nghịch"
+    },
+    "SMOTE": {
+      "method": "SMOTE",
+      "accuracy": 0.7666875,
+      "precision": 0.4160928585481015,
+      "recall": 0.734375,
+      "f1": 0.5312068315961321,
+      "roc_auc": 0.8426131912686314,
+      "confusion_matrix": [
+        [
+          10152,
+          2968
+        ],
+        [
+          765,
+          2115
+        ]
+      ],
+      "smote_samples": {
+        "before": 78720,
+        "after": 78720,
+        "synthetic_created": 0
+      },
+      "description": "Tạo synthetic samples cho minority class bằng interpolation"
+    },
+    "SMOTE_ClassWeights": {
+      "method": "SMOTE + Class Weights",
+      "accuracy": 0.7666875,
+      "precision": 0.4160928585481015,
+      "recall": 0.734375,
+      "f1": 0.5312068315961321,
+      "roc_auc": 0.8426131912686314,
+      "confusion_matrix": [
+        [
+          10152,
+          2968
+        ],
+        [
+          765,
+          2115
+        ]
+      ],
+      "description": "Kết hợp SMOTE oversampling với class weights"
+    },
+    "Threshold_Tuning": {
+      "method": "Threshold Tuning",
+      "optimal_threshold": 0.5201795101916651,
+      "accuracy": 0.7744375,
+      "precision": 0.4247678018575851,
+      "recall": 0.7145833333333333,
+      "f1": 0.5328155339805826,
+      "roc_auc": 0.8426131912686314,
+      "confusion_matrix": [
+        [
+          10333,
+          2787
+        ],
+        [
+          822,
+          2058
+        ]
+      ],
+      "description": "Điều chỉnh threshold để cân bằng Precision-Recall"
+    }
+  },
+  "conclusion": {
+    "best_recall": "Baseline",
+    "best_f1": "Threshold_Tuning",
+    "best_auc": "Baseline",
+    "recommendation": "SMOTE + Class Weights cho recall cao nhất, nhưng cần cân nhắc precision. Threshold tuning là cách đơn giản và hiệu quả."
+  }
+}

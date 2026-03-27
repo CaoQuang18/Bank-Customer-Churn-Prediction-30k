@@ -1,0 +1,385 @@
+{
+  "overview": {
+    "total": 80000,
+    "churn": 14400,
+    "no_churn": 65600,
+    "churn_rate": 18.0,
+    "insight": "Tỉ lệ churn 18.0% cho thấy cứ 100 khách hàng thì có 18 người rời bỏ. Mức tương đối kiểm soát được nhưng vẫn cần cải thiện."
+  },
+  "age": {
+    "labels": [
+      "18-30",
+      "31-40",
+      "41-50",
+      "51-60",
+      "61-70",
+      "70+"
+    ],
+    "churn_rates": [
+      24.47,
+      20.02,
+      17.76,
+      15.75,
+      15.8,
+      15.78
+    ],
+    "counts": [
+      6432,
+      18757,
+      21481,
+      16037,
+      9296,
+      7997
+    ],
+    "insight": {
+      "so_lieu": "Nhóm tuổi 18-30 có churn rate cao nhất: 24.47%",
+      "nguyen_nhan": "Độ tuổi ảnh hưởng trực tiếp đến nhu cầu tài chính và hành vi sử dụng dịch vụ ngân hàng",
+      "ly_do": "Nhóm 18-30 đang ở giai đoạn chuyển tiếp tài chính quan trọng, dễ tìm kiếm sản phẩm phù hợp hơn ở nơi khác",
+      "huong_xu_ly": "Thiết kế sản phẩm tài chính đặc thù theo từng nhóm tuổi",
+      "giai_phap": "Với nhóm 18-30: tư vấn tài chính cá nhân, ưu đãi sản phẩm phù hợp giai đoạn sống"
+    }
+  },
+  "gender": {
+    "labels": [
+      "female",
+      "male"
+    ],
+    "churn_rates": [
+      18.1,
+      17.9
+    ],
+    "counts": [
+      39992,
+      40008
+    ],
+    "insight": {
+      "so_lieu": "Giới tính 'female' có churn rate cao hơn: 18.1%",
+      "nguyen_nhan": "Sự khác biệt giới tính dẫn đến nhu cầu và kỳ vọng dịch vụ khác nhau",
+      "ly_do": "Ngân hàng có thể chưa có sản phẩm/dịch vụ đủ hấp dẫn cho nhóm này",
+      "huong_xu_ly": "Nghiên cứu hành vi tài chính theo giới tính để thiết kế sản phẩm phù hợp",
+      "giai_phap": "Chương trình ưu đãi riêng, marketing cá nhân hóa theo giới tính"
+    }
+  },
+  "segment": {
+    "labels": [
+      "Affluent",
+      "Emerging",
+      "Mass",
+      "Priority"
+    ],
+    "churn_rates": [
+      3.1,
+      17.62,
+      39.48,
+      0.07
+    ],
+    "counts": [
+      11210,
+      31662,
+      21436,
+      15692
+    ],
+    "insight": {
+      "so_lieu": "Phân khúc 'Mass' có churn rate cao nhất: 39.48%",
+      "nguyen_nhan": "Mỗi phân khúc có kỳ vọng dịch vụ và ngưỡng hài lòng khác nhau",
+      "ly_do": "Phân khúc Mass có thể chưa nhận được đủ giá trị tương xứng từ ngân hàng",
+      "huong_xu_ly": "Rà soát lại gói dịch vụ và quyền lợi cho từng phân khúc",
+      "giai_phap": "Nâng cấp quyền lợi, tạo lộ trình thăng hạng rõ ràng cho khách hàng"
+    }
+  },
+  "loyalty": {
+    "labels": [
+      "Bronze",
+      "Gold",
+      "Silver"
+    ],
+    "churn_rates": [
+      20.24,
+      2.82,
+      3.68
+    ],
+    "counts": [
+      69252,
+      1771,
+      8977
+    ],
+    "insight": {
+      "so_lieu": "Hạng loyalty 'Bronze' có churn rate cao nhất: 20.24%",
+      "nguyen_nhan": "Khách hàng hạng thấp chưa cảm nhận đủ giá trị từ chương trình loyalty",
+      "ly_do": "Điểm thưởng và quyền lợi chưa đủ hấp dẫn để giữ chân nhóm này",
+      "huong_xu_ly": "Cải thiện chương trình loyalty, tạo động lực tích điểm rõ ràng hơn",
+      "giai_phap": "Tặng điểm bonus, ưu đãi phí dịch vụ, lộ trình lên hạng nhanh hơn"
+    }
+  },
+  "digital": {
+    "labels": [
+      "mobile",
+      "offline"
+    ],
+    "churn_rates": [
+      6.5,
+      21.14
+    ],
+    "counts": [
+      17176,
+      62824
+    ],
+    "insight": {
+      "so_lieu": "Nhóm 'offline' có churn rate cao nhất: 21.14%",
+      "nguyen_nhan": "Mức độ sử dụng kênh digital ảnh hưởng trực tiếp đến tần suất tương tác",
+      "ly_do": "Khách hàng ít dùng digital ít tiếp xúc với sản phẩm/ưu đãi mới của ngân hàng",
+      "huong_xu_ly": "Khuyến khích chuyển đổi số, đơn giản hóa trải nghiệm app",
+      "giai_phap": "Ưu đãi phí 0đ khi dùng app, cashback giao dịch online, hỗ trợ onboarding digital"
+    }
+  },
+  "active_member": {
+    "labels": [
+      "False",
+      "True"
+    ],
+    "churn_rates": [
+      21.14,
+      6.5
+    ],
+    "counts": [
+      62824,
+      17176
+    ],
+    "insight": {
+      "so_lieu": "Thành viên không hoạt động: churn 21.14% vs hoạt động: 6.5%",
+      "nguyen_nhan": "Không hoạt động = không có nhu cầu hoặc đã chuyển sang ngân hàng khác",
+      "ly_do": "Chênh lệch 14.6% cho thấy engagement là yếu tố bảo vệ mạnh nhất",
+      "huong_xu_ly": "Phát hiện sớm khách hàng ngừng hoạt động và can thiệp kịp thời",
+      "giai_phap": "Gửi thông báo cá nhân hóa, ưu đãi kích hoạt lại tài khoản, gọi điện tư vấn"
+    }
+  },
+  "balance": {
+    "churn_mean": 19628005.0,
+    "no_churn_mean": 68206987.0,
+    "churn_median": 13706650.0,
+    "no_churn_median": 38083040.0,
+    "churn_hist": [
+      10767,
+      2530,
+      695,
+      231,
+      79,
+      50,
+      19,
+      13,
+      6,
+      3,
+      4,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1
+    ],
+    "no_churn_hist": [
+      22851,
+      14487,
+      8266,
+      5229,
+      3377,
+      2414,
+      1810,
+      1392,
+      1011,
+      820,
+      647,
+      506,
+      444,
+      368,
+      290,
+      260,
+      198,
+      157,
+      147,
+      926
+    ],
+    "bin_edges": [
+      2541680.2,
+      24491105.757499974,
+      46440531.31499995,
+      68389956.87249993,
+      90339382.4299999,
+      112288807.98749988,
+      134238233.54499984,
+      156187659.1024998,
+      178137084.6599998,
+      200086510.21749976,
+      222035935.77499974,
+      243985361.3324997,
+      265934786.8899997,
+      287884212.4474997,
+      309833638.00499964,
+      331783063.5624996,
+      353732489.1199996,
+      375681914.6774996,
+      397631340.23499954,
+      419580765.7924995,
+      441530191.3499995
+    ],
+    "insight": {
+      "so_lieu": "Khách hàng churn có balance trung bình 19.6M vs không churn 68.2M",
+      "nguyen_nhan": "Số dư tài khoản phản ánh mức độ phụ thuộc tài chính vào ngân hàng",
+      "ly_do": "Khách hàng balance thấp ít bị ràng buộc, dễ chuyển sang ngân hàng khác hơn",
+      "huong_xu_ly": "Khuyến khích tăng số dư thông qua lãi suất hấp dẫn",
+      "giai_phap": "Gói tiết kiệm lãi suất bậc thang, thưởng khi duy trì số dư tối thiểu"
+    }
+  },
+  "credit_score": {
+    "labels": [
+      "<500",
+      "500-600",
+      "600-650",
+      "650-700",
+      "700-750",
+      "750+"
+    ],
+    "churn_rates": [
+      43.47,
+      30.54,
+      18.76,
+      8.55,
+      1.89
+    ],
+    "counts": [
+      3586,
+      17369,
+      30022,
+      20340,
+      8683
+    ],
+    "insight": {
+      "so_lieu": "Nhóm credit score '500-600' có churn rate cao nhất: 43.47%",
+      "nguyen_nhan": "Điểm tín dụng thấp thường đi kèm với trải nghiệm dịch vụ hạn chế",
+      "ly_do": "Khách hàng điểm thấp bị từ chối nhiều sản phẩm -> cảm thấy không được phục vụ tốt",
+      "huong_xu_ly": "Tạo lộ trình cải thiện điểm tín dụng, sản phẩm phù hợp cho từng mức điểm",
+      "giai_phap": "Tư vấn tài chính miễn phí, sản phẩm vay có bảo đảm cho nhóm điểm thấp"
+    }
+  },
+  "occupation": {
+    "labels": [
+      "Nội trợ/Sinh viên",
+      "Lao động phổ thông",
+      "Hưu trí",
+      "Nhân viên văn phòng/Công chức",
+      "Giáo viên/Giảng viên",
+      "Kinh doanh/Bán hàng",
+      "Kế toán/Tài chính",
+      "Kỹ sư/Chuyên viên IT",
+      "Quản lý/Lãnh đạo",
+      "Chủ Doanh nghiệp nhỏ"
+    ],
+    "churn_rates": [
+      42.53,
+      34.73,
+      31.47,
+      21.91,
+      16.43,
+      15.09,
+      14.53,
+      3.07,
+      0.23,
+      0.13
+    ],
+    "counts": [
+      8096,
+      7968,
+      7861,
+      8061,
+      7975,
+      7967,
+      7972,
+      8199,
+      7986,
+      7915
+    ],
+    "insight": {
+      "so_lieu": "Nghề 'Nội trợ/Sinh viên' có churn rate cao nhất: 42.53%",
+      "nguyen_nhan": "Nghề nghiệp ảnh hưởng đến thu nhập, nhu cầu vay vốn và đầu tư",
+      "ly_do": "Một số nghề có thu nhập không ổn định -> khó duy trì cam kết tài chính dài hạn",
+      "huong_xu_ly": "Thiết kế sản phẩm linh hoạt phù hợp với đặc thù từng nghề",
+      "giai_phap": "Gói vay linh hoạt cho freelancer, bảo hiểm thu nhập cho lao động phổ thông"
+    }
+  },
+  "province": {
+    "labels": [
+      "Tỉnh khác",
+      "Tiền Giang",
+      "Hà Nội",
+      "Long An",
+      "Đồng Nai",
+      "Cần Thơ",
+      "Bà Rịa - Vũng Tàu",
+      "Bình Dương",
+      "TP. Hồ Chí Minh"
+    ],
+    "churn_rates": [
+      20.17,
+      19.44,
+      19.2,
+      18.82,
+      18.64,
+      18.48,
+      18.45,
+      18.24,
+      17.15
+    ],
+    "counts": [
+      4808,
+      4080,
+      3094,
+      4862,
+      7888,
+      3161,
+      3951,
+      8008,
+      40148
+    ],
+    "insight": {
+      "so_lieu": "Tỉnh 'Tỉnh khác' có churn rate cao nhất trong top 10: 20.17%",
+      "nguyen_nhan": "Mức độ cạnh tranh ngân hàng và khả năng tiếp cận chi nhánh khác nhau theo vùng",
+      "ly_do": "Vùng có nhiều ngân hàng cạnh tranh -> khách hàng có nhiều lựa chọn hơn",
+      "huong_xu_ly": "Tăng cường hiện diện và chất lượng dịch vụ tại các vùng churn cao",
+      "giai_phap": "Mở thêm điểm giao dịch, tăng cường digital banking tại vùng xa"
+    }
+  },
+  "correlation": {
+    "features": [
+      "risk_score",
+      "monthly_ir",
+      "credit_sco",
+      "nums_service",
+      "balance",
+      "engagement_score",
+      "nums_card",
+      "age",
+      "tenure_ye"
+    ],
+    "correlations": [
+      0.433,
+      -0.3013,
+      -0.2862,
+      -0.2624,
+      -0.2414,
+      -0.2355,
+      -0.1193,
+      -0.0557,
+      -0.0278
+    ],
+    "insight": {
+      "so_lieu": "Top tương quan dương: ['risk_score'] | Âm: ['monthly_ir', 'credit_sco', 'nums_service']",
+      "nguyen_nhan": "Các đặc trưng tương quan cao với exit là yếu tố dự báo churn quan trọng nhất",
+      "ly_do": "Tương quan dương -> tăng giá trị đặc trưng -> tăng khả năng churn và ngược lại",
+      "huong_xu_ly": "Ưu tiên các đặc trưng tương quan cao trong feature selection",
+      "giai_phap": "Tập trung can thiệp vào các yếu tố có tương quan âm mạnh để giảm churn"
+    }
+  }
+}

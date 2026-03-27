@@ -1,0 +1,39 @@
+group_value,churn_rate,count,feature
+18-30,24.47,6432,age_group
+31-40,20.02,18757,age_group
+41-50,17.76,21481,age_group
+51-60,15.75,16037,age_group
+61-70,15.8,9296,age_group
+70+,15.78,7997,age_group
+female,18.1,39992,gender
+male,17.9,40008,gender
+Affluent,3.1,11210,customer_segment
+Emerging,17.62,31662,customer_segment
+Mass,39.48,21436,customer_segment
+Priority,0.07,15692,customer_segment
+Bronze,20.24,69252,loyalty_level
+Gold,2.82,1771,loyalty_level
+Silver,3.68,8977,loyalty_level
+mobile,6.5,17176,digital_behavior
+offline,21.14,62824,digital_behavior
+False,21.14,62824,active_member
+True,6.5,17176,active_member
+Chủ Doanh nghiệp nhỏ,0.13,7915,occupation
+Giáo viên/Giảng viên,16.43,7975,occupation
+Hưu trí,31.47,7861,occupation
+Kinh doanh/Bán hàng,15.09,7967,occupation
+Kế toán/Tài chính,14.53,7972,occupation
+Kỹ sư/Chuyên viên IT,3.07,8199,occupation
+Lao động phổ thông,34.73,7968,occupation
+Nhân viên văn phòng/Công chức,21.91,8061,occupation
+Nội trợ/Sinh viên,42.53,8096,occupation
+Quản lý/Lãnh đạo,0.23,7986,occupation
+Bà Rịa - Vũng Tàu,18.45,3951,origin_province
+Bình Dương,18.24,8008,origin_province
+Cần Thơ,18.48,3161,origin_province
+Hà Nội,19.2,3094,origin_province
+Long An,18.82,4862,origin_province
+TP. Hồ Chí Minh,17.15,40148,origin_province
+Tiền Giang,19.44,4080,origin_province
+Tỉnh khác,20.17,4808,origin_province
+Đồng Nai,18.64,7888,origin_province

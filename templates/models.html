@@ -1,0 +1,134 @@
+<section id="tab-models" class="tab-content">
+  <!-- LEADERBOARD SECTION -->
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px">
+    <h2 style="margin-bottom:0">🏆 Bảng xếp hạng Thuật toán AI</h2>
+    <div id="best-model-badge"></div>
+  </div>
+
+  <div class="card-pro" style="margin-bottom:32px">
+    <h3 style="margin-bottom:20px; color:#1e293b; display:flex; align-items:center; gap:12px">
+       📊 So sánh Hiệu suất Tổng hợp (Leaderboard)
+    </h3>
+    <div class="table-wrap" style="margin-bottom:24px">
+      <table id="model-table" style="font-size:16px">
+        <thead>
+          <tr style="background:#1e429f; color:white">
+            <th style="padding:18px">Thuật toán</th>
+            <th style="padding:18px; text-align:center">Accuracy</th>
+            <th style="padding:18px; text-align:center">Precision</th>
+            <th style="padding:18px; text-align:center">Recall (Quét Churn)</th>
+            <th style="padding:18px; text-align:center">F1-Score</th>
+            <th style="padding:18px; text-align:center">ROC-AUC</th>
+            <th style="padding:18px; text-align:center">Ngưỡng tối ưu</th>
+          </tr>
+        </thead>
+        <tbody id="model-table-body"></tbody>
+      </table>
+    </div>
+    
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:20px">
+      <div class="info-block" style="background:#ecfdf5; border-left:6px solid #10b981">
+        💡 <strong>Recall (Khả năng quét):</strong> Rất quan trọng trong ngân hàng. Mục tiêu là "không bỏ sót" khách hàng sắp đi. Recall 80% nghĩa là AI bắt được 8/10 người sắp rời bỏ.
+      </div>
+      <div class="info-block" style="background:#f0f9ff; border-left:6px solid #3b82f6">
+        💡 <strong>ROC-AUC (Độ sắc bén):</strong> Chỉ số đo lường khả năng "phân loại" của AI. Càng gần 1.0, AI càng phân biệt rõ ràng ai là khách trung thành, ai là khách rủi ro.
+      </div>
+    </div>
+  </div>
+
+  <!-- DEEP ANALYSIS & TRADE-OFF -->
+  <div style="margin:48px 0 24px; border-bottom: 2px solid #e2e8f0; padding-bottom:12px">
+    <h2 style="margin-bottom:0; font-size:26px; color:#1e293b">🧪 Phân tích Kỹ thuật & Sự đánh đổi (Trade-off)</h2>
+  </div>
+
+  <div class="eda-grid" style="margin-bottom:32px; display:flex; flex-direction:column; gap:32px">
+    <!-- ROC CURVE -->
+    <div class="card-pro chart-card" style="width:100%">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+        <h3 style="margin:0; font-size:20px">📈 Đường cong ROC (Phân biệt lỗi Loại 1 & Loại 2)</h3>
+        <span class="badge-pro info">Khả năng Phân loại</span>
+      </div>
+      <div class="chart-container-pro">
+        <canvas id="chart-roc"></canvas>
+      </div>
+      <div class="insight-box" id="insight-roc" style="margin-top:24px"></div>
+    </div>
+
+    <!-- PR CURVE -->
+    <div class="card-pro chart-card" style="width:100%">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+        <h3 style="margin:0; font-size:20px">📉 Đường cong Precision-Recall (Phân tích Chi phí Cơ hội)</h3>
+        <span class="badge-pro warning">Sự Đánh đổi Chi phí</span>
+      </div>
+      <div class="chart-container-pro">
+        <canvas id="chart-pr"></canvas>
+      </div>
+      <div class="insight-box" id="insight-pr" style="margin-top:24px"></div>
+    </div>
+  </div>
+
+  <!-- CONFUSION MATRIX & FEAT IMP -->
+  <div class="eda-grid" style="margin-bottom:40px">
+    <!-- CONFUSION MATRIX -->
+    <div class="card-pro" style="grid-column: span 1">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px">
+          <h3 style="margin:0">🎯 Kiểm chứng Sai số (Confusion Matrix)</h3>
+          <select id="cm-model-select" style="padding:6px 12px; border-radius:8px; border:1px solid #cbd5e1; font-size:14px; background:#f8fafc">
+             <option value="Random Forest">Random Forest (Mặc định)</option>
+             <option value="XGBoost">XGBoost</option>
+             <option value="Logistic Regression">Logistic Regression</option>
+          </select>
+        </div>
+        <div id="confusion-matrix-wrapper" style="min-height:220px; display:flex; align-items:center; justify-content:center">
+          <div id="confusion-matrix">Đang tải ma trận đánh giá...</div>
+        </div>
+        <div id="cm-explanation" class="insight-box" style="margin-top:20px">
+           Ma trận cho thấy số lượng khách hàng thực tế và AI dự đoán.
+        </div>
+    </div>
+
+    <!-- FEATURE IMPORTANCE -->
+    <div class="card-pro chart-card" style="grid-column: span 1">
+       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px">
+          <h3 style="margin:0">🧠 "Tư duy" của AI (Feature Importance)</h3>
+          <span class="badge-pro success">Yếu tố cốt lõi</span>
+       </div>
+       <div class="chart-container-pro" style="height:250px">
+          <canvas id="chart-feat-imp"></canvas>
+       </div>
+       <div class="insight-box" id="insight-feat-imp" style="margin-top:20px"></div>
+    </div>
+  </div>
+
+  <!-- TRADE-OFF & BUSINESS LOGIC CARD -->
+  <div class="conclusion-pro" style="margin-bottom:40px">
+    <h3>💡 Phân tích Suy luận & Quyết định Kinh doanh</h3>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:30px">
+       <div>
+          <h4 style="color:#1e40af; border-bottom:1px solid #dbeafe; padding-bottom:8px">1. Tại sao phải đánh đổi (Trade-off)?</h4>
+          <p style="font-size:15px; color:#334155">
+            Ngân hàng không thể tối ưu cả <strong>Precision</strong> và <strong>Recall</strong> cùng lúc. 
+            Nếu muốn bắt sạch khách sắp đi (Recall cao), chúng ta sẽ bị "bắt nhầm" nhiều khách đang ổn định (Precision thấp). 
+            Việc này sẽ tốn chi phí voucher cho những người không thực sự cần.
+          </p>
+       </div>
+       <div>
+          <h4 style="color:#10b981; border-bottom:1px solid #d1fae5; padding-bottom:8px">2. Chiến lược Ngưỡng (Thresholding)</h4>
+          <p style="font-size:15px; color:#334155">
+            Chúng tôi đã thiết lập <strong>Ngưỡng tối ưu (~0.5)</strong> để cân bằng giữa chi phí marketing và tỷ lệ giữ chân. 
+            Mô hình Random Forest được chọn vì có đường cong PR ổn định nhất, giúp tối ưu hóa ROI cho các chiến dịch Retention.
+          </p>
+       </div>
+    </div>
+  </div>
+
+  <!-- NEW DEEP ANALYSIS SECTION -->
+  <div class="card-pro" style="margin-bottom:40px; background:#f8fafc">
+    <h3 style="margin-bottom:20px">🔍 So sánh Bản chất các Thuật toán</h3>
+    <div id="model-deep-analysis" style="font-size:15px; grid-template-columns: repeat(3, 1fr); display:grid; gap:20px">
+       <!-- Populated by app.js -->
+    </div>
+  </div>
+
+</section>
+
