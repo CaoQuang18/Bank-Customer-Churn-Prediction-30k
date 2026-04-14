@@ -374,9 +374,9 @@ function analyzeModelDeeply(results, comparison) {
               ${b.label}
             </div>
             <div style="font-size:12px;opacity:.9;margin-top:6px;line-height:1.6">
-              AUC: <strong>${fmt(m.roc_auc)}</strong><br>
+              AUC: <strong>${fmtPct(m.roc_auc)}</strong><br>
               Recall: <strong>${fmtPct(m.recall)}</strong> · Precision: <strong>${fmtPct(m.precision)}</strong><br>
-              F1: <strong>${fmt(m.f1)}</strong> · Threshold: <strong>${fmtThr(m.threshold)}</strong>
+              F1: <strong>${fmtPct(m.f1)}</strong> · Threshold: <strong>${fmtPct(m.threshold)}</strong>
             </div>
           </div>
         </td>
@@ -1463,12 +1463,12 @@ async function loadModels() {
     const tableRows = rows.map(r => `
       <tr style="border-top:1px solid var(--gray-200)">
         <td style="padding:12px 14px; font-weight:700; color:var(--gray-900)">${r.model}</td>
-        <td style="padding:12px 14px">${fmt(r.roc_auc)}</td>
+        <td style="padding:12px 14px">${fmtPct(r.roc_auc)}</td>
         <td style="padding:12px 14px">${fmtPct(r.recall)}</td>
         <td style="padding:12px 14px">${fmtPct(r.precision)}</td>
-        <td style="padding:12px 14px">${fmt(r.f1)}</td>
+        <td style="padding:12px 14px">${fmtPct(r.f1)}</td>
         <td style="padding:12px 14px">${fmtPct((r.accuracy !== undefined) ? r.accuracy : null)}</td>
-        <td style="padding:12px 14px">${(r.threshold !== undefined && r.threshold !== null) ? Number(r.threshold).toFixed(3) : "-"}</td>
+        <td style="padding:12px 14px">${fmtPct(r.threshold)}</td>
       </tr>
     `).join("");
 
