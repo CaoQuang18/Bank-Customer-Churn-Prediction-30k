@@ -1301,11 +1301,11 @@ async function loadModels() {
         scales: {
           x: { 
             title: { display: true, text: 'Tỉ lệ báo động giả (FPR)', font: { size: 14, weight: '700' } }, 
-            min: 0, max: 1, ticks: { font: { size: 12 } }
+            min: 0, max: 1, ticks: { font: { size: 12 }, callback: v => (v * 100).toFixed(0) + '%' }
           },
           y: { 
             title: { display: true, text: 'Tỉ lệ bắt đúng (TPR/Recall)', font: { size: 14, weight: '700' } }, 
-            min: 0, max: 1, ticks: { font: { size: 12 } }
+            min: 0, max: 1, ticks: { font: { size: 12 }, callback: v => (v * 100).toFixed(0) + '%' }
           }
         }
       }
@@ -1317,7 +1317,7 @@ async function loadModels() {
     const rows = (comparison && comparison.table) ? comparison.table : [];
     const best = rows.length ? [...rows].sort((a, b) => (b.roc_auc || 0) - (a.roc_auc || 0))[0] : null;
     if (best) {
-      rocIns.innerHTML = `<strong>💡 Insight:</strong> Trên tập kiểm tra, <strong>${best.model}</strong> có khả năng phân biệt tốt nhất (ROC-AUC=<strong>${(best.roc_auc || 0).toFixed(3)}</strong>). ROC-AUC càng cao thì mô hình càng “tách biệt” tốt giữa nhóm rời bỏ và nhóm giữ lại.`;
+      rocIns.innerHTML = `<strong>💡 Insight:</strong> Trên tập kiểm tra, <strong>${best.model}</strong> có khả năng phân biệt tốt nhất (ROC-AUC=<strong>${((best.roc_auc || 0)*100).toFixed(2)}%</strong>). ROC-AUC càng cao thì mô hình càng “tách biệt” tốt giữa nhóm rời bỏ và nhóm giữ lại.`;
     } else {
       rocIns.innerHTML = `<strong>💡 Insight:</strong> ROC curve mô tả khả năng phân biệt Churn của mô hình theo nhiều ngưỡng quyết định.`;
     }
@@ -1379,12 +1379,12 @@ async function loadModels() {
           x: { 
             type: 'linear',
             title: { display: true, text: 'Khả năng Quét hết khách (Recall)', font: { size: 14, weight: '700' } }, 
-            min: 0, max: 1, ticks: { font: { size: 12 } }
+            min: 0, max: 1, ticks: { font: { size: 12 }, callback: v => (v * 100).toFixed(0) + '%' }
           },
           y: { 
             type: 'linear',
             title: { display: true, text: 'Độ Trúng đích (Precision)', font: { size: 14, weight: '700' } }, 
-            min: 0, max: 1.05, ticks: { font: { size: 12 } }
+            min: 0, max: 1.05, ticks: { font: { size: 12 }, callback: v => (v * 100).toFixed(0) + '%' }
           }
         }
       }
