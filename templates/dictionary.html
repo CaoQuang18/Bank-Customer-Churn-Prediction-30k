@@ -1,0 +1,159 @@
+<!-- TAB: Từ điển Dữ liệu -->
+<section id="tab-dictionary" class="tab-content">
+  <div class="tab-header">
+    <div class="tab-header-left">
+      <h2>Từ điển Dữ liệu (Data Dictionary & Schema)</h2>
+      <p class="tab-header-desc">
+        Minh bạch hóa không gian đặc trưng (Feature Space). Giải nghĩa định dạng, quy mô và Business Logic của từng biến số được nạp vào mô hình Học Máy.
+      </p>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <span class="badge-pro info">Đã kiểm toán Schema</span>
+      <span class="badge-pro success">No Missing Values</span>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:24px; border-left:4px solid var(--blue-600)">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+      <span style="background:var(--blue-100);color:var(--blue-700);width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:bold">📚</span>
+      <h3 style="margin:0;color:var(--gray-900);font-size:16px;font-weight:800">Cấu trúc Dữ liệu Đầu vào (Feature Dictionary)</h3>
+    </div>
+    
+    <div class="table-wrap">
+      <table style="width:100%;font-size:13px;border-collapse:collapse;border-radius:8px;overflow:hidden">
+        <thead>
+          <tr style="background:var(--gray-100);color:var(--gray-700);text-align:left;border-bottom:2px solid var(--gray-200)">
+            <th style="padding:14px;font-weight:700">Tên Biến (Feature)</th>
+            <th style="padding:14px;font-weight:700">Kiểu Dữ Liệu</th>
+            <th style="padding:14px;font-weight:700">Mô Tả Nghiệp Vụ (Business Logic)</th>
+            <th style="padding:14px;font-weight:700">Phân Phối / Dải Dữ Liệu</th>
+          </tr>
+        </thead>
+        <tbody style="background:var(--surface)">
+          <!-- Row 1 -->
+          <tr style="border-bottom:1px solid var(--gray-100)">
+            <td style="padding:14px;font-weight:600;color:var(--blue-700)">age</td>
+            <td style="padding:14px"><span class="badge-pro" style="background:#e0f2fe;color:#0369a1">Numerical (Int)</span></td>
+            <td style="padding:14px">Tuổi của khách hàng tính đến thời điểm chốt sổ.</td>
+            <td style="padding:14px;color:var(--gray-500)">18 - 85 tuổi</td>
+          </tr>
+          <!-- Row 2 -->
+          <tr style="border-bottom:1px solid var(--gray-100)">
+            <td style="padding:14px;font-weight:600;color:var(--blue-700)">gender</td>
+            <td style="padding:14px"><span class="badge-pro" style="background:#fce7f3;color:#be185d">Categorical</span></td>
+            <td style="padding:14px">Giới tính sinh học.</td>
+            <td style="padding:14px;color:var(--gray-500)">Male / Female</td>
+          </tr>
+          <!-- Row 3 -->
+          <tr style="border-bottom:1px solid var(--gray-100)">
+            <td style="padding:14px;font-weight:600;color:var(--blue-700)">tenure_ye</td>
+            <td style="padding:14px"><span class="badge-pro" style="background:#e0f2fe;color:#0369a1">Numerical (Int)</span></td>
+            <td style="padding:14px">Thâm niên (số năm) khách hàng đã sử dụng dịch vụ của ngân hàng.</td>
+            <td style="padding:14px;color:var(--gray-500)">0 - 15 năm</td>
+          </tr>
+          <!-- Row 4 -->
+          <tr style="border-bottom:1px solid var(--gray-100)">
+            <td style="padding:14px;font-weight:600;color:var(--blue-700)">married</td>
+            <td style="padding:14px"><span class="badge-pro" style="background:#fce7f3;color:#be185d">Categorical</span></td>
+            <td style="padding:14px">Tình trạng hôn nhân hợp pháp.</td>
+            <td style="padding:14px;color:var(--gray-500)">0 (Single) / 1 (Married)</td>
+          </tr>
+          <!-- Row 5 -->
+          <tr style="border-bottom:1px solid var(--gray-100)">
+            <td style="padding:14px;font-weight:600;color:var(--blue-700)">credit_sco</td>
+            <td style="padding:14px"><span class="badge-pro" style="background:#e0f2fe;color:#0369a1">Numerical (Int)</span></td>
+            <td style="padding:14px">Điểm tín dụng công dân (dựa trên CIC & giao dịch hành vi).</td>
+            <td style="padding:14px;color:var(--gray-500)">300 - 850 điểm</td>
+          </tr>
+          <!-- Row 6 -->
+          <tr style="border-bottom:1px solid var(--gray-100)">
+            <td style="padding:14px;font-weight:600;color:var(--blue-700)">risk_score</td>
+            <td style="padding:14px"><span class="badge-pro" style="background:#dcfce3;color:#166534">Numerical (Float)</span></td>
+            <td style="padding:14px">Chỉ số rủi ro tín dụng ròng (Net Risk) được hệ thống ngân hàng nội bộ chấm chéo.</td>
+            <td style="padding:14px;color:var(--gray-500)">0.0 (Thấp) -> 1.0 (Báo động)</td>
+          </tr>
+          <!-- Row 7 -->
+          <tr style="border-bottom:1px solid var(--gray-100)">
+            <td style="padding:14px;font-weight:600;color:var(--blue-700)">balance</td>
+            <td style="padding:14px"><span class="badge-pro" style="background:#e0f2fe;color:#0369a1">Numerical (Float)</span></td>
+            <td style="padding:14px">Số dư khả dụng bình quân trong vòng 3 tháng gần nhất (VND).</td>
+            <td style="padding:14px;color:var(--gray-500)">Tự do, có phân phối lệch chuẩn dương.</td>
+          </tr>
+          <!-- Row 8 -->
+          <tr style="border-bottom:1px solid var(--gray-100)">
+            <td style="padding:14px;font-weight:600;color:var(--blue-700)">monthly_ir</td>
+            <td style="padding:14px"><span class="badge-pro" style="background:#e0f2fe;color:#0369a1">Numerical (Float)</span></td>
+            <td style="padding:14px">Khảo sát thu nhập bình quân dòng chảy hằng tháng của khách hàng.</td>
+            <td style="padding:14px;color:var(--gray-500)">Tự do (Thu nhập ròng)</td>
+          </tr>
+          <!-- Row 9 -->
+          <tr style="border-bottom:1px solid var(--gray-100)">
+            <td style="padding:14px;font-weight:600;color:var(--blue-700)">engagement_score</td>
+            <td style="padding:14px"><span class="badge-pro" style="background:#e0f2fe;color:#0369a1">Numerical (Int)</span></td>
+            <td style="padding:14px">Điểm đo lường mức độ tương tác thông qua các điểm chạm số học (Clicks, Logins).</td>
+            <td style="padding:14px;color:var(--gray-500)">0 - 100 điểm</td>
+          </tr>
+          <!-- Row 10 -->
+          <tr style="border-bottom:1px solid var(--gray-100)">
+            <td style="padding:14px;font-weight:600;color:var(--blue-700)">nums_card</td>
+            <td style="padding:14px"><span class="badge-pro" style="background:#e0f2fe;color:#0369a1">Numerical (Int)</span></td>
+            <td style="padding:14px">Tổng số lượng thẻ thanh toán vật lý/phi vật lý đang được active.</td>
+            <td style="padding:14px;color:var(--gray-500)">1 - N thẻ</td>
+          </tr>
+          <!-- Row 11 -->
+          <tr style="border-bottom:1px solid var(--gray-100)">
+            <td style="padding:14px;font-weight:600;color:var(--blue-700)">nums_service</td>
+            <td style="padding:14px"><span class="badge-pro" style="background:#e0f2fe;color:#0369a1">Numerical (Int)</span></td>
+            <td style="padding:14px">Số lượng dịch vụ chéo (Cross-sell products) đang sử dụng.</td>
+            <td style="padding:14px;color:var(--gray-500)">1 - N dịch vụ</td>
+          </tr>
+          <!-- Row 12 -->
+          <tr style="border-bottom:1px solid var(--gray-100)">
+            <td style="padding:14px;font-weight:600;color:var(--blue-700)">active_member</td>
+            <td style="padding:14px"><span class="badge-pro" style="background:#fce7f3;color:#be185d">Categorical</span></td>
+            <td style="padding:14px">Trạng thái Active nội bộ (có phát sinh giao dịch trong X kỳ gần nhất).</td>
+            <td style="padding:14px;color:var(--gray-500)">0 (Inactive) / 1 (Active)</td>
+          </tr>
+          <!-- Row 13 -->
+          <tr style="border-bottom:1px solid var(--gray-100)">
+            <td style="padding:14px;font-weight:600;color:var(--blue-700)">customer_segment</td>
+            <td style="padding:14px"><span class="badge-pro" style="background:#fce7f3;color:#be185d">Categorical</span></td>
+            <td style="padding:14px">Khoanh vùng phân khúc kinh doanh mục tiêu do phòng Sales định nghĩa.</td>
+            <td style="padding:14px;color:var(--gray-500)">Mass / Priority / Affluent...</td>
+          </tr>
+          <!-- Row 14 -->
+          <tr style="border-bottom:1px solid var(--gray-100)">
+            <td style="padding:14px;font-weight:600;color:var(--blue-700)">loyalty_level</td>
+            <td style="padding:14px"><span class="badge-pro" style="background:#fce7f3;color:#be185d">Categorical</span></td>
+            <td style="padding:14px">Hạng thành viên của hệ thống đổi điểm tri ân khách hàng.</td>
+            <td style="padding:14px;color:var(--gray-500)">Bronze / Silver / Gold</td>
+          </tr>
+          <!-- Row 15 -->
+          <tr style="border-bottom:1px solid var(--gray-100)">
+            <td style="padding:14px;font-weight:600;color:var(--blue-700)">digital_behavior</td>
+            <td style="padding:14px"><span class="badge-pro" style="background:#fce7f3;color:#be185d">Categorical</span></td>
+            <td style="padding:14px">Ngôn ngữ hành vi số, khuynh hướng sử dụng Mobile/Web vs Tại Quầy (Offline).</td>
+            <td style="padding:14px;color:var(--gray-500)">Offline / Mobile App</td>
+          </tr>
+          <!-- TARGET -->
+          <tr style="background:var(--red-50);border-top:2px solid var(--red-200)">
+            <td style="padding:14px;font-weight:800;color:var(--red-700)">churn (Target)</td>
+            <td style="padding:14px"><span class="badge-pro" style="background:var(--red-600);color:white">Target Variable</span></td>
+            <td style="padding:14px;font-weight:600;color:var(--red-800)">Nhãn Churn. Thể hiện khách hàng ĐÃ RỜI BỎ hay CHƯA.</td>
+            <td style="padding:14px;color:var(--red-700);font-weight:600">1 (Rời bỏ) / 0 (Ở lại)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div style="background:var(--surface-2); border-left:4px solid var(--purple-500); padding:20px; border-radius:12px; border-top:1px solid var(--border); border-right:1px solid var(--border); border-bottom:1px solid var(--border)">
+    <h3 style="color:var(--gray-900); font-size:16px; font-weight:800; margin-bottom:10px; display:flex; align-items:center; gap:8px">
+      <span style="font-size:18px">📝</span> Thẩm định Tính Chuyên nghiệp (Business Domain Knowledge)
+    </h3>
+    <p style="color:var(--gray-700); line-height:1.75; font-size:14px; margin:0">
+      Trong bất kỳ dự án Khoa học Dữ liệu Doanh nghiệp nào, việc minh bạch hóa Business Logic của Features là yêu cầu bắt buộc trước khi chạy mô hình. Việc hiểu rõ <strong>đơn vị đo lường</strong> và <strong>ngữ cảnh</strong> giúp ngăn chặn nguy cơ Overfitting rác và loại trừ sự phi logic khi mô hình dự báo sinh ra <em>False Positives</em>. Do đó, đây là tấm bản đồ tri thức nền tảng của hệ thống đồ án KDD.
+    </p>
+  </div>
+
+</section>

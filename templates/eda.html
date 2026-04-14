@@ -1,101 +1,156 @@
 <section id="tab-eda" class="tab-content">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px">
-    <h2 style="margin-bottom:0">🔍 Phân tích Chân dung Khách hàng (EDA)</h2>
-    <span style="background:#dbeafe; color:#1e40af; padding:8px 20px; border-radius:30px; font-size:15px; font-weight:700; border:1px solid #bae6fd">Phân tích thực tế (Real Data Analysis)</span>
-  </div>
-  <p style="color:#64748b; font-size:17px; margin-bottom:32px; line-height:1.7; max-width:800px">
-    Giải mã các "patterns" hành vi rời bỏ dịch vụ thông qua phân tích tương quan các chiều dữ liệu nhân khẩu học và tài chính.
-  </p>
 
-  <!-- HIGHLIGHT TOP RISKS -->
-  <div class="card" style="margin-bottom:32px; background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border: 1px solid #fde68a; box-shadow: 0 10px 20px rgba(251,191,36,0.1);">
-    <h3 style="color:#92400e; font-size:20px; display:flex; align-items:center; gap:12px; margin-bottom:15px">🔥 Top 5 Chỉ số Rủi ro cao nhất</h3>
-    <div id="eda-top-risks" style="font-size:16px; color:#92400e; font-weight:500; display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px">Đang quét dữ liệu rủi ro...</div>
+  <div class="tab-header">
+    <div class="tab-header-left">
+      <h2>🔍 Phân tích Khám phá Dữ liệu (EDA)</h2>
+      <p class="tab-header-desc">
+        Giải mã các patterns hành vi rời bỏ thông qua phân tích nhân khẩu học, tài chính và hành vi số.
+      </p>
+    </div>
+    <span class="badge-pro info">Dữ liệu thực · Full Dataset</span>
   </div>
-   
-  <!-- SECTION Demo -->
-  <div style="margin:40px 0 20px; border-bottom: 2px solid #e2e8f0; padding-bottom:10px; display:flex; align-items:center; gap:12px">
-    <span style="background:#1e40af; color:white; width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px">👤</span>
-    <h3 style="margin-bottom:0; font-size:22px; color:#1e293b">Nhân khẩu học & Phân nhóm</h3>
-  </div>
-  
-  <div class="eda-grid" style="gap:24px">
-    <div class="card chart-card">
-      <h3 style="font-size:16px; margin-bottom:15px">📅 Tỉ lệ Churn theo Nhóm tuổi</h3>
-      <canvas id="chart-age"></canvas>
-      <div class="insight-box" id="insight-age" style="margin-top:20px; font-size:15px"></div>
+
+  <!-- Top Risks -->
+  <div class="alert-card warning" style="margin-bottom:24px">
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px">
+      <span style="font-size:18px">🔥</span>
+      <h3 style="color:#b45309; margin-bottom:0; font-size:15px">Top 5 Phân nhóm Churn Rate cao nhất</h3>
     </div>
-    <div class="card chart-card">
-      <h3 style="font-size:16px; margin-bottom:15px">⚧ Tỉ lệ Churn theo Giới tính</h3>
-      <canvas id="chart-gender"></canvas>
-      <div class="insight-box" id="insight-gender" style="margin-top:20px; font-size:15px"></div>
-    </div>
-    <div class="card chart-card">
-      <h3 style="font-size:16px; margin-bottom:15px">🏷️ Tỉ lệ Churn theo Phân khúc</h3>
-      <canvas id="chart-segment"></canvas>
-      <div class="insight-box" id="insight-segment" style="margin-top:20px; font-size:15px"></div>
-    </div>
-    <div class="card chart-card">
-      <h3 style="font-size:16px; margin-bottom:15px">⭐ Tỉ lệ Churn theo Loyalty</h3>
-      <canvas id="chart-loyalty"></canvas>
-      <div class="insight-box" id="insight-loyalty" style="margin-top:20px; font-size:15px"></div>
+    <div id="eda-top-risks" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px">
+      <div class="loading"></div>
     </div>
   </div>
 
-  <!-- SECTION Financial -->
-  <div style="margin:48px 0 20px; border-bottom: 2px solid #e2e8f0; padding-bottom:10px; display:flex; align-items:center; gap:12px">
-    <span style="background:#10b981; color:white; width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px">💰</span>
-    <h3 style="margin-bottom:0; font-size:22px; color:#1e293b">Tài chính & Tín dụng</h3>
-  </div>
-  
-  <div class="eda-grid" style="gap:24px">
-    <div class="card chart-card">
-      <h3 style="font-size:16px; margin-bottom:15px">💳 Tỉ lệ Churn theo Điểm tín dụng</h3>
-      <canvas id="chart-credit"></canvas>
-      <div class="insight-box" id="insight-credit" style="margin-top:20px; font-size:15px"></div>
-    </div>
-    <div class="card chart-card">
-      <h3 style="font-size:16px; margin-bottom:15px">💰 Phân bố Số dư (Churn vs Ở lại)</h3>
-      <canvas id="chart-balance"></canvas>
-      <div class="insight-box" id="insight-balance" style="margin-top:20px; font-size:15px"></div>
+  <!-- Section: Nhân khẩu học -->
+  <div class="section-heading">
+    <div class="section-icon indigo">👤</div>
+    <div>
+      <h3>Nhân khẩu học &amp; Phân nhóm</h3>
+      <p>Phân tích churn rate theo các đặc trưng nhân khẩu học cốt lõi</p>
     </div>
   </div>
 
-  <!-- SECTION Behavior -->
-  <div style="margin:48px 0 20px; border-bottom: 2px solid #e2e8f0; padding-bottom:10px; display:flex; align-items:center; gap:12px">
-    <span style="background:#f59e0b; color:white; width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px">📱</span>
-    <h3 style="margin-bottom:0; font-size:22px; color:#1e293b">Hành vi & Tương tác số</h3>
+  <div class="eda-grid" style="margin-bottom:8px">
+    <div class="card chart-card wide" style="grid-column: span 2;">
+      <div class="chart-header">
+        <span class="chart-title">📅 Phân phối Mật độ Độ tuổi (Age Distribution & Churn)</span>
+        <span class="badge-pro warning">Continuous</span>
+      </div>
+      <div class="chart-wrap" style="height:260px"><canvas id="chart-age"></canvas></div>
+      <div class="insight-box" id="insight-age"></div>
+    </div>
+
+
   </div>
-  
-  <div class="eda-grid" style="gap:24px">
-    <div class="card chart-card">
-      <h3 style="font-size:16px; margin-bottom:15px">📱 Tỉ lệ Churn theo Kênh giao dịch</h3>
-      <canvas id="chart-digital"></canvas>
-      <div class="insight-box" id="insight-digital" style="margin-top:20px; font-size:15px"></div>
-    </div>
-    <div class="card chart-card">
-      <h3 style="font-size:16px; margin-bottom:15px">✅ Tỉ lệ Churn theo Trạng thái Active</h3>
-      <canvas id="chart-active"></canvas>
-      <div class="insight-box" id="insight-active" style="margin-top:20px; font-size:15px"></div>
-    </div>
-    <div class="card chart-card wide" style="background:#f8fafc">
-      <h3 style="font-size:16px; margin-bottom:15px">📈 Ma trận Tương quan các đặc trưng (Heatmap)</h3>
-      <canvas id="chart-corr" style="max-height: 400px"></canvas>
-      <div class="insight-box" id="insight-corr" style="margin-top:20px; font-size:15px"></div>
+
+  <!-- Section: Tài chính -->
+  <div class="section-heading">
+    <div class="section-icon green">💰</div>
+    <div>
+      <h3>Tài chính &amp; Tín dụng</h3>
+      <p>Tương quan giữa sức mạnh tài chính và nguy cơ rời bỏ</p>
     </div>
   </div>
 
-  <!-- DEEP ANALYTICS -->
-  <div class="card" style="margin-top:40px; border: 2px solid #e2e8f0; padding: 24px">
-    <h3 style="font-size:20px; margin-bottom:20px; display:flex; align-items:center; gap:10px">🎯 Insights Tổng hợp & Hành động Kế tiếp</h3>
-    <div id="eda-actionable" style="font-size:16px; line-height:1.8; color:#334155">Đang tổng hợp thông tin chiến lược...</div>
-  </div>
+  <div class="eda-grid" style="margin-bottom:8px">
 
-  <!-- CONCLUSION -->
-  <div class="card" style="margin-top:48px; border-top: 6px solid #3b82f6; background: linear-gradient(to bottom, #eff6ff, #ffffff); border-radius: 20px; padding: 40px; border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;">
-    <h3 style="color: #1e40af; font-size:24px; margin-bottom:16px">📝 Kết luận chung Tab EDC</h3>
-    <div style="font-size:17px; line-height:1.8; color:#1e3a8a; font-weight:400">
-      Phân tích EDA đã vạch trần một sự thật: Churn không xảy ra ngẫu nhiên. Nó tập trung ở <strong>nhóm khách hàng mới</strong>, có <strong>số dư tài khoản thấp</strong> và <strong>ngừng tương tác trên ứng dụng di động</strong>. Kết quả này là cơ sở dữ liệu quan trọng để bộ phận Marketing thiết kế các chiến dịch "Tái kích hoạt" (Re-activation) chính xác cho từng phân khúc cụ thể.
+    <div class="card chart-card">
+      <div class="chart-header">
+        <span class="chart-title">🏷️ Churn rate theo Phân khúc KH</span>
+      </div>
+      <div class="chart-wrap"><canvas id="chart-segment"></canvas></div>
+      <div class="insight-box" id="insight-segment"></div>
+    </div>
+
+    <div class="card chart-card">
+      <div class="chart-header">
+        <span class="chart-title">⭐ Churn rate theo Mức Loyalty</span>
+      </div>
+      <div class="chart-wrap"><canvas id="chart-loyalty"></canvas></div>
+      <div class="insight-box" id="insight-loyalty"></div>
+    </div>
+
+    <div class="card chart-card wide" style="grid-column: span 2;">
+      <div class="chart-header">
+        <span class="chart-title">💰 Phân phối Mật độ Số dư (Balance Density Plot)</span>
+        <span class="badge-pro warning">Continuous</span>
+      </div>
+      <div class="chart-wrap" style="height:280px"><canvas id="chart-balance"></canvas></div>
+      <div class="insight-box" id="insight-balance"></div>
     </div>
   </div>
+
+  <!-- Section: Hành vi -->
+  <div class="section-heading">
+    <div class="section-icon amber">📱</div>
+    <div>
+      <h3>Hành vi &amp; Tương tác số</h3>
+      <p>Tác động của hoạt động số hóa đến tỉ lệ giữ chân</p>
+    </div>
+  </div>
+
+  <div class="eda-grid" style="margin-bottom:8px">
+    <div class="card chart-card">
+      <div class="chart-header">
+        <span class="chart-title">📱 Churn rate theo Kênh giao dịch</span>
+      </div>
+      <div class="chart-wrap"><canvas id="chart-digital"></canvas></div>
+      <div class="insight-box" id="insight-digital"></div>
+    </div>
+
+    <div class="card chart-card">
+      <div class="chart-header">
+        <span class="chart-title">✅ Churn rate theo Trạng thái Active</span>
+      </div>
+      <div class="chart-wrap"><canvas id="chart-active"></canvas></div>
+      <div class="insight-box" id="insight-active"></div>
+    </div>
+
+    <div class="card chart-card wide">
+      <div class="chart-header">
+        <span class="chart-title">📈 Tương quan Pearson — Đặc trưng vs Churn</span>
+        <span class="badge-pro info">Correlation</span>
+      </div>
+      <div class="chart-wrap" style="min-height:280px"><canvas id="chart-corr" style="max-height:320px"></canvas></div>
+      <div class="insight-box" id="insight-corr"></div>
+      <div style="margin-top:10px; background:var(--blue-50); padding:10px 14px; border-radius:6px; font-size:12px; color:var(--blue-800); border:1px dashed var(--blue-300)">
+        <strong>🔬 Ghi chú phương pháp (Method Note):</strong>
+        Biểu đồ này thể hiện mức độ tương quan tuyến tính (Pearson) giữa các biến số và nhãn Churn. Tương quan chỉ mang tính gợi ý quan hệ (association), không khẳng định quan hệ nhân quả. Nếu cần kết luận “khác biệt có ý nghĩa thống kê”, có thể bổ sung các kiểm định phù hợp (ví dụ: Chi-square/T-test) trên tập dữ liệu và báo cáo P-value.
+      </div>
+    </div>
+  </div>
+
+  <!-- Churn Profile -->
+  <div class="section-heading">
+    <div class="section-icon rose">🧬</div>
+    <div>
+      <h3>Chân dung Khách hàng — Phân tích Nguyên nhân</h3>
+      <p>Root-cause analysis từ góc độ hành vi và tài chính</p>
+    </div>
+  </div>
+
+  <div id="eda-churn-profile" style="margin-bottom:20px"></div>
+
+  <div class="card" style="margin-bottom:20px">
+    <h3 style="margin-bottom:14px; display:flex; align-items:center; gap:7px">
+      <span style="color:#0891b2">📊</span> So sánh Trực tiếp: KH Rời bỏ vs KH Giữ lại
+    </h3>
+    <div id="eda-comparison" class="table-wrap"></div>
+  </div>
+
+  <!-- Actionable -->
+  <div class="card" style="margin-bottom:20px">
+    <h3 style="margin-bottom:14px">🎯 Insights Tổng hợp &amp; Hành động Kế tiếp</h3>
+    <div id="eda-actionable" style="font-size:14px; line-height:1.8; color:#64748b">Đang tổng hợp...</div>
+  </div>
+
+  <div style="background:var(--surface-2); border-left:4px solid var(--purple-500); padding:20px; border-radius:12px; border-top:1px solid var(--border); border-right:1px solid var(--border); border-bottom:1px solid var(--border)">
+    <h3 style="color:var(--gray-900); font-size:16px; font-weight:800; margin-bottom:10px; display:flex; align-items:center; gap:8px">
+      <span style="font-size:18px">📝</span> Thẩm Định Tính Quy Luật (Exploratory Validation)
+    </h3>
+    <p style="color:var(--gray-700); line-height:1.75; font-size:14px; margin:0">
+      Phân tích EDA vạch trần hiện tượng <em>Negative Feedback Loop</em>: Churn tập trung ở cụm <strong>Khách hàng trẻ (Gen Z & Millennials)</strong>, sở hữu <strong>số dư tài khoản cận biên</strong> và <strong>điểm chạm tương tác số suy yếu (Low Engagement)</strong>. Hệ quả là, khi không có Mobile Banking neo giữ thói quen, mức Switching Cost (Rào cản thay đổi) về 0. Phát hiện này là cơ sở quan trọng để phòng Marketing thiết kế gói <em>Re-activation</em> chuyên biệt, tập trung giải quyết nguyên nhân gốc rễ chứ không chỉ mua chuộc sự chú ý tạm thời.
+    </p>
+  </div>
+
 </section>

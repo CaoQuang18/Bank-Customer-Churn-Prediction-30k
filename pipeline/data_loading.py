@@ -73,10 +73,10 @@ def inspect_data(df):
 
 def print_summary(report):
     print("=" * 60)
-    print("[DATA] TỔNG QUAN DỮ LIỆU THÔ")
+    print("[DATA] RAW DATA OVERVIEW")
     print("=" * 60)
-    print(f"  Số dòng   : {report['n_rows']:,}")
-    print(f"  Số cột    : {report['n_cols']}")
+    print(f"  Rows      : {report['n_rows']:,}")
+    print(f"  Cols      : {report['n_cols']}")
     print(f"  Duplicates: {report['duplicates']}")
     print()
 
@@ -85,20 +85,20 @@ def print_summary(report):
         for col, info in report["missing"].items():
             print(f"  {col}: {info['count']} ({info['pct']}%)")
     else:
-        print("  Không có missing values")
+        print("  No missing values")
     print()
 
-    print("🎯 PHÂN PHỐI TARGET (exit):")
+    print("TARGET DISTRIBUTION (exit):")
     for k, v in report["target_distribution"].items():
         print(f"  {k}: {v:,}")
     print()
 
-    print("🔤 UNIQUE VALUES (categorical):")
+    print("UNIQUE VALUES (categorical):")
     for col, n in report["unique_values"].items():
-        print(f"  {col}: {n} giá trị")
+        print(f"  {col}: {n} values")
     print()
 
-    print("[PLOT] KIỂU DỮ LIỆU:")
+    print("[PLOT] DATA TYPES:")
     for col, dtype in report["dtypes"].items():
         print(f"  {col}: {dtype}")
 

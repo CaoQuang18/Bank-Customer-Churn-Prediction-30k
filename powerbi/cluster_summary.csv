@@ -1,4 +1,5 @@
-cluster,balance_mean,engagement_mean,churn_rate,age_mean,count,cluster_name
-0,174522183,31.8,0.05,50.3,12862,Khách hàng VIP - Tài sản lớn
-1,36647452,18.03,26.32,49.2,50437,Khách hàng rủi ro cao - Cần kích hoạt ngay
-2,39753895,72.86,6.69,49.2,16701,Khách hàng thân thiết - Đặc biệt
+cluster,balance_mean,engagement_mean,churn_rate,age_mean,risk_mean,count,balance_rank,risk_rank,engagement_rank,cluster_name
+0,284084207.75634295,33.0352872557597,0.0013123359580052493,53.91571886847478,0.17019877515310586,6858,1.0,4.0,2.0,Khách hàng VIP - Trụ cột Tài sản
+1,44735053.774877116,69.18350628072092,0.05406881485527035,47.93539049699618,0.17396900054614967,18310,3.0,3.0,1.0,Khách hàng Tích cực - Tiềm năng Cross-sell
+2,33936772.612750456,18.646237915090374,0.264873196020737,40.06120218579235,0.31747932744850776,35685,4.0,1.0,4.0,Nhóm Rủi ro Cao - Cần Cứu vãn Khẩn
+3,47854680.611427374,19.811719851673892,0.20624640935916855,66.51245625946623,0.3059987465399279,19147,2.0,2.0,3.0,Nhóm Cao tuổi - Rủi ro Tiềm ẩn

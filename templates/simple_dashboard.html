@@ -157,11 +157,11 @@
       <div class="summary-grid">
         <div class="summary-box">
           <h3>🏆 Best Model</h3>
-          <p><strong>{{ data.best_model.name|default('Random Forest') }}</strong></p>
+          <p><strong>{{ data.best_model.name|default('—') }}</strong></p>
           <ul>
-            <li>ROC-AUC: {{ data.best_model.roc_auc|default('0.8423') }}</li>
-            <li>Recall: {{ ((data.best_model.recall|default(0.7)) * 100)|round|int }}%</li>
-            <li>F1-Score: {{ ((data.best_model.f1|default(0.53)) * 100)|round|int }}%</li>
+            <li>ROC-AUC: {{ data.best_model.roc_auc|default('—') }}</li>
+            <li>Recall: {{ ((data.best_model.recall * 100)|round|int) if (data.best_model.recall is defined and data.best_model.recall is not none) else '—' }}%</li>
+            <li>F1-Score: {{ ((data.best_model.f1 * 100)|round|int) if (data.best_model.f1 is defined and data.best_model.f1 is not none) else '—' }}%</li>
           </ul>
         </div>
         <div class="summary-box success">
@@ -191,12 +191,12 @@
           {% for model_name, result in data.results|default({})|items %}
           <tr class="{{ 'best' if model_name == data.best_model.name else '' }}">
             <td><strong>{{ model_name }}</strong></td>
-            <td>{{ ((result.accuracy|default(0.78)) * 100)|round|int }}%</td>
-            <td>{{ ((result.precision|default(0.42)) * 100)|round|int }}%</td>
-            <td>{{ ((result.recall|default(0.71)) * 100)|round|int }}%</td>
-            <td>{{ ((result.f1|default(0.53)) * 100)|round|int }}%</td>
-            <td>{{ result.roc_auc|default(0.84) }}</td>
-            <td>{{ ((result.threshold|default(0.5)) * 100)|round|int }}%</td>
+            <td>{{ ((result.accuracy * 100)|round|int) if (result.accuracy is defined and result.accuracy is not none) else '—' }}%</td>
+            <td>{{ ((result.precision * 100)|round|int) if (result.precision is defined and result.precision is not none) else '—' }}%</td>
+            <td>{{ ((result.recall * 100)|round|int) if (result.recall is defined and result.recall is not none) else '—' }}%</td>
+            <td>{{ ((result.f1 * 100)|round|int) if (result.f1 is defined and result.f1 is not none) else '—' }}%</td>
+            <td>{{ result.roc_auc|default('—') }}</td>
+            <td>{{ ((result.threshold * 100)|round|int) if (result.threshold is defined and result.threshold is not none) else '—' }}%</td>
           </tr>
           {% endfor %}
         </tbody>
@@ -215,8 +215,8 @@
           {% for model_name, cv in data.cv_results|default({})|items %}
           <tr>
             <td>{{ model_name }}</td>
-            <td><strong>{{ cv.cv_auc_mean|default(0.91) }}</strong></td>
-            <td>{{ cv.cv_auc_std|default(0.002) }}</td>
+            <td><strong>{{ cv.cv_auc_mean|default('—') }}</strong></td>
+            <td>{{ cv.cv_auc_std|default('—') }}</td>
           </tr>
           {% endfor %}
         </tbody>
@@ -330,11 +330,11 @@
           {% for method_name, result in data.methods_comparison|items %}
           <tr>
             <td><strong>{{ method_name }}</strong></td>
-            <td>{{ ((result.accuracy|default(0.77)) * 100)|round|int }}%</td>
-            <td>{{ ((result.precision|default(0.42)) * 100)|round|int }}%</td>
-            <td class="{{ 'badge red' if result.recall|default(0.7) > 0.7 else '' }}">{{ ((result.recall|default(0.7)) * 100)|round|int }}%</td>
-            <td>{{ ((result.f1|default(0.53)) * 100)|round|int }}%</td>
-            <td>{{ result.roc_auc|default(0.84) }}</td>
+            <td>{{ ((result.accuracy * 100)|round|int) if (result.accuracy is defined and result.accuracy is not none) else '—' }}%</td>
+            <td>{{ ((result.precision * 100)|round|int) if (result.precision is defined and result.precision is not none) else '—' }}%</td>
+            <td>{{ ((result.recall * 100)|round|int) if (result.recall is defined and result.recall is not none) else '—' }}%</td>
+            <td>{{ ((result.f1 * 100)|round|int) if (result.f1 is defined and result.f1 is not none) else '—' }}%</td>
+            <td>{{ result.roc_auc|default('—') }}</td>
           </tr>
           {% endfor %}
         </tbody>
@@ -348,7 +348,7 @@
           <h3>💡 Khuyen nghi</h3>
           <ul>
             <li>Dung <strong>SMOTE + Class Weights</strong> de tang recall</li>
-            <li>Tune threshold = <strong>0.4-0.5</strong> de can bang</li>
+            <li>Tune threshold theo P-R curve va chi phi chien dich</li>
             <li>Uu tien Recall > Precision trong bai toan churn</li>
           </ul>
         </div>
@@ -382,16 +382,17 @@
         </thead>
         <tbody>
           {% for p in data.cluster_profiles %}
-          {% set churn = p.churn_rate|default(0) %}
+          {% set churn_raw = p.churn_rate_pct if (p.churn_rate_pct is defined and p.churn_rate_pct is not none) else (p.churn_rate|default(0)) %}
+          {% set churn = (churn_raw * 100) if churn_raw <= 1 else churn_raw %}
           <tr style="{{ 'background: #fee2e2' if churn > 20 else '' }}">
             <td><strong>{{ p.cluster }}</strong></td>
             <td>{{ p.cluster_name|default('Khach hang') }}</td>
             <td>{{ p.count|default(0) }}</td>
             <td>{{ ((p.count|default(1) / data.total_customers * 100))|round(1) }}%</td>
             <td><span class="badge {{ 'red' if churn > 20 else 'yellow' if churn > 5 else 'green' }}">{{ churn }}%</span></td>
-            <td>{{ (p.balance_mean|default(37000000) / 1000000)|round|int }}M</td>
-            <td>{{ p.engagement_mean|default(50)|round|int }}</td>
-            <td>{{ p.age_mean|default(49)|round|int }}</td>
+            <td>{{ ((p.balance_mean / 1000000)|round|int) if (p.balance_mean is defined and p.balance_mean is not none) else '—' }}M</td>
+            <td>{{ (p.engagement_mean|round|int) if (p.engagement_mean is defined and p.engagement_mean is not none) else '—' }}</td>
+            <td>{{ (p.age_mean|round|int) if (p.age_mean is defined and p.age_mean is not none) else '—' }}</td>
             <td>{{ 'Cao' if churn > 20 else 'TB' if churn > 5 else 'Thap' }}</td>
           </tr>
           {% endfor %}
@@ -426,7 +427,7 @@
       
       <div class="summary-box">
         <h3>📝 Cach su dung</h3>
-        <p>Su dung model <strong>{{ data.best_model.name|default('Random Forest') }}</strong> de du doan nguy co roi bo cua khach hang moi.</p>
+        <p>Su dung model <strong>{{ data.best_model.name|default('—') }}</strong> de du doan nguy co roi bo cua khach hang moi.</p>
         <p>Du doan qua API: <code>POST /api/predict</code></p>
         <p>Vi du cau truc du lieu dau vao:</p>
         <pre>{
@@ -450,7 +451,7 @@
         <div class="summary-box warning">
           <h3>⚠️ Luu y</h3>
           <ul>
-            <li>Threshold mac dinh: {{ ((data.best_model.threshold|default(0.52)) * 100)|round|int }}%</li>
+            <li>Threshold: {{ ((data.best_model.threshold * 100)|round|int) if (data.best_model.threshold is defined and data.best_model.threshold is not none) else '—' }}%</li>
             <li>Neu probability > threshold -> Churn</li>
             <li>Neu probability <= threshold -> Khong Churn</li>
           </ul>
@@ -458,8 +459,8 @@
         <div class="summary-box">
           <h3>📊 Hieu luc</h3>
           <ul>
-            <li>Recall: {{ ((data.best_model.recall|default(0.71)) * 100)|round|int }}% - bat duoc {{ ((data.best_model.recall|default(0.71)) * 100)|round|int }}/100 KH se churn</li>
-            <li>Precision: {{ ((data.best_model.precision|default(0.42)) * 100)|round|int }}%</li>
+            <li>Recall: {{ ((data.best_model.recall * 100)|round|int) if (data.best_model.recall is defined and data.best_model.recall is not none) else '—' }}%</li>
+            <li>Precision: {{ ((data.best_model.precision * 100)|round|int) if (data.best_model.precision is defined and data.best_model.precision is not none) else '—' }}%</li>
           </ul>
         </div>
       </div>

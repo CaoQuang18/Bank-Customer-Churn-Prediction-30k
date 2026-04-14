@@ -1,195 +1,363 @@
 <section id="tab-predict" class="tab-content">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px">
-    <h2 style="margin-bottom:0">🎯 Hệ thống Dự đoán Churn (Real-time)</h2>
-    <span style="background:#f0f9ff; color:#0369a1; padding:8px 16px; border-radius:30px; font-size:15px; font-weight:700; border:1px solid #bae6fd; display:flex; align-items:center; gap:8px">
-      <span style="width:10px; height:10px; background:#0ea5e9; border-radius:50%"></span> AI Engine Online
+
+  <div class="tab-header">
+    <div class="tab-header-left">
+      <h2>🎯 Công cụ Dự báo Churn (theo hồ sơ nhập)</h2>
+      <p class="tab-header-desc">
+        Nhập hồ sơ khách hàng để mô hình ước tính xác suất rời bỏ, hiển thị các tín hiệu rủi ro chính và gợi ý hành động giữ chân theo persona.
+      </p>
+    </div>
+    <span class="badge-pro success" style="display:inline-flex; align-items:center; gap:6px">
+      <span class="live-dot"></span>Model service sẵn sàng
     </span>
   </div>
-  <p style="color:#64748b; font-size:17px; margin-bottom:32px; line-height:1.7; max-width:800px">
-    Nhập thông tin chi tiết khách hàng để AI đưa ra dự báo xác suất rời bỏ ngay lập tức, đi kèm các phân tích nguyên nhân và hành động tư vấn đề xuất.
-  </p>
-  
-  <div class="predict-layout" style="gap:32px">
-    <!-- CỘT TRÁI: FORM NHẬP LIỆU -->
-    <div class="card predict-form-card" style="box-shadow: 0 20px 40px rgba(0,0,0,0.06); border: 1px solid #f1f5f9; padding: 32px">
-      <h3 style="margin-bottom:24px; color:#1e293b; border-bottom:1px solid #f1f5f9; padding-bottom:12px; display:flex; align-items:center; gap:12px">
-        <span style="background:#1e40af; color:white; width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:10px; font-size:18px">1</span>
-        Nhập Hồ sơ Khách hàng
-      </h3>
-      
+
+  <div class="predict-layout" style="align-items:start">
+    <!-- FORM -->
+    <div class="card" style="padding:24px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+        <span style="background:var(--blue-600);color:#fff;width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:7px;font-size:13px;font-weight:700;flex-shrink:0">1</span>
+        <h3 style="margin:0;font-size:14px">Nhập Hồ sơ Khách hàng</h3>
+      </div>
+
+      <!-- KỊCH BẢN DEMO (AUTOFILL) -->
+      <div style="display:flex; gap:8px; margin-bottom:24px; flex-wrap:wrap">
+        <button type="button" onclick="window.autofillDemo('high_risk')" style="display:flex; align-items:center; gap:6px; background:var(--red-50); color:var(--red-700); border:1px solid var(--red-200); padding:6px 12px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; transition:all 0.2s" title="Nạp dữ liệu Khách hàng có độ tương tác thấp, điểm tín dụng kém">
+           <span>🔴</span> Mẫu: Khách Rủi Ro
+        </button>
+        <button type="button" onclick="window.autofillDemo('vip_safe')" style="display:flex; align-items:center; gap:6px; background:var(--green-50); color:var(--green-700); border:1px solid var(--green-200); padding:6px 12px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; transition:all 0.2s" title="Nạp dữ liệu Khách hàng gắn bó lâu năm, số dư cao">
+           <span>🟢</span> Mẫu: Khách VIP
+        </button>
+        <button type="button" onclick="window.autofillDemo('reset')" style="display:flex; align-items:center; gap:4px; background:var(--gray-100); color:var(--gray-700); border:1px solid var(--border); padding:6px 12px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; transition:all 0.2s; margin-left:auto" title="Xóa trắng mọi ô nhập liệu">
+           <span>🔄</span> Làm mới (Reset)
+        </button>
+      </div>
+
       <form id="predict-form">
-        <div style="font-size:14px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:1px; margin-bottom:15px">👤 Thông tin Định danh</div>
-        <div class="form-grid" style="margin-bottom:32px; gap:20px">
+
+        <!-- ĐỊNH DANH -->
+        <div class="form-section-label" style="background:var(--blue-50); color:var(--blue-800); border-left:4px solid var(--blue-500); padding:10px 14px; border-radius:6px; font-weight:800; font-size:13px; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:16px; margin-top:24px">👤 Thông tin Định danh (Demographics)</div>
+        <div class="form-grid">
           <div class="form-group">
-            <label style="font-size:14px; font-weight:600; color:#475569; margin-bottom:8px">Độ tuổi</label>
-            <input type="number" name="age" value="45" min="18" max="100" required style="font-size:15px; padding:12px" />
+            <label>Độ tuổi</label>
+            <input type="number" name="age" id="input-age" value="45" min="18" max="100" required />
+            <div style="font-size:10.5px;color:var(--gray-500);margin-top:4px">Độ tuổi thực tế (18-100 tuổi)</div>
           </div>
           <div class="form-group">
-            <label style="font-size:14px; font-weight:600; color:#475569; margin-bottom:8px">Giới tính</label>
-            <select name="gender" style="font-size:15px; padding:12px">
+            <label>Giới tính</label>
+            <select name="gender" id="input-gender">
               <option value="male">Nam</option>
               <option value="female" selected>Nữ</option>
             </select>
+            <div style="font-size:10.5px;color:var(--gray-500);margin-top:4px">Phân định giới tính sinh học</div>
           </div>
           <div class="form-group">
-            <label style="font-size:14px; font-weight:600; color:#475569; margin-bottom:8px">Số năm gắn bó (Tenure)</label>
-            <input type="number" name="tenure_ye" value="3" min="0" required style="font-size:15px; padding:12px" />
+            <label>Số năm gắn bó (Tenure)</label>
+            <input type="number" name="tenure_ye" id="input-tenure" value="3" min="0" max="30" required />
+            <div style="font-size:10.5px;color:var(--gray-500);margin-top:4px">Số năm sử dụng dịch vụ</div>
           </div>
           <div class="form-group">
-            <label style="font-size:14px; font-weight:600; color:#475569; margin-bottom:8px">Hôn nhân</label>
-            <select name="married" style="font-size:15px; padding:12px">
+            <label>Tình trạng Hôn nhân</label>
+            <select name="married" id="input-married">
               <option value="1">Đã kết hôn</option>
               <option value="0">Độc thân</option>
             </select>
+            <div style="font-size:10.5px;color:var(--gray-500);margin-top:4px">Ảnh hưởng hành vi tín dụng</div>
           </div>
         </div>
 
-        <div style="font-size:14px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:1px; margin-bottom:15px">💰 Tài chính & Tín dụng</div>
-        <div class="form-grid" style="margin-bottom:32px; gap:20px">
+        <!-- TÀI CHÍNH -->
+        <div class="form-section-label" style="background:var(--green-50); color:var(--green-800); border-left:4px solid var(--green-500); padding:10px 14px; border-radius:6px; font-weight:800; font-size:13px; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:16px; margin-top:24px">💰 Tài sản & Tín dụng (Financials)</div>
+        <div class="form-grid">
           <div class="form-group">
-            <label style="font-size:14px; font-weight:600; color:#475569; margin-bottom:8px">Credit Score (300-850)</label>
-            <input type="number" name="credit_sco" value="680" required style="font-size:15px; padding:12px" />
+            <label>Điểm tín dụng (Credit)</label>
+            <input type="number" name="credit_sco" id="input-credit" value="680" min="300" max="850" required />
+            <div style="font-size:10.5px;color:var(--gray-500);margin-top:4px">Tương đương FICO Score (300-850)</div>
           </div>
           <div class="form-group">
-            <label style="font-size:14px; font-weight:600; color:#475569; margin-bottom:8px">Số dư tài khoản (VNĐ)</label>
-            <input type="number" name="balance" value="5000000" required style="font-size:15px; padding:12px" />
+            <label>Hệ số rủi ro tín dụng</label>
+            <input type="number" name="risk_score" id="input-risk" value="0.25" min="0" max="1" step="0.01" required />
+            <div style="font-size:10.5px;color:var(--gray-500);margin-top:4px">Thang đo CIC cục bộ (0.00 - 1.00)</div>
           </div>
-          <div class="form-group" style="grid-column: span 2">
-            <label style="font-size:14px; font-weight:600; color:#475569; margin-bottom:8px">Thu nhập hằng tháng ước tính (VNĐ)</label>
-            <input type="number" name="monthly_ir" value="20000000" required style="font-size:15px; padding:12px" />
+          <div class="form-group">
+            <label>Số dư tài khoản (VNĐ)</label>
+            <input type="number" name="balance" id="input-balance" value="5000000" required />
+            <div style="font-size:10.5px;color:var(--gray-500);margin-top:4px">Bình quân CASA 3 tháng gần nhất</div>
+          </div>
+          <div class="form-group">
+            <label>Thu nhập hằng tháng (VNĐ)</label>
+            <input type="number" name="monthly_ir" id="input-income" value="20000000" required />
+            <div style="font-size:10.5px;color:var(--gray-500);margin-top:4px">Nguồn tiền luân chuyển (Cash flow)</div>
           </div>
         </div>
 
-        <div style="font-size:14px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:1px; margin-bottom:15px">📱 Tương tác & Sản phẩm</div>
-        <div class="form-grid" style="margin-bottom:32px; gap:20px">
+        <!-- TƯƠNG TÁC -->
+        <div class="form-section-label" style="background:var(--amber-50); color:var(--amber-800); border-left:4px solid var(--amber-500); padding:10px 14px; border-radius:6px; font-weight:800; font-size:13px; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:16px; margin-top:24px">📱 Mức độ Tương tác Số (Engagement)</div>
+        <div class="form-grid">
           <div class="form-group">
-            <label style="font-size:14px; font-weight:600; color:#475569; margin-bottom:8px">Mức tương tác (0-100)</label>
-            <input type="number" name="engagement_score" value="40" required style="font-size:15px; padding:12px" />
+            <label>Chỉ số tương tác (Engagement)</label>
+            <input type="number" name="engagement_score" id="input-engagement" value="40" min="0" max="100" required />
+            <div style="font-size:10.5px;color:var(--gray-500);margin-top:4px">Đăng nhập & Giao dịch App (0-100)</div>
           </div>
           <div class="form-group">
-            <label style="font-size:14px; font-weight:600; color:#475569; margin-bottom:8px">Số thẻ đang dùng</label>
-            <input type="number" name="nums_card" value="1" min="1" max="10" required style="font-size:15px; padding:12px" />
+            <label>Số Thẻ đang dùng</label>
+            <input type="number" name="nums_card" id="input-cards" value="1" min="1" max="10" required />
+            <div style="font-size:10.5px;color:var(--gray-500);margin-top:4px">Thẻ Tín dụng / Thẻ Ghi nợ</div>
           </div>
           <div class="form-group">
-            <label style="font-size:14px; font-weight:600; color:#475569; margin-bottom:8px">Số dịch vụ (Products)</label>
-            <input type="number" name="nums_service" value="2" min="1" max="15" required style="font-size:15px; padding:12px" />
+            <label>Tổng SP/Dịch vụ</label>
+            <input type="number" name="nums_service" id="input-services" value="2" min="1" max="15" required />
+            <div style="font-size:10.5px;color:var(--gray-500);margin-top:4px">Khoản vay, Bảo hiểm, T.Kiệm</div>
           </div>
           <div class="form-group">
-            <label style="font-size:14px; font-weight:600; color:#475569; margin-bottom:8px">Thành viên Active</label>
-            <select name="active_member" style="font-size:15px; padding:12px">
-              <option value="1">Có (Thường xuyên)</option>
-              <option value="0" selected>Không (Ít giao dịch)</option>
+            <label>Trạng thái (Active Mth)</label>
+            <select name="active_member" id="input-active">
+              <option value="1">Thường xuyên (Active)</option>
+              <option value="0" selected>Ít/Không GD (Inactive)</option>
             </select>
-          </div>
-          <div class="form-group" style="grid-column: span 2">
-            <label style="font-size:14px; font-weight:600; color:#475569; margin-bottom:8px">Lựa chọn Mô hình dự báo</label>
-            <select name="model" style="font-size:15px; padding:12px; font-weight:700; color:#1e40af; border: 2px solid #3b82f6">
-              <option value="Random Forest">Random Forest (Mặc định)</option>
-              <option value="XGBoost">XGBoost (Độ nhạy cao)</option>
-              <option value="Logistic Regression">Logistic Regression (Cơ sở)</option>
-            </select>
+            <div style="font-size:10.5px;color:var(--gray-500);margin-top:4px">Phát sinh giao dịch 30 ngày</div>
           </div>
         </div>
 
-        <button type="submit" class="btn-predict" style="height:64px; font-size:20px; font-weight:800; letter-spacing:1px; border-radius:15px; box-shadow: 0 15px 30px rgba(37,99,235,0.3)">
-           🚀 KHAI THÁC QUYẾT ĐỊNH AI
-        </button>
+        <!-- PHÂN LOẠI -->
+        <div class="form-section-label" style="background:var(--purple-50); color:var(--purple-800); border-left:4px solid var(--purple-500); padding:10px 14px; border-radius:6px; font-weight:800; font-size:13px; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:16px; margin-top:24px">🏷️ Phân khúc Khách hàng (Clustering)</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Phân khúc KH (Segment)</label>
+            <select name="customer_segment" id="input-segment">
+              <option value="Mass" selected>Đại chúng (Mass)</option>
+              <option value="Emerging">Tiềm năng (Emerging)</option>
+              <option value="Affluent">Gia sản (Affluent)</option>
+              <option value="Priority">Ưu tiên (VIP/Priority)</option>
+            </select>
+            <div style="font-size:10.5px;color:var(--gray-500);margin-top:4px">Định vị tệp khách hàng lõi</div>
+          </div>
+          <div class="form-group">
+            <label>Hạng thẻ viên (Loyalty)</label>
+            <select name="loyalty_level" id="input-loyalty">
+              <option value="Bronze" selected>Đồng (Bronze)</option>
+              <option value="Silver">Bạc (Silver)</option>
+              <option value="Gold">Vàng (Gold)</option>
+              <option value="Platinum">Bạch kim (Platinum)</option>
+            </select>
+            <div style="font-size:10.5px;color:var(--gray-500);margin-top:4px">Chức danh ưu đãi điểm tích lũy</div>
+          </div>
+          <div class="form-group span-2">
+            <label>Xu hướng giao dịch (Digital Behavior)</label>
+            <select name="digital_behavior" id="input-digital">
+              <option value="offline" selected>Tại quầy chi nhánh (Offline)</option>
+              <option value="mobile">Trực tuyến (Mobile App/Web)</option>
+            </select>
+            <div style="font-size:10.5px;color:var(--gray-500);margin-top:4px">Kênh tương tác tài chính chính yếu nhất của khách hàng</div>
+          </div>
+        </div>
+
+        <!-- MODEL SELECT -->
+        <div class="form-section-label" style="background:var(--red-50); color:var(--red-800); border-left:4px solid var(--red-500); padding:10px 14px; border-radius:6px; font-weight:800; font-size:13px; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:16px; margin-top:24px">🤖 Cấu hình Bộ máy AI (ML Engine)</div>
+        <div class="form-group" style="margin-bottom:22px">
+          <label>Cốt lõi Thuật toán Phân loại (Classifier)</label>
+          <select name="model" id="input-model" style="border:2px solid var(--blue-500); font-weight:700; color:var(--blue-900); background:var(--blue-50)">
+            <!-- FIX E3: LR không phải Baseline (Baseline = DummyClassifier), LR là best model -->
+            <option value="Logistic Regression">📈 Logistic Regression (Khuyến nghị - Best AUC 🏆)</option>
+            <option value="Random Forest">🌲 Random Forest (Ensemble Learning)</option>
+            <option value="XGBoost">🔥 XGBoost (Gradient Boosting - Ưu tiên Recall)</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-predict" style="width:100%; border:none; color:#ffffff; padding:14px; text-transform:uppercase; font-weight:900; letter-spacing:1px; font-size:15px; border-radius:10px; background:linear-gradient(to right, #1c64f2, #1e40af); box-shadow:0 10px 15px -3px rgba(37,99,235,0.3); cursor:pointer; transition:transform 0.2s ease, box-shadow 0.2s ease">🔍 Kích hoạt hệ thống AI Phân tích</button>
       </form>
     </div>
 
-    <!-- CỘT PHẢI: KẾT QUẢ PHÂN TÍCH -->
-    <div id="predict-result-container" style="flex: 1; min-width: 450px;">
-      <div class="card" id="predict-placeholder" style="text-align:center; padding:100px 40px; border:2px dashed #cbd5e1; background:#f8fafc; min-height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; border-radius:20px">
-        <div style="font-size:96px; margin-bottom:40px; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.1))">💎</div>
-        <h3 style="font-size:24px; color:#334155; margin-bottom:16px">Chờ tín hiệu xử lý...</h3>
-        <p style="color:#64748b; font-size:16px; line-height:1.7; max-width:340px">Vui lòng hoàn tất biểu mẫu khách hàng và nhấn nút <strong>"Phân tích"</strong> để AI đưa ra kết quả rủi ro.</p>
+    <!-- KẾT QUẢ -->
+    <div id="predict-result-container" style="position:sticky;top:68px">
+      <!-- Placeholder -->
+      <div id="predict-placeholder" style="text-align:center;padding:64px 24px;border:2px dashed var(--gray-300);border-radius:16px;min-height:360px;display:flex;flex-direction:column;justify-content:center;align-items:center;background:var(--surface)">
+        <div style="font-size:56px;margin-bottom:20px;opacity:0.3;filter:grayscale(1)">🖥️</div>
+        <h3 style="font-size:16px;font-weight:800;color:var(--gray-500);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em">Sẵn Sàng Chẩn Đoán</h3>
+        <p style="color:var(--gray-400);font-size:14px;line-height:1.7;max-width:280px">Hoàn tất biểu mẫu Profile và nhấn <strong style="color:var(--gray-500)">"Phân tích Rủi ro"</strong> để kích hoạt luồng Pipeline dự báo AI biên.</p>
       </div>
 
-      <div class="card predict-result-card" id="predict-result" style="display:none; padding:40px; border:none; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15); border-radius:25px; position:relative; overflow:hidden">
-        <div style="position:absolute; top:0; left:0; width:100%; height:10px; background:linear-gradient(to right, #2563eb, #0ea5e9)"></div>
-        
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px">
-          <h3 style="margin:0; font-size:20px; color:#1e293b">⚡ Kết quả Phân tích Thông minh</h3>
-          <span id="model-badge" style="font-size:13px; font-weight:800; background:#f1f5f9; color:#1e40af; padding:6px 16px; border-radius:30px; border:1px solid #dbeafe"></span>
+      <!-- Loading Tracker (Hiệu ứng AI Đang Xử Lý) -->
+      <div id="predict-loading" style="display:none; text-align:center; padding:64px 24px; border:2px solid var(--blue-200); border-radius:16px; min-height:360px; background:linear-gradient(to bottom, #eff6ff, white); position:relative; overflow:hidden">
+        <style>
+          @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+          @keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(37,99,235,0.4); } 70% { box-shadow: 0 0 0 20px rgba(37,99,235,0); } 100% { box-shadow: 0 0 0 0 rgba(37,99,235,0); } }
+        </style>
+        <div style="margin:0 auto 24px auto; width:56px; height:56px; border:4px solid var(--blue-100); border-top-color:var(--blue-600); border-radius:50%; animation:spin 1s linear infinite, pulse-ring 2s infinite"></div>
+        <h3 id="loading-stage-title" style="font-size:16px;font-weight:800;color:var(--blue-800);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em">Khởi tạo Kiến trúc Nhận thức...</h3>
+        <p id="loading-stage-desc" style="color:var(--blue-600);font-size:13.5px;line-height:1.7;max-width:320px;margin:0 auto">Đang nạp tham số không gian Vector từ Pickle File.</p>
+        <div style="margin-top:24px; max-width:240px; width:100%; height:6px; background:var(--blue-200); border-radius:10px; margin-left:auto; margin-right:auto; overflow:hidden; box-shadow:inset 0 1px 2px rgba(0,0,0,0.1)">
+           <div id="loading-progress" style="height:100%; width:0%; background:var(--blue-600); transition: width 0.4s ease; border-radius:10px"></div>
+        </div>
+      </div>
+
+      <!-- Result Card -->
+      <div id="predict-result" style="display:none;padding:24px;background:var(--surface-2);border-radius:16px;box-shadow:0 10px 30px -10px rgba(0,0,0,0.1);border-top:4px solid var(--blue-600);border-left:1px solid var(--border);border-right:1px solid var(--border);border-bottom:1px solid var(--border)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+          <h3 style="margin:0;font-size:14px">⚡ Kết quả Phân tích Rủi ro</h3>
+          <div style="display:flex; gap:8px">
+            <span id="model-badge" style="font-size:11px;font-weight:600;background:var(--blue-50);color:var(--blue-700);padding:4px 10px;border-radius:20px;border:1px solid var(--blue-100)"></span>
+            <button onclick="window.print()" style="background:var(--gray-100); color:var(--gray-700); border:1px solid var(--gray-300); border-radius:6px; padding:4px 10px; font-size:11px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:4px; transition:all 0.2s">🖨️ Xuất Bản in</button>
+          </div>
         </div>
 
-        <!-- RISK GAUGE SECTION -->
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:30px; margin-bottom:40px; align-items:center">
-          <div style="position:relative; width:100%; max-width:240px; margin:0 auto">
-            <canvas id="chart-gauge" width="240" height="150"></canvas>
-            <div id="gauge-value" style="position:absolute; bottom:15%; left:50%; transform:translateX(-50%); font-size:32px; font-weight:900; color:#1e293b">0%</div>
+        <!-- Gauge -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:24px; align-items:center">
+          <div style="position:relative; width:100%; max-width:220px; margin:0 auto">
+            <canvas id="chart-gauge" width="220" height="140"></canvas>
+            <div id="gauge-value" style="position:absolute; bottom:12%; left:50%; transform:translateX(-50%); font-size:28px; font-weight:800; color:#0f172a">0%</div>
           </div>
-          <div style="text-align:left">
-            <div id="result-label" style="font-size:28px; font-weight:900; line-height:1.2; margin-bottom:12px; text-transform:uppercase">—</div>
-            <div style="color:#64748b; font-size:15px; font-weight:500">Mức độ rủi ro hệ thống xác định dựa trên hành vi giao dịch gần nhất.</div>
-          </div>
-        </div>
-
-        <!-- SIMULATION MODE (WHAT-IF) -->
-        <div id="simulation-section" style="display:none; background:#fdfaff; border: 2px solid #e9d5ff; border-radius:20px; padding:24px; margin-bottom:30px">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px">
-            <h4 style="color:#6b21a8; font-size:17px; font-weight:800; margin:0; display:flex; align-items:center; gap:8px">
-              🕹️ Chế độ Giả định "Sẽ ra sao nếu..."
-            </h4>
-            <span style="font-size:11px; background:#f3e8ff; color:#7e22ce; padding:4px 10px; border-radius:20px">Đang hoạt động</span>
-          </div>
-          
-          <div style="display:grid; grid-template-columns: 1fr; gap:16px">
-            <div>
-              <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:6px">
-                <span>Số dư tài khoản:</span>
-                <span id="sim-balance-val" style="font-weight:700">0</span>
-              </div>
-              <input type="range" id="sim-balance" style="width:100%; accent-color:#7e22ce">
-            </div>
+          <div>
+            <div id="result-label" style="font-size:20px; font-weight:800; line-height:1.3; margin-bottom:10px">—</div>
+            <div style="color:#64748b; font-size:13px; line-height:1.6; margin-bottom:12px">Mức độ rủi ro xác định từ hành vi giao dịch và hồ sơ tài chính.</div>
             
-            <div>
-              <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:6px">
-                <span>Điểm tương tác (Engagement):</span>
-                <span id="sim-engagement-val" style="font-weight:700">0</span>
+            <div style="background:var(--gray-50); padding:10px; border-radius:6px; border:1px solid var(--gray-200)">
+              <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:700; color:var(--gray-600); margin-bottom:6px; text-transform:uppercase">
+                <span>Confidence Probability Map</span>
+                <span id="prob-text" style="color:var(--gray-800)">0.00</span>
               </div>
-              <input type="range" id="sim-engagement" style="width:100%; accent-color:#7e22ce">
-            </div>
-
-            <div>
-              <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:6px">
-                <span>Thời gian gắn bó (Tenure):</span>
-                <span id="sim-tenure-val" style="font-weight:700">0</span>
+              <div style="height:6px; background:var(--gray-200); border-radius:10px; overflow:hidden">
+                <div id="prob-bar" style="height:100%; width:0%; background:linear-gradient(to right, var(--green-500), var(--red-500)); transition: width 0.5s ease"></div>
               </div>
-              <input type="range" id="sim-tenure" min="0" max="25" step="1" style="width:100%; accent-color:#7e22ce">
             </div>
           </div>
         </div>
 
-        <div style="display:grid; grid-template-columns: 1fr; gap:24px">
-          <div class="result-section" style="background:#fff7ed; padding:24px; border-radius:18px; border-left:6px solid #f97316">
-            <h4 style="color:#c2410c; font-size:18px; margin-bottom:12px; display:flex; align-items:center; gap:10px">⚠️ Nguyên nhân rủi ro hàng đầu</h4>
-            <ul id="result-reasons" style="margin:0; padding-left:25px; color:#9a3412; font-size:15px; line-height:1.7"></ul>
+        <!-- Simulation -->
+        <div id="simulation-section" style="display:none; background:var(--blue-50); border:1px solid var(--blue-100); border-radius:12px; padding:20px; margin-bottom:20px">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px">
+            <h4 style="color:var(--blue-900); margin:0; font-size:14px; font-weight:800">🕹️ Cơ chế Dò tìm Tối ưu (What-if Stress Test)</h4>
+            <span style="font-size:11px;font-weight:700;background:var(--blue-600);color:white;padding:3px 8px;border-radius:6px;text-transform:uppercase">What-if</span>
           </div>
-          <div class="result-section" style="background:#f0fdf4; padding:24px; border-radius:18px; border-left:6px solid #22c55e">
-            <h4 style="color:#15803d; font-size:18px; margin-bottom:12px; display:flex; align-items:center; gap:10px">💡 Chiến lược giữ chân đề xuất</h4>
-            <ul id="result-suggestions" style="margin:0; padding-left:25px; color:#166534; font-size:15px; line-height:1.7"></ul>
+          <div style="display:grid; gap:10px">
+            <div>
+              <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:3px; color:#64748b">
+                <span>Số dư tài khoản:</span><span id="sim-balance-val" style="font-weight:600">0</span>
+              </div>
+              <input type="range" id="sim-balance" min="0" max="100000000" style="width:100%; accent-color:#1d4ed8">
+            </div>
+            <div>
+              <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:3px; color:#64748b">
+                <span>Điểm tương tác:</span><span id="sim-engagement-val" style="font-weight:600">0</span>
+              </div>
+              <input type="range" id="sim-engagement" min="0" max="100" style="width:100%; accent-color:#0891b2">
+            </div>
+            <div>
+              <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:3px; color:#64748b">
+                <span>Thời gian gắn bó (năm):</span><span id="sim-tenure-val" style="font-weight:600">0</span>
+              </div>
+              <input type="range" id="sim-tenure" min="0" max="25" step="1" style="width:100%; accent-color:#16a34a">
+            </div>
           </div>
         </div>
 
-        <div style="margin-top:32px; font-size:14px; color:#cbd5e1; text-align:center; font-style:italic">
-          Phân tích thực hiện bởi Động cơ Trí tuệ Nhân tạo (AI Engine).
+        <!-- Cluster -->
+        <div id="result-cluster-box" style="display:none; background:var(--blue-50); padding:16px; border-radius:8px; border-left:3px solid var(--blue-500); margin-bottom:12px">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start">
+            <div>
+              <h4 style="color:var(--blue-800); font-size:11px; text-transform:uppercase; letter-spacing:.05em; font-weight:800; margin-bottom:4px">🎯 Phân cụm AI Tự động (K-Means)</h4>
+              <div id="result-cluster-name" style="font-weight:700; color:var(--blue-700); font-size:15px; margin-bottom:4px"></div>
+              <div style="font-size:12.5px; color:var(--blue-600)">Khách hàng được nhận diện thuộc cụm này dựa trên 4 biến trọng yếu: Số dư, Điểm tương tác, Mức độ rủi ro & Độ tuổi.</div>
+            </div>
+            <span class="badge-pro info">Khớp theo hồ sơ nhập</span>
+          </div>
         </div>
+
+        <!-- Reasons & Suggestions -->
+        <div style="display:grid; gap:16px">
+          <div style="background:var(--amber-50); padding:20px; border-radius:10px; border-left:4px solid var(--amber-500); border-top:1px solid var(--amber-100); border-right:1px solid var(--amber-100); border-bottom:1px solid var(--amber-100)">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
+              <h4 style="color:var(--amber-900); font-size:14px; font-weight:800; margin:0">⚠️ Truy vết Căn nguyên Cốt lõi (Root Cause Tracing)</h4>
+              <!-- FIX E1: Nhãn chính xác hơn: logic thực tế là rule-based ưu tiên theo SHAP importance -->
+              <span style="font-size:11px;font-weight:700;background:var(--amber-100);color:var(--amber-800);padding:3px 8px;border-radius:4px;border:1px solid var(--amber-200)">Model-ranked Risk Signals</span>
+            </div>
+            <ul id="result-reasons" style="margin:0; padding-left:18px; color:var(--amber-900); font-size:13.5px; line-height:1.75"></ul>
+          </div>
+          <div style="background:var(--green-50); padding:20px; border-radius:10px; border-left:4px solid var(--green-600); border-top:1px solid var(--green-100); border-right:1px solid var(--green-100); border-bottom:1px solid var(--green-100)">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
+              <h4 style="color:var(--green-900); font-size:14px; font-weight:800; margin:0">💡 Lệnh Điều phối Kinh doanh (Next-Best Action)</h4>
+              <span style="font-size:11px;font-weight:700;background:var(--green-600);color:white;padding:3px 8px;border-radius:4px">Rule-based Recommendation Engine</span>
+            </div>
+            <ul id="result-suggestions" style="margin:0; padding-left:18px; color:var(--green-800); font-size:13.5px; line-height:1.75; font-weight:500"></ul>
+          </div>
+        </div>
+
+
       </div>
     </div>
   </div>
 
-  <!-- INSTRUCTION -->
-  <div class="card" style="margin-top:40px; border:1px solid #f1f5f9; padding:24px">
-    <h3 style="font-size:18px; margin-bottom:15px">📖 Hướng dẫn sử dụng</h3>
-    <div id="predict-guide" style="font-size:15px; color:#64748b; line-height:1.7">Đang tải hướng dẫn...</div>
-  </div>
-
-  <!-- CONCLUSION -->
-  <div class="card" style="margin-top:48px; border-top: 8px solid #3b82f6; background: linear-gradient(to bottom, #f0f9ff, #ffffff); border-radius: 20px; padding: 40px; border-left: 1px solid #f1f5f9; border-right: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9;">
-    <h3 style="color: #1e40af; font-size:26px; margin-bottom:20px">📝 Kết luận Chiến lược (Quyết định Thời gian thực)</h3>
-    <div style="font-size:18px; line-height:1.9; color:#1e3a8a; font-weight:400">
-      Module dự đoán **Thời gian thực (Real-time)** này chính là nơi khoa học dữ liệu gặp gỡ kinh doanh thực tế. Kết quả phân tích không chỉ là một con số, mà là một **Lời gợi ý hành động** giúp bộ phận Telesales và CSKH biến một rủi ro mất mát doanh thu tiềm tàng thành cơ hội củng cố niềm tin khách hàng, tối ưu hóa **Tỷ lệ giữ chân khách hàng (Retention Rate)**.
+  <!-- SƠ ĐỒ THUẬT TOÁN (PIPELINE) MOVED HERE -->
+  <div style="margin-top:28px; padding:20px; background:white; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow-sm)">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px">
+      <div style="font-size:13px; font-weight:800; color:var(--gray-700); text-transform:uppercase; letter-spacing:0.05em">⚙️ Ghi chú phương pháp (Method Note)</div>
+      <div style="font-size:11px; color:var(--blue-600); font-weight:600; background:var(--blue-50); padding:4px 8px; border-radius:4px">White-box AI Architecture</div>
+    </div>
+    <div style="font-size:13px; color:var(--gray-500); margin-bottom:20px; line-height:1.6">
+      Quy trình chẩn đoán kết hợp <strong>mô hình phân loại</strong> (xác suất churn) và <strong>tập luật nghiệp vụ</strong> để gợi ý hành động phù hợp. Phần giải thích SHAP được báo cáo ở tab XAI (toàn cục); phần dự báo theo từng hồ sơ trên trang này tập trung vào tín hiệu rủi ro và gợi ý tác nghiệp hỗ trợ chuyên viên.
+    </div>
+    
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:6px; overflow-x:auto; padding-bottom:8px">
+      <!-- Node 1 -->
+      <div style="flex:1; min-width:100px; text-align:center; padding:14px 8px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px">
+        <div style="font-size:18px; margin-bottom:6px">1️⃣</div>
+        <div style="font-weight:800; font-size:11px; color:var(--gray-700)">Input Form</div>
+        <div style="font-size:10px; color:var(--gray-500); margin-top:4px">Vector hóa Dữ liệu</div>
+      </div>
+      
+      <div style="color:var(--gray-300); font-size:14px; font-weight:800">➔</div>
+      
+      <!-- Node 2 -->
+      <div style="flex:1; min-width:100px; text-align:center; padding:14px 8px; background:var(--purple-50); border:1px solid var(--purple-200); border-radius:8px">
+        <div style="font-size:18px; margin-bottom:6px">⚖️</div>
+        <div style="font-weight:800; font-size:11px; color:var(--purple-800)">Preprocessing</div>
+        <div style="font-size:10px; color:var(--purple-600); margin-top:4px">StandardScaler (Chuẩn hóa)</div>
+      </div>
+      
+      <div style="color:var(--gray-300); font-size:14px; font-weight:800">➔</div>
+      
+      <!-- Node 3 -->
+      <div style="flex:1.5; min-width:160px; text-align:center; padding:10px 8px; background:linear-gradient(to bottom right, var(--red-50), white); border:1px solid var(--red-200); border-radius:8px; box-shadow:0 4px 6px -1px rgba(239,68,68,0.1)">
+         <div style="font-weight:800; font-size:10.5px; color:var(--red-800); margin-bottom:8px; display:flex; justify-content:center; align-items:center; gap:4px">
+           <span>🧠</span> HYBRID ML ENGINE
+         </div>
+         <div style="display:flex; justify-content:center; gap:6px">
+           <span style="font-size:10px; font-weight:700; background:white; color:var(--red-700); padding:4px 8px; border-radius:4px; border:1px solid var(--red-200); box-shadow:0 1px 2px rgba(0,0,0,0.05)">Classifier (Xác suất)</span>
+           <span style="font-size:10px; font-weight:700; background:white; color:var(--blue-700); padding:4px 8px; border-radius:4px; border:1px solid var(--blue-200); box-shadow:0 1px 2px rgba(0,0,0,0.05)">K-Means (Phân cụm)</span>
+         </div>
+      </div>
+      
+      <div style="color:var(--gray-300); font-size:14px; font-weight:800">➔</div>
+      
+      <!-- Node 4 -->
+      <div style="flex:1; min-width:110px; text-align:center; padding:14px 8px; background:var(--amber-50); border:1px solid var(--amber-200); border-radius:8px">
+        <div style="font-size:18px; margin-bottom:6px">🔍</div>
+        <div style="font-weight:800; font-size:11px; color:var(--amber-800)">XAI (SHAP)</div>
+        <div style="font-size:10px; color:var(--amber-700); margin-top:4px">Truy vết Căn nguyên</div>
+      </div>
+      
+      <div style="color:var(--gray-300); font-size:14px; font-weight:800">➔</div>
+      
+      <!-- Node 5 -->
+      <div style="flex:1; min-width:110px; text-align:center; padding:14px 8px; background:var(--green-50); border:1px solid var(--green-200); border-radius:8px">
+        <div style="font-size:18px; margin-bottom:6px">🎯</div>
+        <div style="font-weight:800; font-size:11px; color:var(--green-800)">Rule-based AI</div>
+        <div style="font-size:10px; color:var(--green-700); margin-top:4px">Lệnh điều phối MKT</div>
+      </div>
     </div>
   </div>
+
+  <!-- Guide -->
+  <div class="card" style="margin-top:28px; padding:20px">
+    <h3 style="font-size:14px; margin-bottom:10px">📖 Hướng dẫn Sử dụng</h3>
+    <div id="predict-guide" style="font-size:13.5px; color:#64748b; line-height:1.75">Đang tải hướng dẫn...</div>
+  </div>
+
+  <div class="conclusion-pro" style="margin-top:24px">
+    <h3>📝 Kết luận Chiến lược</h3>
+    <p>
+      Module dự đoán là nơi khoa học dữ liệu gặp gỡ kinh doanh thực tế. Kết quả không chỉ là con số — mà là <strong>gợi ý hành động</strong> hỗ trợ Telesales và RM ưu tiên chăm sóc đúng nhóm khách hàng.
+    </p>
+  </div>
+
 </section>

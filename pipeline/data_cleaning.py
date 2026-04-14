@@ -51,13 +51,15 @@ def handle_missing(df):
         n_missing = df[col].isnull().sum()
         if n_missing > 0:
             median_val = df[col].median()
-            df[col].fillna(median_val, inplace=True)
+            # FIX P2: Thay inplace=True (deprecated) bằng assignment
+            df[col] = df[col].fillna(median_val)
             report[col] = {"strategy": "median", "filled": int(n_missing), "value": round(float(median_val), 2)}
     for col in cat_cols:
         n_missing = df[col].isnull().sum()
         if n_missing > 0:
             mode_val = df[col].mode()[0]
-            df[col].fillna(mode_val, inplace=True)
+            # FIX P2: Thay inplace=True (deprecated) bằng assignment
+            df[col] = df[col].fillna(mode_val)
             report[col] = {"strategy": "mode", "filled": int(n_missing), "value": str(mode_val)}
     return df, report
 
@@ -98,19 +100,27 @@ def handle_outliers(df):
     outlier_cols = ['balance', 'monthly_ir', 'credit_sco', 'age',
                     'engagement_score', 'risk_score']
     report = {}
+    winsorize_thresholds = {}
     for col in outlier_cols:
         if col not in df.columns:
             continue
-        q01 = df[col].quantile(0.01)
-        q99 = df[col].quantile(0.99)
+        q01 = float(df[col].quantile(0.01))
+        q99 = float(df[col].quantile(0.99))
         n_outliers = int(((df[col] < q01) | (df[col] > q99)).sum())
         df[col] = df[col].clip(lower=q01, upper=q99)
         report[col] = {
-            "q01": round(float(q01), 2),
-            "q99": round(float(q99), 2),
+            "q01": round(q01, 2),
+            "q99": round(q99, 2),
             "n_capped": n_outliers,
             "pct_capped": round(n_outliers / len(df) * 100, 2)
         }
+        winsorize_thresholds[col] = {"lower": q01, "upper": q99}
+        
+    import os
+    import joblib
+    os.makedirs("outputs", exist_ok=True)
+    joblib.dump(winsorize_thresholds, "outputs/winsorize_thresholds.pkl")
+    
     return df, report
 
 def check_imbalance(df):
@@ -129,10 +139,14 @@ def check_imbalance(df):
     - Optimal threshold: hạ ngưỡng quyết định xuống dưới 0.5
     """
     counts = df['exit'].value_counts()
-    ratio  = round(counts[0] / counts[1], 2)
+    # FIX P3: Dùng .get() explicit thay vì counts[0]/counts[1] — tránh KeyError
+    # khi value_counts() trả về thứ tự khác hoặc thiếu class
+    no_churn = int(counts.get(0, 0))
+    churn    = int(counts.get(1, 0))
+    ratio    = round(no_churn / churn, 2) if churn > 0 else 0
     return {
-        "no_churn":  int(counts[0]),
-        "churn":     int(counts[1]),
+        "no_churn":  no_churn,
+        "churn":     churn,
         "ratio":     ratio,
         "imbalanced": ratio > 3,
         "severity":  "cao" if ratio > 5 else "trung bình" if ratio > 3 else "thấp"
@@ -150,8 +164,11 @@ def clean_pipeline(df):
     df, n_dup = remove_duplicates(df)
     cleaning_report["duplicates_removed"] = n_dup
 
-    df, outlier_report = handle_outliers(df)
-    cleaning_report["outliers"] = outlier_report
+    # Chuyển Winsorization sang Feature Engineering Pipeline để tránh Data Leakage
+    # (Chỉ thực hiện ở đây nếu muốn quan sát EDA, nhưng mô hình sẽ dùng Pipeline riêng)
+    # df, outlier_report = handle_outliers(df)
+    # cleaning_report["outliers"] = outlier_report
+    cleaning_report["outliers"] = "Moved to FE Pipeline to prevent Data Leakage"
 
     imbalance = check_imbalance(df)
     cleaning_report["imbalance"] = imbalance
@@ -168,31 +185,38 @@ def print_cleaning_report(report):
     print("[CLEAN] BÁO CÁO LÀM SẠCH DỮ LIỆU")
     print("=" * 60)
 
-    print(f"\n[OK] Kiểu dữ liệu: {report['dtype_fix']}")
-    print(f"[OK] Duplicates đã xóa: {report['duplicates_removed']}")
+    print(f"\n[OK] Kiểu dữ liệu: {report.get('dtype_fix', '—')}")
+    print(f"[OK] Duplicates đã xóa: {report.get('duplicates_removed', 0)}")
 
     print("\n[NOTE] MISSING VALUES ĐÃ XỬ LÝ:")
-    if report["missing"]:
-        for col, info in report["missing"].items():
+    missing = report.get("missing") or {}
+    if missing:
+        for col, info in missing.items():
             print(f"  {col}: {info['filled']} giá trị -> dùng {info['strategy']}")
     else:
         print("  Không có missing values")
 
-    print("\n[NOTE] OUTLIERS ĐÃ XỬ LÝ (Winsorize 1%-99%):")
-    for col, info in report["outliers"].items():
-        print(f"  {col}: {info['n_capped']} giá trị capped [{info['q01']} - {info['q99']}]")
+    print("\n[NOTE] OUTLIERS:")
+    outliers = report.get("outliers")
+    if isinstance(outliers, dict) and outliers:
+        for col, info in outliers.items():
+            print(f"  {col}: {info['n_capped']} giá trị capped [{info['q01']} - {info['q99']}]")
+    else:
+        print(f"  {outliers}")
 
     print("\n[SCALE]️  KIỂM TRA MẤT CÂN BẰNG:")
-    imb = report["imbalance"]
-    print(f"  Không churn : {imb['no_churn']:,}")
-    print(f"  Churn       : {imb['churn']:,}")
-    print(f"  Tỉ lệ       : {imb['ratio']}:1")
-    if imb["imbalanced"]:
+    imb = report.get("imbalance") or {}
+    if imb:
+        print(f"  Không churn : {imb.get('no_churn', 0):,}")
+        print(f"  Churn       : {imb.get('churn', 0):,}")
+        print(f"  Tỉ lệ       : {imb.get('ratio', '—')}:1")
+    if imb.get("imbalanced"):
         print("  [!]️  Dữ liệu MẤT CÂN BẰNG -> sẽ xử lý bằng SMOTE ở bước tiếp theo")
     else:
         print("  [OK] Dữ liệu tương đối cân bằng")
 
-    print(f"\n[OK] Shape sau làm sạch: {report['final_shape']['rows']:,} × {report['final_shape']['cols']}")
+    final_shape = report.get("final_shape") or {}
+    print(f"\n[OK] Shape sau làm sạch: {final_shape.get('rows', 0):,} × {final_shape.get('cols', 0)}")
 
 if __name__ == "__main__":
     os.makedirs("outputs", exist_ok=True)
@@ -203,7 +227,19 @@ if __name__ == "__main__":
 
     df_clean.to_csv("data/processed/cleaned_data.csv", index=False)
 
+    class NpEncoder(json.JSONEncoder):
+        def default(self, obj):
+            if isinstance(obj, np.integer):
+                return int(obj)
+            if isinstance(obj, np.floating):
+                return float(obj)
+            if isinstance(obj, np.ndarray):
+                return obj.tolist()
+            if isinstance(obj, np.bool_):
+                return bool(obj)
+            return super(NpEncoder, self).default(obj)
+
     with open("outputs/cleaning_report.json", "w", encoding="utf-8") as f:
-        json.dump(report, f, ensure_ascii=False, indent=2)
+        json.dump(report, f, ensure_ascii=False, indent=2, cls=NpEncoder)
 
     print("\n[OK] Đã lưu cleaned_data.csv & cleaning_report.json")

@@ -1,29 +1,54 @@
 [
   {
     "cluster": 0,
-    "balance_mean": 174522183,
-    "engagement_mean": 31.8,
-    "churn_rate": 0.05,
-    "age_mean": 50.3,
-    "count": 12862,
-    "cluster_name": "Khách hàng VIP - Tài sản lớn"
+    "balance_mean": 284084207.75634295,
+    "engagement_mean": 33.0352872557597,
+    "churn_rate": 0.0013123359580052493,
+    "age_mean": 53.91571886847478,
+    "risk_mean": 0.17019877515310586,
+    "count": 6858,
+    "balance_rank": 1.0,
+    "risk_rank": 4.0,
+    "engagement_rank": 2.0,
+    "cluster_name": "Khách hàng VIP - Trụ cột Tài sản"
   },
   {
     "cluster": 1,
-    "balance_mean": 36647452,
-    "engagement_mean": 18.03,
-    "churn_rate": 26.32,
-    "age_mean": 49.2,
-    "count": 50437,
-    "cluster_name": "Khách hàng rủi ro cao - Cần kích hoạt ngay"
+    "balance_mean": 44735053.774877116,
+    "engagement_mean": 69.18350628072092,
+    "churn_rate": 0.05406881485527035,
+    "age_mean": 47.93539049699618,
+    "risk_mean": 0.17396900054614967,
+    "count": 18310,
+    "balance_rank": 3.0,
+    "risk_rank": 3.0,
+    "engagement_rank": 1.0,
+    "cluster_name": "Khách hàng Tích cực - Tiềm năng Cross-sell"
   },
   {
     "cluster": 2,
-    "balance_mean": 39753895,
-    "engagement_mean": 72.86,
-    "churn_rate": 6.69,
-    "age_mean": 49.2,
-    "count": 16701,
-    "cluster_name": "Khách hàng thân thiết - Đặc biệt"
+    "balance_mean": 33936772.612750456,
+    "engagement_mean": 18.646237915090374,
+    "churn_rate": 0.264873196020737,
+    "age_mean": 40.06120218579235,
+    "risk_mean": 0.31747932744850776,
+    "count": 35685,
+    "balance_rank": 4.0,
+    "risk_rank": 1.0,
+    "engagement_rank": 4.0,
+    "cluster_name": "Nhóm Rủi ro Cao - Cần Cứu vãn Khẩn"
+  },
+  {
+    "cluster": 3,
+    "balance_mean": 47854680.611427374,
+    "engagement_mean": 19.811719851673892,
+    "churn_rate": 0.20624640935916855,
+    "age_mean": 66.51245625946623,
+    "risk_mean": 0.3059987465399279,
+    "count": 19147,
+    "balance_rank": 2.0,
+    "risk_rank": 2.0,
+    "engagement_rank": 3.0,
+    "cluster_name": "Nhóm Cao tuổi - Rủi ro Tiềm ẩn"
   }
 ]

@@ -1,152 +1,212 @@
+<!-- TAB: Phân cụm K-Means -->
 <section id="tab-clusters" class="tab-content">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px">
-    <h2 style="margin-bottom:0">🧩 Phân đoạn Khách hàng (Clustering)</h2>
-    <span style="background:#fdf2f8; color:#be185d; padding:8px 20px; border-radius:30px; font-size:15px; font-weight:700; border:1px solid #fbcfe8">K-Means AI Segmentation</span>
-  </div>
-  <p style="color:#64748b; font-size:17px; margin-bottom:32px; line-height:1.7; max-width:800px">
-    Sử dụng thuật toán K-Means để tự động phân nhóm khách hàng dựa trên sự tương đồng về hành vi tài chính và cá nhân. Nhằm tối ưu hóa chiến lược giữ chân theo từng nhóm đối tượng cụ thể.
-  </p>
-   
-  <div class="card-row" style="margin-bottom:32px; gap:24px">
-    <div class="card chart-card">
-      <h3 style="font-size:16px; margin-bottom:12px">📐 Phương pháp Khuỷu tay (Elbow Method)</h3>
-      <p style="font-size:14px; color:#64748b; margin-bottom:15px">Xác định số lượng cụm (K) tối ưu nhất cho mô hình AI.</p>
-      <canvas id="chart-elbow"></canvas>
-      <div id="insight-elbow" class="insight-box" style="margin-top:20px; font-size:13.5px"></div>
+
+  <div class="tab-header">
+    <div class="tab-header-left">
+      <h2>Phân cụm Khách hàng (K-Means Clustering)</h2>
+      <p class="tab-header-desc">
+        Machine Learning tự động phân đoạn toàn bộ KH thành các nhóm hành vi tương đồng — cơ sở khoa học cho từng chiến lược giữ chân cá nhân hóa.
+      </p>
     </div>
+    <span class="badge-pro info">K-Means · k=4 Phân khúc (Segments)</span>
+  </div>
+
+  <!-- Rationale -->
+  <div class="card" style="margin-bottom:20px;background:var(--blue-50);border-color:var(--blue-100);display:flex;gap:14px;align-items:flex-start">
+    <div style="font-size:24px;flex-shrink:0;margin-top:2px">💡</div>
+    <div>
+      <h3 style="color:var(--blue-700);margin-bottom:6px;font-size:14px">Tại sao không dùng chung 1 chiến lược cho tất cả khách hàng?</h3>
+      <p style="color:var(--blue-700);font-size:13px;margin:0;line-height:1.7">
+        Thay vì áp dụng chiến dịch tặng quà đại trà, AI tính khoảng cách Euclidean và tự gộp KH thành <strong>Chân dung Đặc thù (Persona)</strong> riêng biệt. Nhóm rủi ro nhất → tập trung ngân sách cứu vãn. Nhóm an toàn → Bán chéo (Cross-sell) thêm sản phẩm.
+      </p>
+    </div>
+  </div>
+
+  <!-- Priority Warning -->
+  <div class="card" style="margin-bottom:20px;background:var(--red-50);border-color:var(--red-100);border-left:3px solid var(--red-500)">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+      <span style="font-size:16px">🚨</span>
+      <h3 style="margin:0;color:var(--red-700);font-size:14px">Cảnh báo Khẩn cấp — Nhóm Ưu tiên Can thiệp</h3>
+    </div>
+    <div id="cluster-priority" style="font-size:13px;color:var(--red-700);font-weight:500;line-height:1.65">Đang phân tích rủi ro...</div>
+  </div>
+
+  <!-- Cluster Cards -->
+  <div class="section-heading">
+    <div class="section-icon indigo">🎯</div>
+    <div>
+      <h3>Chân dung Khách hàng &amp; Chiến dịch Khuyến nghị</h3>
+      <p>Từng cụm có chiến lược chăm sóc và ưu đãi riêng, được cá nhân hóa từ dữ liệu thực</p>
+    </div>
+  </div>
+
+  <div id="cluster-cards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;margin-bottom:24px"></div>
+
+  <!-- Removed Textual Matrix in favor of visual UI -->
+
+  <!-- ══ ROI + Action — side by side ══ -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
+    <!-- ROI -->
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+        <span style="color:var(--green-600);font-size:14px">📈</span>
+        <h3 style="margin:0;font-size:14px">Tỉ suất Hoàn vốn Chiến dịch (ROI)</h3>
+      </div>
+      <div id="cluster-roi">Đang phân tích lợi ích...</div>
+      <div style="margin-top:10px;font-size:12px;color:var(--gray-500);line-height:1.6">
+        ROI hiển thị là minh hoạ theo giả định (LTV/chi phí giữ chân/tỉ lệ thành công). Khi báo cáo, cần thay bằng dữ liệu thực tế hoặc nêu rõ giả định.
+      </div>
+    </div>
+
+    <!-- Action Plan -->
+    <div class="card" style="background:var(--blue-50);border-color:var(--blue-100)">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+        <span style="color:var(--blue-700);font-size:14px">⚡</span>
+        <h3 style="margin:0;font-size:14px;color:var(--blue-700)">Lộ trình Hành động — Theo Mức Khẩn cấp</h3>
+      </div>
+      <div id="cluster-action-plan">Đang lập kế hoạch...</div>
+    </div>
+  </div>
+
+  <!-- ══ Comparison Table + Donut ══ -->
+  <div class="section-heading">
+    <div class="section-icon cyan">📊</div>
+    <div>
+      <h3>So sánh Đặc tính giữa các Phân cụm</h3>
+      <p>Ma trận giá trị trung bình và phân bố thị phần theo từng phân khúc</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px; position: relative;">
+    <h4 style="margin-bottom:14px;font-size:11px;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.07em;font-weight:700;text-align:center;">Biểu Đồ Đa Giác (Radar Chart) So Sánh Trụ Cột</h4>
+    <div style="display:flex; justify-content:center; align-items:center; height:320px; width:100%">
+      <canvas id="cluster-radar-chart"></canvas>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:16px;align-items:stretch;margin-bottom:24px">
+    <!-- Insight text -->
+    <div class="card" style="background:var(--surface-2);border-color:var(--border); display:flex; flex-direction:column;">
+      <h4 style="font-size:12px;color:var(--gray-500);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;flex-shrink:0">Nhận định Phân bố</h4>
+      <div id="insight-cluster-dist" style="font-size:13px;color:var(--gray-600);line-height:1.75;flex-grow:1;display:flex;flex-direction:column;justify-content:center;"></div>
+    </div>
+    <!-- Donut -->
     <div class="card chart-card">
-      <h3 style="font-size:16px; margin-bottom:12px">📊 Quy mô các Phân đoạn</h3>
-      <p style="font-size:14px; color:#64748b; margin-bottom:15px">Tỷ trọng số lượng khách hàng trong từng nhóm cụm.</p>
+      <h4 style="margin-bottom:10px;font-size:11px;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.07em;font-weight:700">Thị phần Từng Nhóm</h4>
       <canvas id="chart-cluster-dist"></canvas>
-      <div id="insight-cluster-dist" class="insight-box" style="margin-top:20px; font-size:13.5px"></div>
     </div>
   </div>
 
-  <div class="card" style="margin-bottom:32px; border: 1px solid #f1f5f9; box-shadow: 0 20px 40px rgba(0,0,0,0.06);">
-    <h3 style="margin-bottom:24px; color:#1e293b; display:flex; align-items:center; gap:12px">
-       📋 So sánh Đặc trưng giữa các Cụm
-    </h3>
-    <div id="cluster-comparison" class="table-wrap">Đang phân tích các lớp khách hàng...</div>
-  </div>
-
-  <!-- HIGHLIGHT PRIORITY -->
-  <div class="card" style="margin-bottom:32px; background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border: 1px solid #fecaca; box-shadow: 0 10px 20px rgba(239,68,68,0.05);">
-    <h3 style="color:#b91c1c; font-size:20px; display:flex; align-items:center; gap:12px; margin-bottom:15px">🚨 Nhóm cần quan tâm đặc biệt (Priority)</h3>
-    <div id="cluster-priority" style="font-size:16px; color:#991b1b; font-weight:500">Đang khoanh vùng rủi ro...</div>
-  </div>
-
-  <!-- CLUSTER CARDS -->
-  <div style="margin:48px 0 24px; border-bottom: 2px solid #e2e8f0; padding-bottom:10px; display:flex; align-items:center; gap:12px">
-    <span style="background:#be185d; color:white; width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px">🎯</span>
-    <h3 style="margin-bottom:0; font-size:22px; color:#1e293b">Chiến lược Giữ chân (Retention Strategy)</h3>
-  </div>
-  <div id="cluster-cards" class="cluster-grid" style="gap:24px; margin-bottom:48px"></div>
-
-  <!-- DETAILED ANALYSIS -->
-  <div class="card" style="margin-bottom:32px; border: 1px solid #e2e8f0; padding:32px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.08);">
-    <h3 style="font-size:20px; color:#1e293b; display:flex; justify-content:space-between; align-items:center">
-       <span>👥 Khám phá Chi tiết Phân đoạn</span>
-       <div class="cluster-filter" style="display:flex; align-items:center; gap:12px">
-         <span style="font-size:15px; font-weight:600; color:#64748b">Cụm:</span>
-         <select id="cluster-select" style="padding:8px 16px; border-radius:10px; border:1px solid #e2e8f0; font-size:15px; cursor:pointer; background:white; font-weight:700; color:#1e40af; border:2px solid #3b82f6"></select>
-       </div>
-    </h3>
-    
-    <div id="cluster-detail-analysis"></div>
-    
-    <div style="margin-top:40px; border-top: 1px solid #f1f5f9; padding-top:40px">
-      <h4 style="margin-bottom:24px; font-size:18px; color:#1e293b">📊 Đồ thị phân bố nội hàm Phân đoạn</h4>
-      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:32px">
-        <div id="cluster-age-dist">
-          <strong style="display:block; margin-bottom:12px; font-size:15px; color:#475569">🎂 Phân bố Tuổi:</strong>
-          <canvas id="cluster-age-chart" height="140"></canvas>
-        </div>
-        <div id="cluster-engagement-dist">
-          <strong style="display:block; margin-bottom:12px; font-size:15px; color:#475569">📈 Mức tương tác:</strong>
-          <canvas id="cluster-engagement-chart" height="140"></canvas>
-        </div>
-        <div id="cluster-balance-dist">
-          <strong style="display:block; margin-bottom:12px; font-size:15px; color:#475569">💰 Phân bố Số dư:</strong>
-          <canvas id="cluster-balance-chart" height="140"></canvas>
-        </div>
-      </div>
-    </div>
-
-    <!-- CUST TABLE -->
-    <div class="card-pro" style="margin-top:40px; border-top:4px solid #1e40af">
-    <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:24px; flex-wrap:wrap; gap:20px">
+  <!-- ══ Drill-down ══ -->
+  <div class="card" style="margin-bottom:24px">
+    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:14px;margin-bottom:18px;flex-wrap:wrap;gap:12px">
       <div>
-        <h3 style="margin-bottom:8px; font-size:22px">📋 Danh sách Khách hàng trong Cụm</h3>
-        <p style="color:#64748b; font-size:15px; margin-bottom:0">Chi tiết nhân khẩu học và rủi ro churn dựa trên dữ liệu lịch sử.</p>
+        <h3 style="margin-bottom:3px;font-size:14px">🔍 Phân tích Thông số Chuyên sâu (Drill-down)</h3>
+        <p style="font-size:12px;margin:0;color:var(--gray-400)">Chọn cụm để xem phân bố chi tiết và danh sách khách hàng</p>
       </div>
-      
-      <div style="display:flex; gap:12px; background:#f1f5f9; padding:8px; border-radius:14px">
-        <div style="display:flex; flex-direction:column; gap:4px">
-          <label style="font-size:10px; font-weight:800; color:#475569; text-transform:uppercase; margin-left:8px">Phân khúc</label>
-          <select id="filter-segment" style="padding:8px 12px; border-radius:10px; border:1px solid #cbd5e1; font-size:14px; background:white; outline:none; min-width:140px">
-            <option value="all">Tất cả</option>
-            <option value="Mass">Mass</option>
-            <option value="Affluent">Affluent</option>
-            <option value="Priority">Priority</option>
-          </select>
-        </div>
-        <div style="display:flex; flex-direction:column; gap:4px">
-          <label style="font-size:10px; font-weight:800; color:#475569; text-transform:uppercase; margin-left:8px">Trạng thái</label>
-          <select id="filter-active" style="padding:8px 12px; border-radius:10px; border:1px solid #cbd5e1; font-size:14px; background:white; outline:none; min-width:140px">
-            <option value="all">Tất cả</option>
-            <option value="1">Active</option>
-            <option value="0">Inactive</option>
-          </select>
-        </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <label style="font-size:11px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.07em">Cụm:</label>
+        <select id="cluster-select" class="filter-select"></select>
       </div>
     </div>
 
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>STT</th>
-            <th>Tên KH</th>
-            <th style="text-align:center">Tuổi</th>
-            <th style="text-align:center">Giới tính</th>
-            <th style="text-align:center">Phân khúc</th>
-            <th style="text-align:center">Loyalty</th>
-            <th style="text-align:right">Số dư</th>
-            <th style="text-align:center">Engagement</th>
-            <th style="text-align:center">Active</th>
-            <th style="text-align:center">Kênh số</th>
-            <th style="text-align:center">Nguy cơ</th>
-          </tr>
-        </thead>
-        <tbody id="cluster-customer-body">
-          <tr><td colspan="11" style="text-align:center;padding:40px;color:#94a3b8">Đang tải danh sách khách hàng...</td></tr>
-        </tbody>
-      </table>
+    <div id="cluster-detail-analysis"></div>
+
+    <div style="margin-top:20px">
+      <h4 style="margin-bottom:12px;font-size:11px;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.08em;font-weight:700">Phân bố Hình thái học</h4>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+        <div class="card" style="padding:14px">
+          <strong style="display:flex;align-items:center;gap:6px;margin-bottom:10px;font-size:12.5px;color:var(--gray-700)">🎂 Độ tuổi</strong>
+          <canvas id="cluster-age-chart" height="130"></canvas>
+        </div>
+        <div class="card" style="padding:14px">
+          <strong style="display:flex;align-items:center;gap:6px;margin-bottom:10px;font-size:12.5px;color:var(--gray-700)">📈 Điểm tương tác</strong>
+          <canvas id="cluster-engagement-chart" height="130"></canvas>
+        </div>
+        <div class="card" style="padding:14px">
+          <strong style="display:flex;align-items:center;gap:6px;margin-bottom:10px;font-size:12.5px;color:var(--gray-700)">💰 Số dư biến động</strong>
+          <canvas id="cluster-balance-chart" height="130"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer Table -->
+    <div style="margin-top:24px;padding-top:20px;border-top:1px dashed var(--border)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:14px;flex-wrap:wrap;gap:12px">
+        <div>
+          <h3 style="margin-bottom:3px;font-size:13px">📋 Trích xuất Dữ liệu Kịch bản (Export for Telesales)</h3>
+          <p style="color:var(--gray-400);font-size:12px;margin:0">Danh sách Khách hàng thuộc cụm đang chọn — 50 bản ghi tiêu biểu</p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap; align-items:flex-end">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <label style="font-size:9px;font-weight:800;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.08em">Phân khúc</label>
+            <select id="filter-segment" class="filter-select">
+              <option value="all">Tất cả</option>
+              <option value="Mass">Đại chúng (Mass)</option>
+              <option value="Affluent">Gia sản (Affluent)</option>
+              <option value="Priority">Ưu tiên (VIP)</option>
+              <option value="Emerging">Tiềm năng (Emerging)</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <label style="font-size:9px;font-weight:800;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.08em">Trạng thái App</label>
+            <select id="filter-active" class="filter-select">
+              <option value="all">Tất cả</option>
+              <option value="1">Đang Active</option>
+              <option value="0">Ngủ đông</option>
+            </select>
+          </div>
+          <button id="btn-export-csv" style="background:var(--blue-600); color:white; border:none; padding:8px 16px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:6px; height:36px; box-shadow:0 4px 6px -1px rgba(37,99,235,0.2)">
+            📥 Tải File CSV
+          </button>
+        </div>
+      </div>
+
+      <div class="table-wrap" style="max-height:400px;overflow-y:auto">
+        <table style="min-width:920px">
+          <thead>
+            <tr>
+              <th style="width:40px">STT</th>
+              <th>Tên KH</th>
+              <th style="text-align:center">Tuổi</th>
+              <th style="text-align:center">Giới tính</th>
+              <th>Phân khúc</th>
+              <th style="text-align:center">Loyalty</th>
+              <th style="text-align:right">Số dư</th>
+              <th style="text-align:center">Tương tác</th>
+              <th style="text-align:center">App</th>
+              <th style="text-align:center">Kênh Số</th>
+              <th style="text-align:center">Rủi ro</th>
+            </tr>
+          </thead>
+          <tbody id="cluster-customer-body">
+            <tr><td colspan="11" style="text-align:center;padding:40px;color:var(--gray-400)">Đang tải dữ liệu...</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 
-  <!-- ADDITIONAL INSIGHT GROUPS -->
-  <div class="card-row" style="margin-bottom:40px; gap:24px">
-    <div class="card">
-      <h3 style="font-size:18px; margin-bottom:15px">💡 Đặc tính Hành vi Phân đoạn</h3>
-      <div id="cluster-behavior" style="font-size:15px; line-height:1.7; color:#475569">Đang xây dựng báo cáo hành vi...</div>
+  <!-- ══ Elbow Method ══ -->
+  <div style="border-top:1px solid var(--border);padding-top:20px">
+    <h4 style="font-size:11px;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:16px;text-align:center;font-weight:700">📐 Phụ lục Kỹ thuật: Cơ sở Toán học của việc chọn K</h4>
+
+    <!-- FIX G1: Note lý do chọn k=4 — Silhouette peak tại k=3 nhưng domain reason chọn k=4 -->
+    <div style="background:var(--amber-50);border-left:4px solid var(--amber-500);padding:14px 18px;border-radius:8px;border:1px solid var(--amber-100);margin-bottom:16px;font-size:13px;color:var(--amber-900);max-width:720px;margin-left:auto;margin-right:auto">
+      <strong>📌 Lý do chọn k=4 thay vì k=3</strong> (Silhouette tốt nhất tại k=3 = 0.409):<br>
+      Mặc dù Silhouette Score đạt đỉnh tại k=3, nghiên cứu chọn k=4 dựa trên <strong>lý luận nghiệp vụ (domain knowledge)</strong>:
+      4 nhóm giúp phân biệt rõ ràng: <em>VIP · Tích cực · Rủi ro Cao · Cao tuổi</em> — tương ứng với 4 chiến lược giữ chân trong thực tế ngân hàng bán lẻ.
+      Đây là ví dụ điển hình của <strong>Domain-driven K selection</strong>: toán học cung cấp gợi ý, nhưng nghiệp vụ quyết định.
     </div>
-    <div class="card">
-      <h3 style="font-size:18px; margin-bottom:15px">📈 ROI & Tình hình Chiến lược</h3>
-      <div id="cluster-roi" style="font-size:15px; line-height:1.7; color:#475569">Đang tính toán tỷ suất giữ chân...</div>
+
+    <div style="max-width:720px;margin:0 auto">
+      <div class="card chart-card" style="border-style:dashed">
+        <h4 style="font-size:13px;margin-bottom:4px">Đường cong Khuỷu tay (Elbow Method)</h4>
+        <p style="font-size:12px;color:var(--gray-400);margin-bottom:14px">Hệ thống đo Inertia để tìm điểm uốn, giúp chọn K lý tưởng không dựa vào cảm tính.</p>
+        <canvas id="chart-elbow" height="150"></canvas>
+        <div id="insight-elbow" class="insight-box" style="margin-top:12px;font-size:12.5px"></div>
+      </div>
     </div>
   </div>
 
-  <div class="card" style="margin-bottom:40px; border: 1px solid #e2e8f0; background: #fffaf0;">
-    <h3 style="font-size:18px; color:#b45309; margin-bottom:15px; display:flex; align-items:center; gap:8px">🎯 Đề xuất Hành động Nhanh</h3>
-    <div id="cluster-action-plan" style="font-size:15px; line-height:1.7; color:#92400e">Đang gợi ý hành động cụ thể...</div>
-  </div>
-
-  <!-- CONCLUSION -->
-  <div class="card" style="margin-top:48px; border-top: 6px solid #ec4899; background: linear-gradient(to bottom, #fdf2f8, #ffffff); border-radius: 20px; padding: 40px; border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;">
-    <h3 style="color: #be185d; font-size:24px; margin-bottom:16px">📝 Kết luận Chiến lược Phân Cụm</h3>
-    <div style="font-size:17px; line-height:1.8; color:#831843; font-weight:400">
-      Phân cụm giải quyết dứt điểm câu chuyện: "Làm sao giữ chân khách hàng hiệu quả nhất?". Thuật toán K-Means đã bóc tách chính xác các lớp khách hàng: Từ nhóm <strong>Rủi ro cao</strong> cần gói kịch hoạt nhanh, đến nhóm <strong>VIP</strong> đòi hỏi sự chăm sóc mang tính cá nhân hóa. Đây chính là tiền đề để ngân hàng hiện thực hóa mô hình kinh doanh nhắm mục tiêu (Target Marketing), bảo toàn nguồn lực tối đa.
-    </div>
-  </div>
 </section>

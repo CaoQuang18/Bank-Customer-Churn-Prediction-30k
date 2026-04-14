@@ -1,7 +1,15 @@
+import sys
 import pandas as pd
 import numpy as np
 import json
 import os
+
+# FIX: Windows cp1252 không hỗ trợ tiếng Việt → force UTF-8 stdout
+try:
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+except AttributeError:
+    pass
+
 from pipeline.data_cleaning import load_data, clean_pipeline
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -41,7 +49,8 @@ def eda_age(df):
     labels = ['18-30', '31-40', '41-50', '51-60', '61-70', '70+']
     df['age_group'] = pd.cut(df['age'], bins=bins, labels=labels)
 
-    age_churn = df.groupby('age_group', observed=True)['exit'].agg(['mean', 'count']).reset_index()
+    # LƯU Ý: observed=False để đảm bảo không bị mất cột khi một nhóm có 0 khách hàng
+    age_churn = df.groupby('age_group', observed=False)['exit'].agg(['mean', 'count']).fillna(0).reset_index()
     age_churn['churn_rate'] = (age_churn['mean'] * 100).round(2)
 
     result = {
@@ -70,7 +79,7 @@ def eda_gender(df):
     tài chính và mức độ trung thành với ngân hàng.
     """
     gender_map = {0: 'Nữ', 1: 'Nam'} if df['gender'].dtype != object else {}
-    g = df.groupby('gender')['exit'].agg(['mean', 'count']).reset_index()
+    g = df.groupby('gender')['exit'].agg(['mean', 'count']).fillna(0).reset_index()
     g['churn_rate'] = (g['mean'] * 100).round(2)
 
     labels = g['gender'].astype(str).tolist()
@@ -99,7 +108,7 @@ def eda_segment(df):
     Nguyên nhân: Phân khúc khách hàng phản ánh giá trị và mức độ
     quan trọng của từng nhóm với ngân hàng.
     """
-    seg = df.groupby('customer_segment')['exit'].agg(['mean', 'count']).reset_index()
+    seg = df.groupby('customer_segment')['exit'].agg(['mean', 'count']).fillna(0).reset_index()
     seg['churn_rate'] = (seg['mean'] * 100).round(2)
 
     max_idx  = seg['churn_rate'].idxmax()
@@ -124,7 +133,7 @@ def eda_loyalty(df):
     Nguyên nhân: Loyalty level phản ánh mức độ gắn bó lịch sử
     của khách hàng với ngân hàng.
     """
-    loy = df.groupby('loyalty_level')['exit'].agg(['mean', 'count']).reset_index()
+    loy = df.groupby('loyalty_level')['exit'].agg(['mean', 'count']).fillna(0).reset_index()
     loy['churn_rate'] = (loy['mean'] * 100).round(2)
 
     max_idx  = loy['churn_rate'].idxmax()
@@ -149,7 +158,7 @@ def eda_digital(df):
     Nguyên nhân: Hành vi digital phản ánh mức độ tương tác và
     sự tiện lợi mà khách hàng cảm nhận từ ngân hàng.
     """
-    dig = df.groupby('digital_behavior')['exit'].agg(['mean', 'count']).reset_index()
+    dig = df.groupby('digital_behavior')['exit'].agg(['mean', 'count']).fillna(0).reset_index()
     dig['churn_rate'] = (dig['mean'] * 100).round(2)
 
     max_idx  = dig['churn_rate'].idxmax()
@@ -174,7 +183,7 @@ def eda_active_member(df):
     Nguyên nhân: Thành viên không hoạt động là dấu hiệu sớm nhất
     của việc sắp rời bỏ ngân hàng.
     """
-    act = df.groupby('active_member')['exit'].agg(['mean', 'count']).reset_index()
+    act = df.groupby('active_member')['exit'].agg(['mean', 'count']).fillna(0).reset_index()
     act['churn_rate'] = (act['mean'] * 100).round(2)
 
     inactive_rate = act.loc[act['active_member'] == 0, 'churn_rate'].values
@@ -234,7 +243,8 @@ def eda_credit_score(df):
     labels = ['<500', '500-600', '600-650', '650-700', '700-750', '750+']
     df['credit_group'] = pd.cut(df['credit_sco'], bins=bins, labels=labels)
 
-    cr = df.groupby('credit_group', observed=True)['exit'].agg(['mean', 'count']).reset_index()
+    # LƯU Ý: observed=False để đảm bảo mảng data luôn khớp mảng labels
+    cr = df.groupby('credit_group', observed=False)['exit'].agg(['mean', 'count']).fillna(0).reset_index()
     cr['churn_rate'] = (cr['mean'] * 100).round(2)
 
     max_idx  = cr['churn_rate'].idxmax()
@@ -259,7 +269,7 @@ def eda_occupation(df):
     Nguyên nhân: Nghề nghiệp quyết định thu nhập, sự ổn định tài chính
     và nhu cầu sản phẩm ngân hàng.
     """
-    occ = df.groupby('occupation')['exit'].agg(['mean', 'count']).reset_index()
+    occ = df.groupby('occupation')['exit'].agg(['mean', 'count']).fillna(0).reset_index()
     occ['churn_rate'] = (occ['mean'] * 100).round(2)
     occ = occ.sort_values('churn_rate', ascending=False)
 
@@ -284,7 +294,7 @@ def eda_province(df):
     Nguyên nhân: Địa lý ảnh hưởng đến khả năng tiếp cận dịch vụ
     và mức độ cạnh tranh từ các ngân hàng khác.
     """
-    prov = df.groupby('origin_province')['exit'].agg(['mean', 'count']).reset_index()
+    prov = df.groupby('origin_province')['exit'].agg(['mean', 'count']).fillna(0).reset_index()
     prov['churn_rate'] = (prov['mean'] * 100).round(2)
     prov = prov.sort_values('churn_rate', ascending=False).head(10)
 
@@ -362,7 +372,7 @@ if __name__ == "__main__":
                      'digital_behavior', 'active_member', 'occupation', 'origin_province']:
         if feature not in df.columns:
             continue
-        g = df.groupby(feature)['exit'].agg(['mean', 'count']).reset_index()
+        g = df.groupby(feature)['exit'].agg(['mean', 'count']).fillna(0).reset_index()
         g.columns = ['group_value', 'churn_rate', 'count']
         g['feature']    = feature
         g['churn_rate'] = (g['churn_rate'] * 100).round(2)
@@ -370,6 +380,6 @@ if __name__ == "__main__":
 
     pd.concat(powerbi_rows).to_csv("powerbi/churn_by_feature.csv", index=False)
 
-    print("[OK] EDA hoàn tất -> outputs/eda.json")
+    print("[OK] EDA completed -> outputs/eda.json")
     print("[OK] PowerBI data -> powerbi/churn_by_feature.csv")
-    print(f"\n[PLOT] Tổng quan: {eda_data['overview']['total']:,} KH | Churn rate: {eda_data['overview']['churn_rate']}%")
+    print(f"\n[SUMMARY] Total: {eda_data['overview']['total']:,} customers | Churn rate: {eda_data['overview']['churn_rate']}%")

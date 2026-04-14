@@ -1,44 +1,36 @@
 {
   "table": [
     {
-      "model": "Random Forest",
-      "accuracy": 0.7768,
-      "precision": 0.4275,
-      "recall": 0.7069,
-      "f1": 0.5328,
-      "roc_auc": 0.8423,
-      "threshold": 0.5265
+      "model": "Logistic Regression",
+      "accuracy": 0.7854,
+      "precision": 0.441,
+      "recall": 0.7188,
+      "f1": 0.5466,
+      "roc_auc": 0.8555,
+      "threshold": 0.6093
     },
     {
       "model": "XGBoost",
-      "accuracy": 0.7649,
-      "precision": 0.4133,
-      "recall": 0.7295,
-      "f1": 0.5277,
-      "roc_auc": 0.8397,
-      "threshold": 0.3604
+      "accuracy": 0.7734,
+      "precision": 0.4249,
+      "recall": 0.7326,
+      "f1": 0.5379,
+      "roc_auc": 0.8515,
+      "threshold": 0.5064
     },
     {
-      "model": "Logistic Regression",
-      "accuracy": 0.7864,
-      "precision": 0.4366,
-      "recall": 0.6434,
-      "f1": 0.5202,
-      "roc_auc": 0.8332,
-      "threshold": 0.5866
+      "model": "Random Forest",
+      "accuracy": 0.7572,
+      "precision": 0.4097,
+      "recall": 0.791,
+      "f1": 0.5398,
+      "roc_auc": 0.8493,
+      "threshold": 0.5353
     }
   ],
   "insights": {
-    "best_overall": "Random Forest",
-    "so_lieu": "Random Forest đạt AUC=0.8423, Recall=0.7069 (optimal threshold)",
-    "nguyen_nhan": "Các mô hình khác nhau về cah học pattern tu dữ liệu",
-    "ly_do_tsao": {
-      "Logistic Regression": "Mô hình tuyến tính, giả định quan hệ tuyến tính giua features va log-odds churn. Dễ giải thích nhung bỏ sót pattern phi tuyến.",
-      "Random Forest": "Ensemble nhiều cây quyết định, nắm bắt tốt tương tác phi tuyến. Ổn định, ít overfit nhờ bagging.",
-      "XGBoost": "Gradient boosting tối uu hoa tuần tự, học tu lỗi cua iteration truoc. Thường cho ket qua tốt nhat tren tabular data."
-    },
-    "tai_sao_nhu_vay": "Random Forest vượt trội vì dữ liệu churn co nhiều pattern phi tuyến va tương tác phức tạp giua ca features",
-    "huong_xu_ly": "Triển khai Random Forest lam mô hình chính, dùng LR lam baseline giải thích cho stakeholders",
-    "giai_phap": "Kết hợp Random Forest cho dự đoán tự động + LR cho báo cáo giải thích duoc"
+    "best_overall": "Logistic Regression",
+    "so_lieu": "Logistic Regression đạt AUC=0.8555 (kiểm chứng trên Test set độc lập)",
+    "tai_sao_nhu_vay": "Logistic Regression vượt trội nhờ regularization hiệu quả và dataset có tương quan tuyến tính rõ ràng (risk_score r=0.433, monthly_ir r=-0.301), phù hợp với bản chất phân loại linear của Logistic Regression."
   }
 }

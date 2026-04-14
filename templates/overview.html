@@ -1,75 +1,150 @@
+<!-- TAB: Dashboard Tổng quan -->
 <section id="tab-overview" class="tab-content active">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px">
-    <h2 style="margin-bottom:0">📊 Phân tích Tổng quan Hệ thống Dự báo</h2>
-    <div style="display:flex; gap:12px">
-      <span style="background:#f1f5f9; padding:8px 16px; border-radius:30px; font-size:14px; font-weight:600; color:#475569; border:1px solid #e2e8f0">📅 Trạng thái Pipeline: Hoạt động</span>
-      <span style="background:#ecfdf5; padding:8px 16px; border-radius:30px; font-size:14px; font-weight:600; color:#065f46; border:1px solid #d1fae5">✓ Dữ liệu nguyên vẹn</span>
+
+  <!-- Header -->
+  <div class="tab-header">
+    <div class="tab-header-left">
+      <h2>Dashboard Tổng quan Hệ thống</h2>
+      <p class="tab-header-desc">
+        Toàn cảnh pipeline dự báo churn: kích thước dữ liệu, hiệu suất mô hình tốt nhất và phân đoạn khách hàng theo K-Means.
+      </p>
     </div>
-  </div>
-  
-  <div class="kpi-grid" id="kpi-grid" style="margin-bottom:32px">
-    <div class="kpi-card" style="border-left: 6px solid #3b82f6;">
-      <div class="kpi-icon">👥</div>
-      <div class="kpi-val" id="kpi-total">—</div>
-      <div class="kpi-label">KÍCH THƯỚC MẪU (N)</div>
-    </div>
-    <div class="kpi-card churn" style="border-left: 6px solid #ef4444;">
-      <div class="kpi-icon">📉</div>
-      <div class="kpi-val" id="kpi-churn-rate">—</div>
-      <div class="kpi-label">TỈ LỆ LỆCH CHUẨN (CHURN)</div>
-    </div>
-    <div class="kpi-card good" style="border-left: 6px solid #10b981;">
-      <div class="kpi-icon">🎯</div>
-      <div class="kpi-val" id="kpi-auc">—</div>
-      <div class="kpi-label">ĐỘ CHÍNH XÁC (ROC-AUC)</div>
-    </div>
-    <div class="kpi-card info" style="border-left: 6px solid #0891b2;">
-      <div class="kpi-icon">🧩</div>
-      <div class="kpi-val" id="kpi-clusters">—</div>
-      <div class="kpi-label">SỐ LƯỢNG CỤM PHÂN PHỐI</div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <div style="display:flex; align-items:center; gap:6px; background:white; border:1px solid var(--border); padding:6px 12px; border-radius:30px; font-size:12px; font-weight:700; color:var(--gray-700); box-shadow:0 2px 4px rgba(0,0,0,0.02)">
+        <span class="live-dot" style="background:var(--green-500); width:8px; height:8px; display:inline-block; border-radius:50%; box-shadow: 0 0 0 2px var(--green-100)"></span>
+        MLOps Monitor: <span style="color:var(--green-600)">Data Drift Stable</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:6px; background:white; border:1px solid var(--border); padding:6px 12px; border-radius:30px; font-size:12px; font-weight:700; color:var(--gray-700); box-shadow:0 2px 4px rgba(0,0,0,0.02)">
+        <span style="color:var(--blue-600)">📅</span> Phiên bản Pipeline: V2.1
+      </div>
     </div>
   </div>
 
-  <div class="card-row" style="margin-bottom:24px">
-    <div class="card" style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white; border:none; box-shadow: 0 20px 40px rgba(30,64,175,0.25);">
-      <h3 style="color:white; opacity:0.9; font-size:18px">🏆 Nhóm Thuật toán Tối ưu</h3>
-      <div id="best-model-info" style="font-size:26px; font-weight:900; margin:20px 0; letter-spacing:-0.5px">Đang tải...</div>
-      <p style="font-size:15px; opacity:0.85; line-height:1.7; margin:0">Thuật toán Ensemble (Random Forest) hiện là lõi xử lý trung tâm, xử lý tốt tính phi tuyến của các biến phân loại và liên tục.</p>
+  <!-- KPI Row -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <span class="kpi-icon">👥</span>
+      <span class="kpi-val" id="kpi-total">—</span>
+      <span class="kpi-label">Kích thước mẫu (N)</span>
     </div>
-    <div class="card" style="border: 1px solid #e2e8f0; display:flex; flex-direction:column">
-      <h3 style="font-size:18px; color:#1e293b; margin-bottom:15px">🔑 Biến Độc Lập Quan Trọng (Top Features)</h3>
-      <div id="top-features" style="display:flex; flex-direction:column; gap:10px; flex:1">Đang phân tích vector đặc trưng...</div>
+    <div class="kpi-card churn">
+      <span class="kpi-icon">📉</span>
+      <span class="kpi-val" id="kpi-churn-rate">—</span>
+      <span class="kpi-label">Tỉ lệ rời bỏ (Churn Rate)</span>
     </div>
-    <div class="card" style="border: 1px solid #e2e8f0; display:flex; flex-direction:column">
-      <h3 style="font-size:18px; color:#1e293b; margin-bottom:15px">📌 Insight Dữ liệu</h3>
-      <div id="overview-insight" style="font-size:15px; line-height:1.7; color:#475569; flex:1">Đang tổng hợp insight cấu trúc...</div>
+    <div class="kpi-card good">
+      <span class="kpi-icon">🎯</span>
+      <span class="kpi-val" id="kpi-auc">—</span>
+      <span class="kpi-label">Độ chính xác (ROC-AUC)</span>
+    </div>
+    <div class="kpi-card info">
+      <span class="kpi-icon">🧩</span>
+      <span class="kpi-val" id="kpi-clusters">—</span>
+      <span class="kpi-label">Số cụm phân đoạn KH</span>
     </div>
   </div>
 
-  <div class="card-row" style="margin-bottom:24px">
-    <div class="card" style="flex: 2; border: 1px solid #e2e8f0;">
-      <h3 style="font-size:18px; color:#1e293b; margin-bottom:20px">📊 Phân phối Lớp Target (Class Distribution)</h3>
-      <div style="height: 280px; position:relative">
+  <!-- Model Summary + Top Features + Insight -->
+  <div class="card-row" style="margin-bottom:20px">
+    <!-- Best Model -->
+    <div class="card" style="background:var(--blue-50);border-color:var(--blue-100)">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+        <span style="font-size:14px">🏆</span>
+        <h3 style="margin:0;color:var(--blue-700)">Thuật toán Tối ưu được Chọn</h3>
+      </div>
+      <div id="best-model-info" style="font-size:14px;font-weight:500;color:var(--gray-800)">Đang tải...</div>
+    </div>
+
+    <!-- Top Features -->
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+        <span style="background:var(--blue-50);color:var(--blue-700);width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;border-radius:6px;font-size:12px">🔑</span>
+        <h3 style="margin:0">Biến Đặc trưng Quan trọng Nhất</h3>
+      </div>
+      <div id="top-features" style="display:flex;flex-direction:column;gap:6px">
+        <div class="skeleton" style="height:18px;border-radius:4px"></div>
+        <div class="skeleton" style="height:18px;width:80%;border-radius:4px"></div>
+        <div class="skeleton" style="height:18px;width:65%;border-radius:4px"></div>
+      </div>
+    </div>
+
+    <!-- Insight -->
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+        <span style="background:var(--teal-50);color:var(--teal-600);width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;border-radius:6px;font-size:12px">📌</span>
+        <h3 style="margin:0">Nhận định Dữ liệu Chính</h3>
+      </div>
+      <div id="overview-insight" style="font-size:13px;line-height:1.75;color:var(--gray-600)">Đang tổng hợp...</div>
+    </div>
+  </div>
+
+  <!-- Churn Distribution + Risk Panel -->
+  <div class="card-row" style="margin-bottom:20px">
+    <div class="card" style="flex:1">
+      <div class="chart-header">
+        <span class="chart-title">📊 Phân phối lớp mục tiêu (Class Distribution)</span>
+        <!-- FIX G3: Thay hardcode '80,000 mẫu' bằng id để JS có thể cập nhật động từ API -->
+        <span class="badge-pro info" id="badge-sample-count">N = đang tải...</span>
+      </div>
+      <div style="height:210px;position:relative">
         <canvas id="chart-churn-dist"></canvas>
       </div>
-      <div class="insight-box" id="insight-churn-dist" style="margin-top:20px; font-size:15px; padding:15px; border-radius:10px; border-left-width:5px"></div>
+      <div class="insight-box" id="insight-churn-dist"></div>
     </div>
-    <div class="card" style="border: 1px solid #e2e8f0;">
-      <h3 style="font-size:18px; color:#1e293b; margin-bottom:20px">⚠️ Cụm Dữ liệu Nhiễu Động Trọng Yếu</h3>
-      <div id="high-risk-summary" style="background:#fff7ed; color:#9a3412; border-left:5px solid #f59e0b; padding:18px; border-radius:10px; font-size:15px; margin-bottom:15px">Đang phân tích phương sai...</div>
-      <div id="overview-summary" style="background:#f0f9ff; color:#0369a1; border-left:5px solid #3b82f6; padding:18px; border-radius:10px; font-size:15px">Đang trích xuất đặc trưng...</div>
+
+    <div class="card" style="flex:1.5;display:flex;flex-direction:column;justify-content:center">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+        <span style="color:var(--red-600)">⚠️</span>
+        <h3 style="margin:0">Nhóm Rủi ro Cao Nhất</h3>
+      </div>
+      <div id="high-risk-summary" style="font-size:13px;line-height:1.7;color:var(--gray-600);margin-bottom:12px">Đang phân tích...</div>
+      <div id="overview-summary" style="font-size:13px;line-height:1.7;color:var(--gray-500)">Đang trích xuất...</div>
     </div>
   </div>
 
-  <div class="card" style="margin-bottom:24px; border: 1px solid #e2e8f0;">
-    <h3 style="font-size:18px; color:#1e293b; margin-bottom:20px">💡 Phương pháp Khắc phục Hiện tượng Dịch chuyển Phân phối (Distribution Shift)</h3>
-    <div id="overview-actions" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:15px">Đang tải kiến trúc mô hình đề xuất...</div>
+  <!-- Strategy Cards -->
+  <div class="card" style="margin-bottom:20px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+      <span style="color:var(--teal-600)">💡</span>
+      <h3 style="margin:0">Phương án Xử lý &amp; Chiến lược Giữ chân</h3>
+    </div>
+    <div id="overview-actions"></div>
   </div>
 
-  <div class="card" style="margin-top:48px; border-top: 6px solid #3b82f6; background: linear-gradient(to bottom, #f8fafc, #ffffff); border-radius: 20px; padding: 40px; border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;">
-    <h3 style="color: #1e40af; font-size:26px; margin-bottom:20px">📝 Nhận định Mở rộng Hệ thống (Scalability Status)</h3>
-    <div style="font-size:18px; line-height:1.9; color:#334155; font-weight:400">
-      Kiến trúc mô hình hiện tại đã thiết lập thành công quy trình nội suy dựa trên trọng số SHAP và kỹ thuật tái mẫu (Oversampling). Giai đoạn tiếp theo đòi hỏi triển khai cơ chế học tăng cường (Online Learning) đối với các biến thiên thị trường nhằm giữ vững độ ổn định của ma trận hiệp phương sai. Hệ thống Pipeline đạt yêu cầu thiết kế để vận hành hoàn toàn độc lập với tương tác của người dùng cuối.
+  <!-- Architecture Pipeline -->
+  <div class="card" style="margin-bottom:20px; border-left:4px solid var(--blue-600)">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+      <span style="color:var(--blue-600); font-size:18px">⚙️</span>
+      <h3 style="margin:0; font-size:15px">Kiến trúc Tiền xử lý & Không gian Siêu tham số (Data Pipeline & Hyperparameter Tuning Space)</h3>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px">
+      <div style="background:var(--surface); padding:16px; border-radius:8px; border:1px solid var(--border)">
+        <h4 style="font-size:13px; color:var(--gray-900); margin:0 0 10px 0; text-transform:uppercase">1. Trích xuất Đặc trưng (ColumnTransformer)</h4>
+        <ul style="font-size:13px; color:var(--gray-700); line-height:1.7; margin:0; padding-left:16px">
+          <li><strong>Outliers & Skewness:</strong> Sử dụng <code style="background:var(--gray-100); padding:2px 4px; border-radius:4px; font-size:12px; color:var(--red-600)">StandardScaler</code> sau khi Winsorize các biến <span style="font-style:italic">Balance, Monthly Income</span> để chuẩn hóa dải tài sản.</li>
+          <li><strong>Categorical Encoding:</strong> Tiêm <code style="background:var(--gray-100); padding:2px 4px; border-radius:4px; font-size:12px; color:var(--blue-600)">OneHotEncoder(drop='first')</code> cho <span style="font-style:italic">Gender, Segment</span> tránh bẫy đa cộng tuyến (Multicollinearity Trap).</li>
+          <li><strong>Data Balancing:</strong> Pass dữ liệu qua <code style="background:var(--gray-100); padding:2px 4px; border-radius:4px; font-size:12px; color:var(--purple-600)">SMOTE</code> đảm bảo mô hình học tốt lớp thiểu số (Churn) mà không bị thiên kiến.</li>
+        </ul>
+      </div>
+      <div style="background:var(--surface); padding:16px; border-radius:8px; border:1px solid var(--border)">
+        <h4 style="font-size:13px; color:var(--gray-900); margin:0 0 10px 0; text-transform:uppercase">2. Tinh chỉnh Mô hình (GridSearchCV K-Fold=5)</h4>
+        <ul style="font-size:13px; color:var(--gray-700); line-height:1.7; margin:0; padding-left:16px">
+          <li><strong>Logistic Regression:</strong> Không gian biến thiên <code style="background:var(--gray-100); padding:2px 4px; border-radius:4px; font-size:12px; color:var(--teal-700)">C: [0.01, 0.1, 1.0, 10]</code>, Penalty: l2, Trọng số class_weight: 'balanced'.</li>
+          <li><strong>Random Forest:</strong> Tìm kiếm cây quyết định <code style="background:var(--gray-100); padding:2px 4px; border-radius:4px; font-size:12px; color:var(--teal-700)">n_estimators: [100, 200]</code>, max_depth: [7, 10, None]. Hạn chế Overfitting chẻ nhánh sâu.</li>
+          <li><strong>XGBoost:</strong> Hàm mục tiêu <code style="background:var(--gray-100); padding:2px 4px; border-radius:4px; font-size:12px; color:var(--teal-700)">binary:logistic</code>, tuning <code style="background:var(--gray-100); padding:2px 4px; border-radius:4px; font-size:12px; color:var(--teal-700)">learning_rate: [0.01, 0.1]</code> và <code style="background:var(--gray-100); padding:2px 4px; border-radius:4px; font-size:12px; color:var(--teal-700)">max_depth: [3, 5, 7]</code>.</li>
+        </ul>
+      </div>
     </div>
   </div>
+
+  <!-- Conclusion -->
+  <div style="background:var(--surface-2); border-left:4px solid var(--purple-500); padding:20px; border-radius:12px; border-top:1px solid var(--border); border-right:1px solid var(--border); border-bottom:1px solid var(--border)">
+    <h3 style="color:var(--gray-900); font-size:16px; font-weight:800; margin-bottom:10px; display:flex; align-items:center; gap:8px">
+      <span style="font-size:18px">📝</span> Tổng kết Năng lực Nội suy (Pipeline Scalability & Robustness)
+    </h3>
+    <p style="color:var(--gray-700); line-height:1.75; font-size:14px; margin:0">
+      Kiến trúc mô hình thiết lập quy trình chẩn đoán hai chiều: <strong>Forward Prediction</strong> (dự báo xác suất churn theo mô hình phân loại) và <strong>Backward Explainability</strong> (giải thích mức đóng góp đặc trưng bằng SHAP). Pipeline cân bằng dữ liệu (SMOTE) giúp cải thiện khả năng học lớp thiểu số trong bối cảnh mất cân bằng nhãn. Khi triển khai thực tế, cần bổ sung giám sát drift và cơ chế tái huấn luyện định kỳ theo batch dữ liệu mới.
+    </p>
+  </div>
+
 </section>

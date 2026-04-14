@@ -16,6 +16,7 @@ Tại sao cần SHAP:
 - SHAP là phương pháp được chấp nhận rộng rãi trong XAI (Explainable AI)
 """
 
+import sys
 import pandas as pd
 import numpy as np
 import json
@@ -23,6 +24,13 @@ import os
 import joblib
 import shap
 import matplotlib
+
+# FIX: Windows cp1252 không hỗ trợ tiếng Việt → force UTF-8 stdout
+try:
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+except AttributeError:
+    pass
+
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -47,21 +55,37 @@ FEATURE_LABELS = {
 
 
 def load_model_and_data():
-    """Load trained model và test data"""
-    model_rf = joblib.load("outputs/model_rf.pkl")
-    model_xgb = joblib.load("outputs/model_xgb.pkl")
+    """Load trained pipeline và test data, bóc tách model bên trong"""
+    pipe_rf  = joblib.load("outputs/model_rf.pkl")
+    pipe_xgb = joblib.load("outputs/model_xgb.pkl")
+    pipe_lr  = joblib.load("outputs/model_lr.pkl")
 
-    if os.path.exists("outputs/X_test.pkl"):
-        X_test = joblib.load("outputs/X_test.pkl")
-        y_test = joblib.load("outputs/y_test.pkl")
+    # Bóc tách Estimator thực sự khỏi Imblearn Pipeline
+    model_rf  = pipe_rf.named_steps['rf'] if hasattr(pipe_rf, "named_steps") and 'rf' in pipe_rf.named_steps else pipe_rf
+    model_xgb = pipe_xgb.named_steps['xgb'] if hasattr(pipe_xgb, "named_steps") and 'xgb' in pipe_xgb.named_steps else pipe_xgb
+    model_lr  = pipe_lr.named_steps['lr'] if hasattr(pipe_lr, "named_steps") and 'lr' in pipe_lr.named_steps else pipe_lr
+
+    from pipeline.feature_engineering import run_feature_engineering
+    fe = run_feature_engineering()
+    X_test_raw = fe["X_test"]
+    y_test = fe["y_test"]
+
+    if hasattr(pipe_rf, "named_steps") and pipe_rf.named_steps.get("preprocess") is not None:
+        X_t = X_test_raw
+        winsor = pipe_rf.named_steps.get("winsor")
+        preprocess = pipe_rf.named_steps.get("preprocess")
+        if winsor is not None:
+            X_t = winsor.transform(X_t)
+        arr = preprocess.transform(X_t)
+        try:
+            cols = preprocess.get_feature_names_out().tolist()
+        except Exception:
+            cols = [f"f{i}" for i in range(arr.shape[1])]
+        X_test = pd.DataFrame(arr, columns=cols, index=X_test_raw.index)
     else:
-        from pipeline.feature_engineering import run_feature_engineering
+        X_test = X_test_raw
 
-        fe = run_feature_engineering()
-        X_test = fe["X_test"]
-        y_test = fe["y_test"]
-
-    return model_rf, model_xgb, X_test, y_test
+    return model_rf, model_xgb, model_lr, X_test, y_test
 
 
 def analyze_shap_rf(model_rf, X_test):
@@ -122,6 +146,44 @@ def analyze_shap_rf(model_rf, X_test):
             {"feature": f, "shap_importance": round(v, 4)} for f, v in top_features
         ],
         "description": "SHAP importance = mean(|SHAP value|). Cho biết feature đóng góp bao nhiêu vào prediction.",
+    }
+
+
+def analyze_shap_lr(model_lr, X_test):
+    """
+    Phân tích SHAP cho Logistic Regression (Linear Model)
+    Dùng LinearExplainer để giải thích các hệ số.
+    """
+    print("\n" + "=" * 60)
+    print("SHAP Analysis for Logistic Regression")
+    print("=" * 60)
+
+    # LinearExplainer cho Logistic Regression
+    explainer = shap.LinearExplainer(model_lr, X_test)
+
+    sample_size = min(1000, len(X_test))
+    X_sample = X_test.sample(n=sample_size, random_state=42)
+
+    print(f"Calculating SHAP values for {sample_size} samples...")
+    shap_values = explainer.shap_values(X_sample)
+
+    feature_importance = {}
+    for i, col in enumerate(X_sample.columns):
+        feature_importance[col] = float(np.abs(shap_values[:, i]).mean())
+
+    sorted_importance = dict(
+        sorted(feature_importance.items(), key=lambda x: x[1], reverse=True)
+    )
+    top_features = list(sorted_importance.items())[:10]
+
+    return {
+        "model": "Logistic Regression",
+        "sample_size": sample_size,
+        "feature_importance": sorted_importance,
+        "top_10": [
+            {"feature": f, "shap_importance": round(v, 4)} for f, v in top_features
+        ],
+        "description": "Dùng LinearExplainer để giải thích các trọng số tuyến tính thông qua SHAP.",
     }
 
 
@@ -383,7 +445,9 @@ def compare_feature_importance(X_test=None):
     print("Feature Importance Comparison")
     print("=" * 60)
 
-    model_rf = joblib.load("outputs/model_rf.pkl")
+    pipe_rf = joblib.load("outputs/model_rf.pkl")
+    model_rf = pipe_rf.named_steps["rf"] if hasattr(pipe_rf, "named_steps") and "rf" in pipe_rf.named_steps else pipe_rf
+    
     if X_test is None:
         if os.path.exists("outputs/X_test.pkl"):
             X_test = joblib.load("outputs/X_test.pkl")
@@ -392,6 +456,23 @@ def compare_feature_importance(X_test=None):
 
             fe = run_feature_engineering()
             X_test = fe["X_test"]
+
+    if hasattr(pipe_rf, "named_steps") and pipe_rf.named_steps.get("preprocess") is not None and isinstance(X_test, pd.DataFrame):
+        winsor = pipe_rf.named_steps.get("winsor")
+        preprocess = pipe_rf.named_steps.get("preprocess")
+        raw_cols = getattr(preprocess, "feature_names_in_", None)
+        raw_col_set = set(raw_cols.tolist()) if hasattr(raw_cols, "tolist") else (set(raw_cols) if raw_cols is not None else set())
+
+        if raw_col_set and raw_col_set.issubset(set(X_test.columns)):
+            X_t = X_test
+            if winsor is not None:
+                X_t = winsor.transform(X_t)
+            arr = preprocess.transform(X_t)
+            try:
+                cols = preprocess.get_feature_names_out().tolist()
+            except Exception:
+                cols = [f"f{i}" for i in range(arr.shape[1])]
+            X_test = pd.DataFrame(arr, columns=cols, index=X_test.index)
 
     # 1. Built-in importance
     built_in = dict(zip(X_test.columns, model_rf.feature_importances_))
@@ -414,7 +495,9 @@ def compare_feature_importance(X_test=None):
 
     # Normalize both to 0-1 scale for comparison
     def normalize(d):
-        max_val = max(d.values())
+        max_val = max(d.values()) if d else 0
+        if max_val == 0:
+            return {k: 0 for k in d}
         return {k: v / max_val for k, v in d.items()}
 
     built_in_norm = normalize(built_in)
@@ -461,40 +544,45 @@ def main():
     print("=" * 60)
 
     # Load model and data
-    print("\n[DATA] Loading model and data...")
-    model_rf, model_xgb, X_test, y_test = load_model_and_data()
+    print("\n[DATA] Loading models and data...")
+    model_rf, model_xgb, model_lr, X_test, y_test = load_model_and_data()
 
     # SHAP Analysis for RF
-    print("\n[SEARCH] Analyzing SHAP for Random Forest...")
+    print("\n[ML] Analyzing SHAP for Random Forest...")
     shap_rf = analyze_shap_rf(model_rf, X_test)
 
     # SHAP Analysis for XGBoost
-    print("\n[SEARCH] Analyzing SHAP for XGBoost...")
+    print("\n[ML] Analyzing SHAP for XGBoost...")
     shap_xgb = analyze_shap_xgb(model_xgb, X_test)
 
-    # Local Explanation
-    print("\n[SEARCH] Generating Local Explanations...")
+    # SHAP Analysis for Logistic Regression
+    print("\n[ML] Analyzing SHAP for Logistic Regression...")
+    shap_lr = analyze_shap_lr(model_lr, X_test)
+
+    # Local Explanation (dùng RF làm mẫu cho local)
+    print("\n[ML] Generating Local Explanations...")
     local_explanations = analyze_local_explanation(model_rf, X_test, y_test)
 
     # Create visualizations
-    print("\n[ART] Creating SHAP Visualizations...")
+    print("\n[VIZ] Creating SHAP Visualizations...")
     visualizations = create_shap_visualizations(model_rf, model_xgb, X_test)
 
     # Compare feature importance methods
-    print("\n[PLOT] Comparing Feature Importance Methods...")
+    print("\n[VIZ] Comparing Feature Importance Methods...")
     importance_comparison = compare_feature_importance(X_test)
 
     # Compile results
     output = {
         "random_forest": shap_rf,
         "xgboost": shap_xgb,
+        "logistic_regression": shap_lr,
         "local_explanations": local_explanations,
         "importance_comparison": importance_comparison,
         "visualizations": visualizations,
         "summary": {
             "key_findings": [
-                "SHAP values cho thấy risk_score là feature quan trọng nhất trong cả RF và XGB",
-                "monthly_ir và engagement_score cũng có ảnh hưởng lớn đến dự đoán",
+                "SHAP values cho thấy các đặc trưng rủi ro hàng đầu khác biệt giữa các mô hình",
+                "risk_score và engagement_score là các nhân tố ổn định nhất",
                 "Local explanation cho phép giải thích từng khách hàng cụ thể",
             ],
             "recommendations": [

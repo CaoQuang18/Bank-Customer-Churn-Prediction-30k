@@ -1,120 +1,44 @@
 {
   "imbalance_analysis": {
-    "total": 78720,
-    "majority_class": 39360,
-    "minority_class": 39360,
-    "majority_pct": 50.0,
-    "minority_pct": 50.0,
-    "imbalance_ratio": 1.0,
-    "severity": "Mild"
+    "total": 64000,
+    "churn": 11520,
+    "non_churn": 52480,
+    "minority_pct": 18.0,
+    "majority_pct": 82.0,
+    "imbalance_ratio": 4.6,
+    "severity": "Nghiêm trọng (Nguy cơ Model bị Mù)"
   },
   "methods_comparison": {
     "Baseline": {
-      "method": "Baseline (No处理)",
-      "accuracy": 0.7666875,
-      "precision": 0.4160928585481015,
-      "recall": 0.734375,
-      "f1": 0.5312068315961321,
-      "roc_auc": 0.8426131912686314,
-      "confusion_matrix": [
-        [
-          10152,
-          2968
-        ],
-        [
-          765,
-          2115
-        ]
-      ],
-      "description": "Model không xử lý imbalance - tendency predict class chiếm đa số"
+      "method": "Baseline (Bỏ mặc)",
+      "accuracy": 0.8399531249999999,
+      "precision": 0.616899903967445,
+      "recall": 0.2924479166666667,
+      "f1": 0.39678834420828635,
+      "roc_auc": 0.8533263333121612,
+      "description": "5-Fold CV metrics"
     },
-    "Class_Weights": {
-      "method": "Class Weights",
-      "accuracy": 0.7666875,
-      "precision": 0.4160928585481015,
-      "recall": 0.734375,
-      "f1": 0.5312068315961321,
-      "roc_auc": 0.8426131912686314,
-      "confusion_matrix": [
-        [
-          10152,
-          2968
-        ],
-        [
-          765,
-          2115
-        ]
-      ],
-      "description": "Tự động điều chỉnh trọng số class theo tỉ lệ nghịch"
+    "Class Weights": {
+      "method": "Class Weights (Tán xạ tự nhiên)",
+      "accuracy": 0.7508125,
+      "precision": 0.40328055603394397,
+      "recall": 0.8012152777777779,
+      "f1": 0.5364904894208167,
+      "roc_auc": 0.8533630950017997,
+      "description": "5-Fold CV metrics"
     },
-    "SMOTE": {
-      "method": "SMOTE",
-      "accuracy": 0.7666875,
-      "precision": 0.4160928585481015,
-      "recall": 0.734375,
-      "f1": 0.5312068315961321,
-      "roc_auc": 0.8426131912686314,
-      "confusion_matrix": [
-        [
-          10152,
-          2968
-        ],
-        [
-          765,
-          2115
-        ]
-      ],
-      "smote_samples": {
-        "before": 78720,
-        "after": 78720,
-        "synthetic_created": 0
-      },
-      "description": "Tạo synthetic samples cho minority class bằng interpolation"
-    },
-    "SMOTE_ClassWeights": {
-      "method": "SMOTE + Class Weights",
-      "accuracy": 0.7666875,
-      "precision": 0.4160928585481015,
-      "recall": 0.734375,
-      "f1": 0.5312068315961321,
-      "roc_auc": 0.8426131912686314,
-      "confusion_matrix": [
-        [
-          10152,
-          2968
-        ],
-        [
-          765,
-          2115
-        ]
-      ],
-      "description": "Kết hợp SMOTE oversampling với class weights"
-    },
-    "Threshold_Tuning": {
-      "method": "Threshold Tuning",
-      "optimal_threshold": 0.5201795101916651,
-      "accuracy": 0.7744375,
-      "precision": 0.4247678018575851,
-      "recall": 0.7145833333333333,
-      "f1": 0.5328155339805826,
-      "roc_auc": 0.8426131912686314,
-      "confusion_matrix": [
-        [
-          10333,
-          2787
-        ],
-        [
-          822,
-          2058
-        ]
-      ],
-      "description": "Điều chỉnh threshold để cân bằng Precision-Recall"
+    "SMOTE Pipeline": {
+      "method": "SMOTE (Nội suy Không gian)",
+      "accuracy": 0.754265625,
+      "precision": 0.4060491111751879,
+      "recall": 0.7891493055555555,
+      "f1": 0.5361767175158562,
+      "roc_auc": 0.8493056796107512,
+      "description": "5-Fold CV metrics"
     }
   },
-  "conclusion": {
-    "best_recall": "Baseline",
-    "best_f1": "Threshold_Tuning",
-    "best_auc": "Baseline",
-    "recommendation": "SMOTE + Class Weights cho recall cao nhất, nhưng cần cân nhắc precision. Threshold tuning là cách đơn giản và hiệu quả."
+  "best_methods": {
+    "best_f1": "Class Weights (Tán xạ tự nhiên)",
+    "best_recall": "Class Weights (Tán xạ tự nhiên)"
   }
 }

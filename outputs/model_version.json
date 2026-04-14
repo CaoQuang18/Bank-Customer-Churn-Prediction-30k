@@ -1,67 +1,49 @@
 {
-  "version": "20260325_121106",
-  "best_model": "Random Forest",
+  "version": "20260413_171206",
+  "best_model": "Logistic Regression",
   "metrics": {
-    "threshold": 0.5265,
-    "accuracy": 0.7768,
-    "precision": 0.4275,
-    "recall": 0.7069,
-    "f1": 0.5328,
-    "roc_auc": 0.8423,
+    "threshold": 0.6091,
+    "accuracy": 0.7851,
+    "precision": 0.4409,
+    "recall": 0.7229,
+    "f1": 0.5478,
+    "roc_auc": 0.8554,
     "confusion_matrix": [
       [
-        10393,
-        2727
+        10480,
+        2640
       ],
       [
-        844,
-        2036
+        798,
+        2082
       ]
     ]
   },
   "top_features": [
     "monthly_ir",
-    "engagement_score",
-    "risk_score"
+    "risk_score",
+    "balance"
   ],
   "cv_results": {
     "Logistic Regression": {
-      "cv_auc_mean": 0.8917,
-      "cv_auc_std": 0.0022,
-      "cv_auc_scores": [
-        0.8903,
-        0.8931,
-        0.8932,
-        0.888,
-        0.894
-      ]
+      "mean": 0.8269,
+      "std": 0.0081
     },
     "Random Forest": {
-      "cv_auc_mean": 0.9114,
-      "cv_auc_std": 0.002,
-      "cv_auc_scores": [
-        0.9087,
-        0.9112,
-        0.9115,
-        0.9106,
-        0.915
-      ]
+      "mean": 0.8328,
+      "std": 0.0137
     },
     "XGBoost": {
-      "cv_auc_mean": 0.9526,
-      "cv_auc_std": 0.0016,
-      "cv_auc_scores": [
-        0.9511,
-        0.9525,
-        0.9525,
-        0.9515,
-        0.9556
-      ]
+      "mean": 0.6774,
+      "std": 0.0093
+    },
+    "Baseline": {
+      "mean": 0.5,
+      "std": 0.02
     }
   },
   "features": [
     "credit_sco",
-    "gender",
     "age",
     "balance",
     "monthly_ir",
@@ -72,9 +54,12 @@
     "active_member",
     "engagement_score",
     "risk_score",
-    "customer_segment",
     "loyalty_level",
-    "digital_behavior"
+    "gender_male",
+    "customer_segment_Emerging",
+    "customer_segment_Mass",
+    "customer_segment_Priority",
+    "digital_behavior_offline"
   ],
-  "n_features": 15
+  "n_features": 17
 }

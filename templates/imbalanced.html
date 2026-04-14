@@ -1,53 +1,71 @@
+<!-- TAB: Xử lý Mất cân bằng -->
 <section id="tab-imbalanced" class="tab-content">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px">
-    <h2 style="margin-bottom:0">⚖️ Phân tích Kỹ thuật Nội suy Dữ liệu (Oversampling)</h2>
-    <span style="background:#fee2e2; color:#b91c1c; padding:8px 20px; border-radius:30px; font-size:15px; font-weight:700; border:1px solid #fecaca">SMOTE & Class Weights Hybrid</span>
-  </div>
-  <p style="color:#64748b; font-size:17px; margin-bottom:32px; line-height:1.7; max-width:800px">
-    Báo cáo kỹ thuật chi tiết về hiện tượng Data Blindness do mất cân bằng phân phối (Class Imbalance). Đánh giá hiệu suất của các thuật toán Synthetic Minority Over-sampling Technique (SMOTE) so với Baseline.
-  </p>
 
-  <div class="card-row" style="margin-bottom:32px; gap:24px">
-    <div class="card" style="border-left: 6px solid #ef4444; background: #fff5f5; box-shadow: 0 10px 25px rgba(239,68,68,0.05);">
-      <h3 style="color:#b91c1c; font-size:20px; display:flex; align-items:center; gap:12px; margin-bottom:20px">
-        <span style="background:#ef4444; color:white; width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px">🚨</span>
-        Mức độ Lệch Phân phối (Distribution Skewness)
-      </h3>
-      <div id="imbalance-overview" style="font-size:16px; color:#991b1b; line-height:1.7">Đang phân tích độ lệch dữ liệu...</div>
+  <div class="tab-header">
+    <div class="tab-header-left">
+      <h2>Xử lý Dữ liệu Mất cân bằng (Class Imbalance)</h2>
+      <p class="tab-header-desc">
+        Báo cáo kỹ thuật: hiện tượng Data Blindness do Class Imbalance, đánh giá SMOTE vs Class Weights vs Baseline và định lượng hiệu quả từng phương pháp.
+      </p>
     </div>
-    <div class="card" style="border-left: 6px solid #10b981; background: #f0fdf4; box-shadow: 0 10px 25px rgba(16,185,129,0.05);">
-      <h3 style="color:#065f46; font-size:20px; display:flex; align-items:center; gap:12px; margin-bottom:20px">
-        <span style="background:#10b981; color:white; width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px">🛠️</span>
-        Phân tích Kiến trúc Baseline vs SMOTE
-      </h3>
-      <div id="imbalance-insights" style="font-size:16px; color:#166534; line-height:1.7">Đang tải biểu đồ tóm tắt kỹ thuật...</div>
-    </div>
+    <span class="badge-pro warning">SMOTE &amp; Class Weights</span>
   </div>
 
-  <div class="card" style="margin-bottom:32px; border: 1px solid #e2e8f0; box-shadow: 0 15px 35px rgba(0,0,0,0.04);">
-    <h3 style="margin-bottom:24px; color:#1e293b; display:flex; align-items:center; gap:12px">
-       📊 Đánh giá Ma trận Nhầm lẫn (Confusion Matrix Metrics)
+  <!-- Overview -->
+  <div style="background:var(--red-50); border-left:4px solid var(--red-600); padding:20px; border-radius:12px; border-top:1px solid var(--red-100); border-right:1px solid var(--red-100); border-bottom:1px solid var(--red-100); margin-bottom:20px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+      <span style="background:var(--red-600);color:white;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:bold">🚨</span>
+      <h3 style="margin:0;color:var(--red-900);font-size:16px;font-weight:800">Biến dạng Phân phối & Nguy cơ Học vẹt (Algorithm Blindness)</h3>
+    </div>
+    <div id="imbalance-overview" style="font-size:14px;color:var(--red-800);line-height:1.75">Đang phân tích độ lệch...</div>
+  </div>
+
+  <!-- Architecture -->
+  <div style="background:var(--green-50); border-left:4px solid var(--green-600); padding:20px; border-radius:12px; border-top:1px solid var(--green-100); border-right:1px solid var(--green-100); border-bottom:1px solid var(--green-100); margin-bottom:20px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+      <span style="background:var(--green-600);color:white;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:bold">🛠️</span>
+      <h3 style="margin:0;color:var(--green-900);font-size:16px;font-weight:800">Kiến trúc Tái tạo Mẫu (Baseline vs SMOTE Pipeline)</h3>
+    </div>
+    <div id="imbalance-insights" style="font-size:14px;color:var(--green-800);line-height:1.75">Đang tải tóm tắt phân tích kỹ thuật...</div>
+  </div>
+
+  <!-- Comparison Table -->
+  <div class="card" style="margin-bottom:20px">
+    <div class="chart-header" style="margin-bottom:14px">
+      <h3 style="margin:0">📊 So sánh Hiệu suất theo Phương pháp Xử lý Mất cân bằng</h3>
+      <span class="badge-pro info">5-Fold CV Metrics</span>
+    </div>
+    <div id="imbalance-comparison" class="table-wrap">
+      <div class="loading"></div>
+    </div>
+  </div>
+
+  <!-- Threshold Tuning -->
+  <div class="card" style="margin-bottom:20px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+      <span style="background:var(--blue-50);color:var(--blue-700);width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px">🎚️</span>
+      <h3 style="margin:0">Tối ưu hóa Ngưỡng quyết định (Threshold Tuning)</h3>
+    </div>
+    <div id="threshold-analysis" style="font-size:13px;color:var(--gray-600);line-height:1.75">Đang tính toán ngưỡng tối ưu...</div>
+  </div>
+
+  <!-- Architecture Highlight -->
+  <div style="background:var(--blue-50); border-left:4px solid var(--blue-600); padding:20px; border-radius:12px; border-top:1px solid var(--blue-100); border-right:1px solid var(--blue-100); border-bottom:1px solid var(--blue-100); margin-bottom:20px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+      <span style="background:var(--blue-600);color:white;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:bold">🎯</span>
+      <h3 style="margin:0;color:var(--blue-900);font-size:16px;font-weight:800">Quyết Định Kiến Trúc Hỗ Trợ (Oversampling Architecture Choice)</h3>
+    </div>
+    <div id="imbalance-recommendations" style="font-size:14px;line-height:1.75;color:var(--blue-800)">Đang tải tham số mô hình tối ưu...</div>
+  </div>
+
+  <!-- Conclusion -->
+  <div style="background:var(--surface-2); border-left:4px solid var(--gray-600); padding:20px; border-radius:12px; border-top:1px solid var(--border); border-right:1px solid var(--border); border-bottom:1px solid var(--border)">
+    <h3 style="color:var(--gray-900); font-size:16px; font-weight:800; margin-bottom:10px; display:flex; align-items:center; gap:8px">
+      <span style="font-size:18px">📝</span> Thẩm Định Kỹ Thuật (Technical Validation)
     </h3>
-    <div id="imbalance-comparison" class="table-wrap">Đang trích xuất ma trận đánh giá...</div>
+    <p style="color:var(--gray-700); line-height:1.75; font-size:14px; margin:0">
+      Do phân phối nhãn đích bị mất cân bằng (ví dụ ~18%/82%), nếu giữ nguyên dữ liệu gốc mô hình có xu hướng thiên về lớp đa số (majority class) và làm giảm khả năng phát hiện lớp Churn. Kỹ thuật <strong>SMOTE</strong> tạo thêm mẫu cho lớp thiểu số bằng nội suy dựa trên K-Nearest Neighbors trong không gian đặc trưng, giúp cải thiện Recall trong nhiều trường hợp. Sau đó, hệ thống hiệu chỉnh <strong>threshold</strong> để cân bằng trade-off Precision/Recall theo mục tiêu chi phí (giảm bỏ sót rủi ro nhưng không tăng báo động nhầm quá mức).
+    </p>
   </div>
 
-  <div class="card" style="margin-bottom:32px; border: 1px solid #e2e8f0; box-shadow: 0 15px 35px rgba(0,0,0,0.04);">
-    <h3 style="margin-bottom:24px; color:#1e293b; display:flex; align-items:center; gap:12px">
-       📈 Tối ưu hóa Hàm Mất mát (Threshold Tuning Optimization)
-    </h3>
-    <div id="threshold-analysis">Đang tính toán đạo hàm ngưỡng...</div>
-  </div>
-
-  <div class="card" style="margin-bottom:32px; border: 1px solid #e2e8f0;">
-    <h3 style="font-size:18px; color:#1e293b; margin-bottom:15px">🎯 Quyết định Thiết kế (Architecture Choice)</h3>
-    <div id="imbalance-recommendations" style="font-size:16px; line-height:1.8; color:#475569">Đang tải tham số mô hình tối ưu...</div>
-  </div>
-
-  <!-- CONCLUSION -->
-  <div class="card" style="margin-top:40px; border-top: 6px solid #ef4444; background: linear-gradient(to bottom, #fef2f2, #ffffff); border-radius: 20px; padding: 40px; border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;">
-    <h3 style="color: #b91c1c; font-size:24px; margin-bottom:16px">📝 Kết luận Đánh giá Nội suy (Oversampling Post-Mortem)</h3>
-    <div style="font-size:17px; line-height:1.8; color:#7f1d1d; font-weight:400">
-      Do phân phối lớp Target bị lệch nghiêm trọng (Class Imbalance), thuật toán <strong>SMOTE (Synthetic Minority Over-sampling Technique)</strong> nội suy các điểm dữ liệu mới trong không gian đặc trưng bằng cách tính toán K-Nearest Neighbors, giúp mô hình thoát khỏi khuynh hướng dự đoán thiên vị (Bias) cho lớp đa số (Majority Class). Hiện tượng đánh đổi Precision để tối ưu Recall (Precision-Recall Tradeoff) được điều chỉnh thông qua tham số cực trị Threshold Tuning, đảm bảo giảm thiểu triệt để lỗi loại II (False Negatives - Bỏ sót lớp Positive).
-    </div>
-  </div>
 </section>

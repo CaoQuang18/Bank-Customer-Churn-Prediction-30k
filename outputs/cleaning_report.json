@@ -1,0 +1,47 @@
+{
+  "dtype_fix": "boolean & date columns converted",
+  "missing": {},
+  "duplicates_removed": 0,
+  "outliers": {
+    "balance": {
+      "q01": 2541680.2,
+      "q99": 441530191.35,
+      "n_capped": 1600,
+      "pct_capped": 2.0
+    },
+    "monthly_ir": {
+      "q01": 4000000.0,
+      "q99": 158000000.0,
+      "n_capped": 1012,
+      "pct_capped": 1.26
+    },
+    "credit_sco": {
+      "q01": 571.0,
+      "q99": 800.0,
+      "n_capped": 776,
+      "pct_capped": 0.97
+    },
+    "age": {
+      "q01": 24.0,
+      "q99": 90.0,
+      "n_capped": 785,
+      "pct_capped": 0.98
+    },
+    "engagement_score": {
+      "q01": 7.0,
+      "q99": 91.0,
+      "n_capped": 679,
+      "pct_capped": 0.85
+    },
+    "risk_score": {
+      "q01": 0.05,
+      "q99": 0.45,
+      "n_capped": 1593,
+      "pct_capped": 1.99
+    }
+  },
+  "imbalance": {
+    "no_churn": 65600,
+    "churn": 14400,
+    "ratio": 4.56,
+    "imbalanced": 
