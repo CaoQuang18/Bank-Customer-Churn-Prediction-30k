@@ -1655,10 +1655,10 @@ async function loadSHAPAnalysis() {
               <tr style="border-bottom:1px solid #e5e7eb">
                 <td style="padding:10px;text-align:center"><strong>${i + 1}</strong></td>
                 <td style="padding:10px"><strong>${cleanFeatureName(item.feature)}</strong><br><span style="font-size:11px;color:#9ca3af;font-family:monospace">${item.feature}</span></td>
-                <td style="padding:10px;text-align:center">${item.shap_importance.toFixed(4)}</td>
+                <td style="padding:10px;text-align:center">${(item.shap_importance * 100).toFixed(2)}%</td>
                 <td style="padding:10px;width:200px">
                   <div style="background:#f3f4f6;height:12px;border-radius:6px;overflow:hidden">
-                    <div style="background:#1e429f;height:100%;width:${item.shap_importance / shapData.top_10[0].shap_importance * 100}%;border-radius:6px"></div>
+                    <div style="background:#1e429f;height:100%;width:${(item.shap_importance / (shapData.top_10[0].shap_importance || 1)) * 100}%;border-radius:6px"></div>
                   </div>
                 </td>
               </tr>
@@ -1700,11 +1700,11 @@ async function loadSHAPAnalysis() {
     const xgbTop = (res.xgboost?.top_10 || []);
     // Risk factors: top features by SHAP (drivers of churn)
     const riskFactors = rfTop.slice(0, 3).map(item =>
-      `<li style="margin-bottom:8px"><strong>${cleanFeatureName(item.feature)}</strong> — SHAP: <span style="color:#dc2626;font-weight:700">${item.shap_importance.toFixed(4)}</span><br><span style="font-size:12px;color:#6b7280">${item.feature.includes('risk_score') ? 'Điểm rủi ro tổng hợp — yếu tố quyết định trực tiếp nhất' : item.feature.includes('monthly_ir') ? 'Thu nhập thấp → không duy trì số dư tối thiểu → rời bỏ' : item.feature.includes('engagement_score') ? 'Tương tác số thấp → ít gắn bó với hệ sinh thái ngân hàng' : 'Ảnh hưởng đáng kể đến quyết định rời bỏ'}</span></li>`
+      `<li style="margin-bottom:8px"><strong>${cleanFeatureName(item.feature)}</strong> — Impact: <span style="color:#dc2626;font-weight:700">${(item.shap_importance * 100).toFixed(2)}%</span><br><span style="font-size:12px;color:#6b7280">${item.feature.includes('risk_score') ? 'Điểm rủi ro tổng hợp — yếu tố quyết định trực tiếp nhất' : item.feature.includes('monthly_ir') ? 'Thu nhập thấp → không duy trì số dư tối thiểu → rời bỏ' : item.feature.includes('engagement_score') ? 'Tương tác số thấp → ít gắn bó với hệ sinh thái ngân hàng' : 'Ảnh hưởng đáng kể đến quyết định rời bỏ'}</span></li>`
     ).join('');
     // Loyalty factors: features with medium importance (potential cross-sell)
     const loyalFactors = rfTop.slice(3, 6).map(item =>
-      `<li style="margin-bottom:8px"><strong>${cleanFeatureName(item.feature)}</strong> — SHAP: <span style="color:#059669;font-weight:700">${item.shap_importance.toFixed(4)}</span><br><span style="font-size:12px;color:#6b7280">${item.feature.includes('nums_service') ? 'KH dùng nhiều DV → khó rời → cơ hội cross-sell mạnh' : item.feature.includes('tenure_ye') ? 'Gắn bó lâu → loyal → 6 tháng đầu là giai đoạn critical' : item.feature.includes('balance') ? 'Số dư cao → không muốn mất ưu đãi → yếu tố giữ chân' : 'Ảnh hưởng đến khả năng giữ chân khách hàng'}</span></li>`
+      `<li style="margin-bottom:8px"><strong>${cleanFeatureName(item.feature)}</strong> — Impact: <span style="color:#059669;font-weight:700">${(item.shap_importance * 100).toFixed(2)}%</span><br><span style="font-size:12px;color:#6b7280">${item.feature.includes('nums_service') ? 'KH dùng nhiều DV → khó rời → cơ hội cross-sell mạnh' : item.feature.includes('tenure_ye') ? 'Gắn bó lâu → loyal → 6 tháng đầu là giai đoạn critical' : item.feature.includes('balance') ? 'Số dư cao → không muốn mất ưu đãi → yếu tố giữ chân' : 'Ảnh hưởng đến khả năng giữ chân khách hàng'}</span></li>`
     ).join('');
     const hrEl = document.getElementById('shap-high-risk');
     if (hrEl) hrEl.innerHTML = `<ul style="margin:0;padding-left:18px">${riskFactors}</ul>`;
@@ -1789,7 +1789,7 @@ async function loadImbalanceAnalysis() {
                 <td style="padding:10px;text-align:center">${(m.precision * 100).toFixed(1)}%</td>
                 <td style="padding:10px;text-align:center;font-weight:bold;color:#dc2626">${(m.recall * 100).toFixed(1)}%</td>
                 <td style="padding:10px;text-align:center;font-weight:bold">${(m.f1 * 100).toFixed(1)}%</td>
-                <td style="padding:10px;text-align:center">${m.roc_auc.toFixed(4)}</td>
+                <td style="padding:10px;text-align:center">${(m.roc_auc * 100).toFixed(1)}%</td>
               </tr>
             `).join('')}
           </tbody>
@@ -2570,7 +2570,7 @@ const debouncedApiCall = debounce(async (balance, engagement, tenure) => {
       const probText = document.getElementById('prob-text');
       if(probBar && probText) {
         probBar.style.width = probValue + '%';
-        probText.textContent = (probValue / 100).toFixed(4);
+        probText.textContent = probValue.toFixed(1) + '%';
       }
       
       document.getElementById('model-badge').textContent = `Mô hình: ${simPayload.model}`;
@@ -2722,7 +2722,7 @@ document.getElementById('predict-form').addEventListener('submit', async (e) => 
     const probText = document.getElementById('prob-text');
     if(probBar && probText) {
       probBar.style.width = prob + '%';
-      probText.textContent = (prob / 100).toFixed(4);
+      probText.textContent = prob.toFixed(1) + '%';
     }
     
     document.getElementById('model-badge').textContent = `Mô hình: ${payload.model}`;
