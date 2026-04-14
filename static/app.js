@@ -174,33 +174,33 @@ function setInsight(id, insight) {
 }
 
 const FEATURE_LABELS = {
-  credit_sco: 'Điểm tín dụng',
-  gender: 'Giới tính',
-  age: 'Tuổi',
-  balance: 'Số dư',
-  monthly_ir: 'Thu nhập hàng tháng',
-  tenure_ye: 'Số năm gắn bó',
-  married: 'Tình trạng hôn nhân',
-  nums_card: 'Số thẻ',
-  nums_service: 'Số dịch vụ',
-  active_member: 'Thành viên hoạt động',
-  engagement_score: 'Điểm Tương tác',
-  risk_score: 'Điểm Rủi ro',
-  customer_segment: 'Phân khúc KH',
-  loyalty_level: 'Hạng Loyalty',
-  digital_behavior: 'Hành vi Digital'
+  credit_sco: 'Credit Score',
+  gender: 'Gender',
+  age: 'Age',
+  balance: 'Balance',
+  monthly_ir: 'Monthly Income',
+  tenure_ye: 'Tenure (Years)',
+  married: 'Marital Status',
+  nums_card: 'Num of Cards',
+  nums_service: 'Num of Services',
+  active_member: 'Active Member',
+  engagement_score: 'Engagement Score',
+  risk_score: 'Risk Score',
+  customer_segment: 'Customer Segment',
+  loyalty_level: 'Loyalty Level',
+  digital_behavior: 'Digital Behavior'
 };
 
 // Bản đồ tên thân thiện cho OHE features (ColumnTransformer output)
 const SHAP_OHE_LABELS = {
-  'customer_segment_Mass': 'Phân khúc Mass',
-  'customer_segment_Emerging': 'Phân khúc Tiềm năng',
-  'customer_segment_Priority': 'Phân khúc Priority',
-  'customer_segment_Affluent': 'Phân khúc Affluent',
-  'gender_male': 'Giới tính Nam',
-  'gender_female': 'Giới tính Nữ',
-  'digital_behavior_offline': 'Hành vi Offline',
-  'digital_behavior_mobile': 'Hành vi Mobile'
+  'customer_segment_Mass': 'Segment: Mass',
+  'customer_segment_Emerging': 'Segment: Emerging',
+  'customer_segment_Priority': 'Segment: Priority',
+  'customer_segment_Affluent': 'Segment: Affluent',
+  'gender_male': 'Gender: Male',
+  'gender_female': 'Gender: Female',
+  'digital_behavior_offline': 'Behavior: Offline',
+  'digital_behavior_mobile': 'Behavior: Mobile'
 };
 
 /**
