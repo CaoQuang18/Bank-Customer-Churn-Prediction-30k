@@ -693,7 +693,7 @@ async function loadOverview() {
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px">
       <div style="background:var(--surface); border-radius:8px; padding:10px 14px; border: 1px solid var(--border)">
         <div style="font-size:11px; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px">ROC-AUC</div>
-        <div style="font-size:22px; font-weight:800; color:var(--gray-900)">${bm.roc_auc === null ? '—' : Number(bm.roc_auc).toFixed(3)}</div>
+        <div style="font-size:22px; font-weight:800; color:var(--gray-900)">${bm.roc_auc === null ? '—' : (Number(bm.roc_auc) * 100).toFixed(2) + '%'}</div>
       </div>
       <div style="background:var(--surface); border-radius:8px; padding:10px 14px; border: 1px solid var(--border)">
         <div style="font-size:11px; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px">Recall</div>
@@ -740,6 +740,8 @@ async function loadOverview() {
       </div>
     </div>
   `;
+
+  document.getElementById('overview-test-auc').innerHTML = ov.test_auc ? (ov.test_auc * 100).toFixed(2) + '%' : '—';
 
   document.getElementById('overview-summary').innerHTML = `
     <div style="font-size:12px; font-weight:800; color:var(--gray-500); margin-bottom:16px; text-transform:uppercase; letter-spacing:0.1em; border-bottom:1px solid var(--border); padding-bottom:8px">Cơ cấu Khách hàng</div>
@@ -1139,12 +1141,12 @@ async function loadModels() {
   const compBodyEl = document.getElementById('model-table-body') || document.getElementById('model-comparison-body');
   if (compBodyEl) {
     compBodyEl.innerHTML = comparison.table.map((r, i) => {
-      const cvAuc  = r.cv_auc  ? r.cv_auc.toFixed(4)  : '—';
-      const cvStd  = r.cv_std  ? ' ±' + r.cv_std.toFixed(4) : '';
-      const testAuc = r.roc_auc ? r.roc_auc.toFixed(4) : '—';
+      const cvAuc  = r.cv_auc  ? (r.cv_auc * 100).toFixed(2) + '%'  : '—';
+      const cvStd  = r.cv_std  ? ' ±' + (r.cv_std * 100).toFixed(2) + '%' : '';
+      const testAuc = r.roc_auc ? (r.roc_auc * 100).toFixed(2) + '%' : '—';
       const gap    = (r.cv_auc && r.roc_auc) ? (r.cv_auc - r.roc_auc) : null;
       const gapTag = gap && gap > 0.08
-        ? `<span style="font-size:10px; color:var(--warning); margin-left:4px" title="CV vs Test gap = ${gap.toFixed(3)} — cần kiểm tra overfit">⚠️</span>`
+        ? `<span style="font-size:10px; color:var(--warning); margin-left:4px" title="CV vs Test gap = ${(gap * 100).toFixed(1)}% — cần kiểm tra overfit">⚠️</span>`
         : '';
       const badges = [
         '<span class="badge-pro success" style="font-size:10px">TOP 1</span>',
