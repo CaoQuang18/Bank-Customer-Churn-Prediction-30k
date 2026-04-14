@@ -613,7 +613,7 @@ async function loadOverview() {
   const kpiChurn = document.getElementById('kpi-churn-rate');
   if (kpiChurn) kpiChurn.textContent = (ov.churn_rate || 0) + '%';
   const kpiAuc = document.getElementById('kpi-auc');
-  if (kpiAuc) kpiAuc.textContent = ovRes.best_model?.roc_auc || '—';
+  if (kpiAuc) kpiAuc.textContent = ovRes.best_model?.roc_auc ? (ovRes.best_model.roc_auc * 100).toFixed(2) + '%' : '—';
   const kpiCluster = document.getElementById('kpi-clusters');
   if (kpiCluster) kpiCluster.textContent = ovRes.n_clusters || '3';
 
@@ -1240,7 +1240,7 @@ async function loadModels() {
   const rocDatasets = Object.entries(results).map(([name, res], i) => {
     const points = res.roc.fpr.map((x, j) => ({ x, y: res.roc.tpr[j] })).sort((a, b) => a.x - b.x);
     return {
-      label: `${name} (AUC: ${(comparison.table.find(t=>t.model===name)?.roc_auc || 0).toFixed(4)})`,
+      label: `${name} (AUC: ${((comparison.table.find(t=>t.model===name)?.roc_auc || 0)*100).toFixed(2)}%)`,
       data: points,
       borderColor: COLORS[i],
       backgroundColor: 'transparent',
@@ -1444,19 +1444,19 @@ async function loadModels() {
     const fmtPct = (x) => (x === undefined || x === null) ? "-" : `${(Number(x) * 100).toFixed(1)}%`;
 
     const summary = byAuc
-      ? `Trên tập kiểm tra, mô hình theo AUC tốt nhất là <strong>${byAuc.model}</strong> (AUC=${fmt(byAuc.roc_auc)}). Việc lựa chọn mô hình còn phụ thuộc ưu tiên bắt rủi ro (Recall) hay giảm báo động nhầm (Precision).`
+      ? `Trên tập kiểm tra, mô hình theo AUC tốt nhất là <strong>${byAuc.model}</strong> (AUC=${fmtPct(byAuc.roc_auc)}). Việc lựa chọn mô hình còn phụ thuộc ưu tiên bắt rủi ro (Recall) hay giảm báo động nhầm (Precision).`
       : `Bảng dưới tổng hợp các chỉ số đánh giá mô hình trên tập kiểm tra.`;
 
     const cards = `
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:12px">
         <div class="info-block" style="border-left-color:var(--green-600)">
-          🏆 <strong>Best AUC:</strong> ${byAuc ? `${byAuc.model} (AUC ${fmt(byAuc.roc_auc)})` : "-"}
+          🏆 <strong>Best AUC:</strong> ${byAuc ? `${byAuc.model} (AUC ${fmtPct(byAuc.roc_auc)})` : "-"}
         </div>
         <div class="info-block" style="border-left-color:var(--amber-600)">
           🎯 <strong>Best Recall:</strong> ${byRecall ? `${byRecall.model} (Recall ${fmtPct(byRecall.recall)})` : "-"}
         </div>
         <div class="info-block" style="border-left-color:var(--blue-600)">
-          ⚖️ <strong>Best F1:</strong> ${byF1 ? `${byF1.model} (F1 ${fmt(byF1.f1)})` : "-"}
+          ⚖️ <strong>Best F1:</strong> ${byF1 ? `${byF1.model} (F1 ${fmtPct(byF1.f1)})` : "-"}
         </div>
       </div>
     `;
