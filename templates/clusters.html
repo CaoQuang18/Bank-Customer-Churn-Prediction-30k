@@ -11,6 +11,28 @@
     <span class="badge-pro info">K-Means · k=4 Phân khúc (Segments)</span>
   </div>
 
+  <!-- ══ Elbow Method ══ -->
+  <div style="margin-bottom:24px">
+    <h4 style="font-size:11px;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:16px;text-align:center;font-weight:700">📐 Cơ sở Toán học của việc chọn K</h4>
+
+    <!-- FIX G1: Note lý do chọn k=4 — Silhouette peak tại k=3 nhưng domain reason chọn k=4 -->
+    <div class="card" style="background:var(--amber-50);border-left:4px solid var(--amber-500);padding:14px 18px;border-radius:8px;border:1px solid var(--amber-100);margin-bottom:16px;font-size:13px;color:var(--amber-900);max-width:720px;margin-left:auto;margin-right:auto">
+      <strong>📌 Lý do chọn k=4 thay vì k=3</strong> (Silhouette tốt nhất tại k=3 = 0.409):<br>
+      Mặc dù Silhouette Score đạt đỉnh tại k=3, nghiên cứu chọn k=4 dựa trên <strong>lý luận nghiệp vụ (domain knowledge)</strong>:
+      4 nhóm giúp phân biệt rõ ràng: <em>VIP · Tích cực · Rủi ro Cao · Cao tuổi</em> — tương ứng với 4 chiến lược giữ chân trong thực tế ngân hàng bán lẻ.
+      Đây là ví dụ điển hình của <strong>Domain-driven K selection</strong>: toán học cung cấp gợi ý, nhưng nghiệp vụ quyết định.
+    </div>
+
+    <div style="max-width:720px;margin:0 auto">
+      <div class="card chart-card" style="border-style:dashed">
+        <h4 style="font-size:13px;margin-bottom:4px">Đường cong Khuỷu tay (Elbow Method)</h4>
+        <p style="font-size:12px;color:var(--gray-400);margin-bottom:14px">Hệ thống đo Inertia để tìm điểm uốn, giúp chọn K lý tưởng không dựa vào cảm tính.</p>
+        <canvas id="chart-elbow" height="150"></canvas>
+        <div id="insight-elbow" class="insight-box" style="margin-top:12px;font-size:12.5px"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- Rationale -->
   <div class="card" style="margin-bottom:20px;background:var(--blue-50);border-color:var(--blue-100);display:flex;gap:14px;align-items:flex-start">
     <div style="font-size:24px;flex-shrink:0;margin-top:2px">💡</div>
@@ -187,26 +209,6 @@
     </div>
   </div>
 
-  <!-- ══ Elbow Method ══ -->
-  <div style="border-top:1px solid var(--border);padding-top:20px">
-    <h4 style="font-size:11px;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:16px;text-align:center;font-weight:700">📐 Phụ lục Kỹ thuật: Cơ sở Toán học của việc chọn K</h4>
 
-    <!-- FIX G1: Note lý do chọn k=4 — Silhouette peak tại k=3 nhưng domain reason chọn k=4 -->
-    <div style="background:var(--amber-50);border-left:4px solid var(--amber-500);padding:14px 18px;border-radius:8px;border:1px solid var(--amber-100);margin-bottom:16px;font-size:13px;color:var(--amber-900);max-width:720px;margin-left:auto;margin-right:auto">
-      <strong>📌 Lý do chọn k=4 thay vì k=3</strong> (Silhouette tốt nhất tại k=3 = 0.409):<br>
-      Mặc dù Silhouette Score đạt đỉnh tại k=3, nghiên cứu chọn k=4 dựa trên <strong>lý luận nghiệp vụ (domain knowledge)</strong>:
-      4 nhóm giúp phân biệt rõ ràng: <em>VIP · Tích cực · Rủi ro Cao · Cao tuổi</em> — tương ứng với 4 chiến lược giữ chân trong thực tế ngân hàng bán lẻ.
-      Đây là ví dụ điển hình của <strong>Domain-driven K selection</strong>: toán học cung cấp gợi ý, nhưng nghiệp vụ quyết định.
-    </div>
-
-    <div style="max-width:720px;margin:0 auto">
-      <div class="card chart-card" style="border-style:dashed">
-        <h4 style="font-size:13px;margin-bottom:4px">Đường cong Khuỷu tay (Elbow Method)</h4>
-        <p style="font-size:12px;color:var(--gray-400);margin-bottom:14px">Hệ thống đo Inertia để tìm điểm uốn, giúp chọn K lý tưởng không dựa vào cảm tính.</p>
-        <canvas id="chart-elbow" height="150"></canvas>
-        <div id="insight-elbow" class="insight-box" style="margin-top:12px;font-size:12.5px"></div>
-      </div>
-    </div>
-  </div>
 
 </section>
