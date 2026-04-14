@@ -2386,14 +2386,24 @@ function renderClusterCustomers(clusterId, filterSegment = 'all', filterActive =
   // Update Summary Stats dynamically
   const detailContainer = document.getElementById('cluster-detail-analysis');
   if (detailContainer) {
+    const churnPctVal = ((profile.churn_rate_pct !== undefined && profile.churn_rate_pct !== null) ? Number(profile.churn_rate_pct) : typeof churnPct === 'function' ? churnPct(profile.churn_rate) : (profile.churn_rate || 0)) || 0;
+    const churnColor = churnPctVal < 5 ? '#10b981' : churnPctVal < 18 ? '#f59e0b' : '#ef4444';
+    const churnBadge = churnPctVal < 5 ? '🟢 Rất An Toàn' : churnPctVal < 18 ? '🟡 Rủi ro TB' : '🔴 Cảnh Báo';
+    const churnInsight = churnPctVal < 1 
+      ? `(Siêu an toàn — K-Means đã phân tách bóc tách thành công nhóm trung thành tuyệt đối, gần như không có rủi ro rời bỏ)`
+      : churnPctVal > 20 
+      ? `(Báo động đỏ — K-Means gom nhóm rủi ro rất cao, cần tập trung ngân sách Win-back Campaign vào đây)`
+      : `(Mức độ rời bỏ xoay quanh mức trung bình của toàn tập dữ liệu)`;
+
     detailContainer.innerHTML = `
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;margin-bottom:32px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;margin-bottom:12px">
         <div class="card-pro" style="text-align:center">
           <div style="font-size:32px;font-weight:900;color:#1e40af">${rows.length.toLocaleString()}</div>
           <div style="font-size:12px;color:#64748b;margin-top:5px;text-transform:uppercase;font-weight:700">KH theo bộ lọc</div>
         </div>
-        <div class="card-pro" style="text-align:center">
-          <div style="font-size:32px;font-weight:900;color:#ef4444">${(((profile.churn_rate_pct !== undefined && profile.churn_rate_pct !== null) ? Number(profile.churn_rate_pct) : typeof churnPct === 'function' ? churnPct(profile.churn_rate) : (profile.churn_rate || 0)) || 0).toFixed(2)}%</div>
+        <div class="card-pro" style="text-align:center;position:relative">
+          <div style="position:absolute;top:10px;right:10px;font-size:10px;background:${churnColor}1a;color:${churnColor};padding:3px 6px;border-radius:4px;font-weight:800">${churnBadge}</div>
+          <div style="font-size:32px;font-weight:900;color:${churnColor}">${churnPctVal.toFixed(2)}%</div>
           <div style="font-size:12px;color:#64748b;margin-top:5px;text-transform:uppercase;font-weight:700">Tỷ lệ Churn Cụm</div>
         </div>
         <div class="card-pro" style="text-align:center">
@@ -2405,8 +2415,13 @@ function renderClusterCustomers(clusterId, filterSegment = 'all', filterActive =
           <div style="font-size:12px;color:#64748b;margin-top:5px;text-transform:uppercase;font-weight:700">Số dư TB Cụm</div>
         </div>
       </div>
+      <div style="text-align:center;font-size:13px;color:#475569;margin-bottom:32px">
+        💡 <strong>Giải thích điểm dữ liệu:</strong> Tỷ lệ Churn của cụm hiện tại là <strong>${churnPctVal.toFixed(2)}%</strong>. 
+        <span style="color:${churnColor};font-weight:600">${churnInsight}</span>
+      </div>
     `;
   }
+
 
   // Draw Charts: Aggregated Histogram Distribution (Methodologically Correct)
   if (rows.length > 0) {
